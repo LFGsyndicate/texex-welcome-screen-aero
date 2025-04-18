@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -104,7 +105,7 @@
   }
 
   .hero-background {
-    background: url('/lovable-uploads/c9b2eab0-b411-40e5-bb02-18f3e16db582.png') center/cover no-repeat;
+    background: url('/public/lovable-uploads/2fda2294-807e-438c-bf7c-aaa1d20afe61.png') center/cover no-repeat;
     @apply fixed inset-0 z-0;
   }
 
