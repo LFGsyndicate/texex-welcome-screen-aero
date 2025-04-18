@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -88,14 +90,33 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+  body {
+    @apply bg-background text-foreground overflow-hidden;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .hero-background {
+    background: url('/lovable-uploads/c78bcde1-b01b-4612-9e36-7e22900aab20.png') center/cover no-repeat;
+    @apply fixed inset-0 z-0;
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .language-switch span {
+    @apply cursor-pointer transition-all duration-200;
+  }
+
+  .language-switch span.active {
+    @apply text-amber-400 font-semibold;
   }
 }
