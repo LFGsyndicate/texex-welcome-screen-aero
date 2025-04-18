@@ -105,7 +105,10 @@
   }
 
   .hero-background {
-    background: url('/public/lovable-uploads/33498a50-64fc-48b7-b105-c895f397fbc2.png') center/cover no-repeat;
+    background-image: url('/lovable-uploads/33498a50-64fc-48b7-b105-c895f397fbc2.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     @apply fixed inset-0 z-0;
   }
 
