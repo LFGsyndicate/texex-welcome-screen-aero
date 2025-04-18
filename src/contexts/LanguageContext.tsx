@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'ru' | 'en';
@@ -11,13 +10,13 @@ interface LanguageContextType {
 
 const translations = {
   ru: {
-    title: "Спасибо за 15 лет сотрудничества",
-    buttonText: "Переходите к нашим партнёрам",
+    title: "Спасибо за 15 лет вдохновляющего сотрудничества",
+    buttonText: "Заказ AI-проектов у наших партнеров",
     footer: "2025 год, все права защищены Texex"
   },
   en: {
-    title: "Thank you for 15 years of cooperation",
-    buttonText: "Go to our partners",
+    title: "Thank you for 15 years of inspiring cooperation",
+    buttonText: "Order AI projects from our partners",
     footer: "2025, all rights reserved by Texex"
   }
 };
