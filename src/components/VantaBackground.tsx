@@ -20,7 +20,9 @@ export const VantaBackground = () => {
         scale: 1.00,
         scaleMobile: 1.00,
         color: 0x5569ac,
-        backgroundColor: 0x3443b9
+        backgroundColor: 0x3443b9,
+        spacing: 0,
+        chaos: 1
       });
     }
 
