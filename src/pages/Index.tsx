@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LanguageSwitch from '@/components/LanguageSwitch';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import VantaBackground from '@/components/VantaBackground';
 
 const Index = () => {
   const { t } = useLanguage();
@@ -14,7 +15,7 @@ const Index = () => {
 
   return (
     <>
-      <div className="hero-background" />
+      <VantaBackground />
       <main className="relative min-h-screen flex flex-col items-center justify-between p-6 text-white">
         <header className="w-full flex justify-between items-center">
           <img 

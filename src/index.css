@@ -7,17 +7,17 @@
 
 @layer base {
   :root {
-    --background: 217 91% 60%;
+    --background: 238 67% 47%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 11%;
+    --card: 238 67% 47%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 11%;
+    --popover: 238 67% 47%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 238 67% 47%;
+    --primary-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -43,20 +43,8 @@
   }
 
   body {
-    @apply bg-background text-foreground overflow-hidden;
+    @apply text-foreground;
     font-family: 'Inter', sans-serif;
-  }
-
-  .hero-background {
-    background-image: url('/lovable-uploads/dbf9b890-e2f4-4b8d-9fce-a0c796128ea3.png');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    @apply fixed inset-0 z-0;
-  }
-
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .language-switch span {
