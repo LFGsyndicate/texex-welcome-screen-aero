@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
+    --background: 217 91% 60%;
     --foreground: 210 40% 98%;
 
     --card: 222 47% 11%;
@@ -25,7 +25,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 45 93% 47%;
+    --accent: 47 95% 50%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -48,7 +48,7 @@
   }
 
   .hero-background {
-    background-image: url('/lovable-uploads/902585da-c2dc-46b4-bd9f-05987377a596.png');
+    background-image: url('/lovable-uploads/dbf9b890-e2f4-4b8d-9fce-a0c796128ea3.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
