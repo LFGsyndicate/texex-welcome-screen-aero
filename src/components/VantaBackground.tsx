@@ -21,10 +21,11 @@ const VantaBackground = () => {
           minWidth: 200.00,
           scale: 1.00,
           scaleMobile: 1.00,
-          color: 0x5569ac,
+          // Adjusting colors to match the screenshot's blue color
+          color: 0x4C5ADF,
           backgroundColor: 0x3443b9,
-          spacing: 0,
-          chaos: 1
+          spacing: 4.00,
+          chaos: 5.00
         });
         
         setVantaEffect(effect);
