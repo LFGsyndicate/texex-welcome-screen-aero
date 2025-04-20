@@ -7,7 +7,7 @@ const VantaBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // We need to dynamically import Vanta since it expects the window to be defined
+    // Only initialize if effect doesn't exist and container is available
     if (!vantaEffect && containerRef.current) {
       // Dynamic import for Vanta TRUNK
       import('vanta/dist/vanta.trunk.min').then((TRUNK) => {
@@ -21,11 +21,10 @@ const VantaBackground = () => {
           minWidth: 200.00,
           scale: 1.00,
           scaleMobile: 1.00,
-          // Adjusting colors to match the screenshot's blue color
-          color: 0x4C5ADF,
+          color: 0x6669ec,
           backgroundColor: 0x3443b9,
-          spacing: 4.00,
-          chaos: 5.00
+          spacing: 0,
+          chaos: 1
         });
         
         setVantaEffect(effect);
@@ -36,7 +35,7 @@ const VantaBackground = () => {
     return () => {
       if (vantaEffect) vantaEffect.destroy();
     };
-  }, [vantaEffect]);
+  }, []); // Empty dependency array ensures effect runs only once on mount
 
   return <div ref={containerRef} className="fixed inset-0 -z-10" />;
 };
