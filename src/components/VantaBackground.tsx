@@ -9,9 +9,9 @@ const VantaBackground = () => {
   useEffect(() => {
     // Only initialize if effect doesn't exist and container is available
     if (!vantaEffect && containerRef.current) {
-      // Dynamic import for Vanta TRUNK
-      import('vanta/dist/vanta.trunk.min').then((TRUNK) => {
-        const effect = TRUNK.default({
+      // Dynamic import for Vanta NET
+      import('vanta/dist/vanta.net.min').then((NET) => {
+        const effect = NET.default({
           el: containerRef.current,
           THREE: THREE,
           mouseControls: true,
@@ -21,10 +21,12 @@ const VantaBackground = () => {
           minWidth: 200.00,
           scale: 1.00,
           scaleMobile: 1.00,
-          color: 0x5569ac,
-          backgroundColor: 0x3443b9,
-          spacing: 0,
-          chaos: 1
+          color: 0x3f55ff,
+          backgroundColor: 0x2100b6,
+          points: 4.00,
+          maxDistance: 10.00,
+          spacing: 11.00,
+          showDots: true
         });
         
         setVantaEffect(effect);
@@ -41,3 +43,4 @@ const VantaBackground = () => {
 };
 
 export default VantaBackground;
+
