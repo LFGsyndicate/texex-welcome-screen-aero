@@ -38,8 +38,21 @@
     --radius: 0.5rem;
   }
 
+  /* Предотвращение горизонтальной прокрутки */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  /* Адаптивные изображения */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 
   body {

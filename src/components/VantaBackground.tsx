@@ -31,23 +31,26 @@ const VantaBackground = () => {
   useEffect(() => {
     // Only initialize if p5 is loaded, effect doesn't exist and container is available
     if (p5Loaded && !vantaEffect && containerRef.current) {
+      // Check if device is mobile for performance optimization
+      const isMobile = window.innerWidth < 768;
+      
       // Dynamic import for Vanta TRUNK
       import('vanta/dist/vanta.trunk.min').then((TRUNK) => {
         const effect = TRUNK.default({
           el: containerRef.current,
           THREE: THREE,
           p5: window.p5,
-          mouseControls: true,
+          mouseControls: !isMobile,
           touchControls: true,
           gyroControls: false,
           minHeight: 200.00,
           minWidth: 200.00,
-          scale: 1.00,
-          scaleMobile: 1.00,
+          scale: isMobile ? 0.8 : 1.00,
+          scaleMobile: 0.8,
           color: 0xfc20d5,
           backgroundColor: 0x4111cf,
-          spacing: 0.50,
-          chaos: 1.50
+          spacing: isMobile ? 0.8 : 0.50,
+          chaos: isMobile ? 1.0 : 1.50
         });
         
         setVantaEffect(effect);
