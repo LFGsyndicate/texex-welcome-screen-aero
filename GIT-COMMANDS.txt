@@ -1,0 +1,13 @@
+КОМАНДЫ ДЛЯ ОБНОВЛЕНИЯ GITHUB РЕПОЗИТОРИЯ
+
+Скопируйте и вставьте эти команды в новый терминал PowerShell:
+
+1. git add .
+
+2. git commit -m "Complete project update - full code replacement"
+
+3. git push origin main --force
+
+АЛЬТЕРНАТИВНО - запустите файл UPDATE-GITHUB.bat двойным щелчком
+
+ПРИМЕЧАНИЕ: Флаг --force перезапишет историю в удаленном репозитории

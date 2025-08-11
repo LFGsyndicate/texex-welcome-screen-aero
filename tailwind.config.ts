@@ -19,6 +19,14 @@ export default {
 		},
 		extend: {
 			colors: {
+				// Custom palette colors
+				'primary-blue': 'var(--primary-blue)',
+				'dark-blue': 'var(--dark-blue)',
+				'accent-green': 'var(--accent-green)',
+				'light-cream': 'var(--light-cream)',
+				'gold': 'var(--gold)',
+				
+				// Shadcn colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -82,7 +90,7 @@ export default {
 						height: 'var(--radix-accordion-content-height)'
 					},
 					to: {
-						height: '0'
+						height: 'var(--radix-accordion-content-height)'
 					}
 				}
 			},

@@ -1,0 +1,7 @@
+КОПИРУЙТЕ И ВСТАВЛЯЙТЕ ЭТИ КОМАНДЫ В НОВЫЙ ТЕРМИНАЛ POWERSHELL:
+
+git add .
+git commit -m "Complete project update - full code replacement"
+git push origin main --force
+
+ИЛИ ЗАПУСТИТЕ ФАЙЛ UPDATE-GITHUB.bat ДВОЙНЫМ ЩЕЛЧКОМ

@@ -1,5 +1,5 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,64 +7,132 @@
 
 @layer base {
   :root {
-    --background: 238 67% 47%;
-    --foreground: 210 40% 98%;
+    --primary-blue: #2A3BD6;
+    --dark-blue: #1427B0;
+    --accent-green: #15D895;
+    --light-cream: #F4E4C1;
+    --gold: #E4C580;
 
-    --card: 238 67% 47%;
-    --card-foreground: 210 40% 98%;
+    --primary-blue-hsl: 232, 67%, 51%;
+    --dark-blue-hsl: 229, 76%, 38%;
+    --accent-green-hsl: 162, 77%, 47%;
+    --light-cream-hsl: 42, 56%, 88%;
+    --gold-hsl: 42, 56%, 70%;
 
-    --popover: 238 67% 47%;
-    --popover-foreground: 210 40% 98%;
+    --background: 233 92% 35%;
+    --foreground: 42 56% 88%;
 
-    --primary: 238 67% 47%;
-    --primary-foreground: 210 40% 98%;
+    --card: 233 85% 20%;
+    --card-foreground: 42 56% 88%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --popover: 233 85% 20%;
+    --popover-foreground: 42 56% 88%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --primary: 162 77% 47%;
+    --primary-foreground: 233 85% 20%;
 
-    --accent: 47 95% 50%;
-    --accent-foreground: 210 40% 98%;
+    --secondary: 233 85% 20%;
+    --secondary-foreground: 42 56% 88%;
+
+    --muted: 233 85% 20%;
+    --muted-foreground: 42 56% 70%;
+
+    --accent: 162 77% 47%;
+    --accent-foreground: 233 85% 20%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 42 56% 88%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --border: 42 56% 70%;
+    --input: 233 85% 20%;
+    --ring: 162 77% 47%;
 
     --radius: 0.5rem;
   }
 
-  /* Предотвращение горизонтальной прокрутки */
-  html, body {
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
+  html,
+  body { overflow-x: hidden; max-width: 100vw; scroll-behavior: smooth; }
 
-  * {
-    @apply border-border;
-    box-sizing: border-box;
-  }
+  * { @apply border-border; box-sizing: border-box; }
 
-  /* Адаптивные изображения */
-  img {
-    max-width: 100%;
-    height: auto;
-  }
+  img { max-width: 100%; height: auto; }
 
   body {
-    @apply text-foreground;
-    font-family: 'Inter', sans-serif;
+    color: #F4E4C1;
+    font-family: 'Noto Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    text-shadow: none !important;
   }
 
-  .language-switch span {
-    @apply cursor-pointer transition-all duration-200;
+  h1, h2, h3 { font-family: 'Manrope', 'Noto Sans', sans-serif; letter-spacing: -0.01em; text-shadow: none !important; }
+  .font-examples { font-family: 'Inter', 'Noto Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; font-style: normal; font-weight: 500; }
+
+  .language-switch span { @apply cursor-pointer transition-all duration-200; }
+  .language-switch span.active { @apply text-amber-400 font-semibold; }
+}
+
+@layer utilities {
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+  @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+
+  .liquid-surface { background: rgba(244, 228, 193, 0.08); border: 1px solid rgba(228, 197, 128, 0.22); box-shadow: 0 8px 32px rgba(8, 15, 91, 0.35); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .liquid-surface-strong { background: rgba(20, 39, 176, 0.95); border: 1px solid rgba(244, 228, 193, 0.30); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+  /* Аккуратный градиентный разделитель 1px */
+  .liquid-separator {
+    display: block;
+    height: 1px;
+    border: 0;
+    background: linear-gradient(to right, rgba(244, 228, 193, 0), rgba(244, 228, 193, 0.4), rgba(244, 228, 193, 0));
   }
 
-  .language-switch span.active {
-    @apply text-amber-400 font-semibold;
-  }
+  /* Убрали зелёный фон. Класс оставлен для обратной совместимости, но теперь стеклянный */
+  .liquid-button { position: relative; overflow: hidden; background: rgba(20,39,176,0.14); border: 1px solid rgba(244, 228, 193, 0.30); box-shadow: 0 10px 28px rgba(8,15,91,0.28); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: #F4E4C1; }
+  .liquid-button::before { content: ""; position: absolute; inset: -40% -40%; background: radial-gradient(160px 80px at 30% 30%, rgba(244,228,193,0.22), transparent 60%); animation: liquidFlow 8s ease-in-out infinite; opacity: .9; }
+  .liquid-outline-btn { background: rgba(244, 228, 193, 0.045); border: 1px solid rgba(244, 228, 193, 0.35); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #F4E4C1; }
+
+  /* Liquid glass arrows for carousels */
+  .liquid-arrow { position: relative; background: transparent; border: 1px solid transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; transition: all .2s ease; }
+  .liquid-arrow::before { content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity .2s ease; background: radial-gradient(120px 60px at var(--x,50%) var(--y,50%), rgba(244,228,193,0.18), transparent 60%); }
+  .liquid-arrow:hover { background: rgba(244,228,193,0.06); border-color: rgba(228,197,128,0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgba(8,15,91,0.28); }
+  .liquid-arrow:hover::before { opacity: 1; }
+  .liquid-arrow:active { transform: scale(0.96); }
+
+  /* Shimmer for stripes */
+  @keyframes stripeShimmer { 0% { transform: translateX(-45%) skewX(-6deg); } 50% { transform: translateX(45%) skewX(6deg); } 100% { transform: translateX(-45%) skewX(-6deg); } }
+  .liquid-stripe-shimmer { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(244,228,193,0), rgba(244,228,193,0.32), rgba(244,228,193,0)); mix-blend-mode: screen; animation: stripeShimmer var(--stripe-speed,12s) cubic-bezier(.55,.1,.35,1) infinite; filter: blur(1px); }
+
+  /* Liquid animated outline button */
+  @keyframes liquidFlow { 0% { transform: translate(-30%, -30%); } 50% { transform: translate(30%, 30%); } 100% { transform: translate(-30%, -30%); } }
+  .liquid-animated-btn { position: relative; overflow: hidden; border: 1px solid rgba(244,228,193,0.35); color: #F4E4C1; background: rgba(20,39,176,0.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 8px 28px rgba(8,15,91,0.30); }
+  .liquid-animated-btn::before { content: ""; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: radial-gradient(160px 80px at 30% 30%, rgba(244,228,193,0.22), transparent 60%); animation: liquidFlow 8s ease-in-out infinite; opacity: .9; }
+  .liquid-animated-btn:hover { background: rgba(20,39,176,0.18); }
+
+  /* Liquid connectors (How we work) */
+  @keyframes connectorFlowX { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  @keyframes connectorFlowY { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+  .liquid-connector-h, .liquid-connector-v { pointer-events: none; position: absolute; overflow: hidden; border-radius: 9999px; background: rgba(244,228,193,0.18); border: 1px solid rgba(228,197,128,0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgba(8,15,91,0.28); }
+  .liquid-connector-h::after { content: ""; position: absolute; top: 0; bottom: 0; width: 45%; background: linear-gradient(90deg, transparent, rgba(244,228,193,0.75), transparent); animation: connectorFlowX 1.8s linear infinite; }
+  .liquid-connector-v::after { content: ""; position: absolute; left: 0; right: 0; height: 45%; background: linear-gradient(180deg, transparent, rgba(244,228,193,0.75), transparent); animation: connectorFlowY 1.8s linear infinite; }
+
+  /* Mobile-only slim vertical connector to avoid caps/overlap */
+  .liquid-connector-v-mobile { pointer-events: none; position: relative; width: 4px; border-radius: 2px; background: linear-gradient(180deg, rgba(244,228,193,0), rgba(244,228,193,0.7), rgba(244,228,193,0)); filter: blur(0.4px); }
+  .liquid-connector-v-mobile::after { content: ""; position: absolute; left: 0; right: 0; top: -30%; bottom: -30%; background: linear-gradient(180deg, transparent, rgba(244,228,193,0.5), transparent); animation: connectorFlowY 1.8s linear infinite; }
+
+  /* Mini glass icon bubble */
+  .liquid-icon { width: 28px; height: 28px; border-radius: 9999px; background: rgba(244,228,193,0.06); border: 1px solid rgba(228,197,128,0.32); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 4px 14px rgba(8,15,91,0.22); display: inline-flex; align-items: center; justify-content: center; color: #E4C580; }
+
+  /* Liquid caret (down) */
+  @keyframes caretFlowY { 0% { background-position: 0% 0%; } 100% { background-position: 0% 200%; } }
+  .liquid-caret { width: 6px; height: 12px; margin-left: 6px; border-radius: 9999px; display: inline-block; transform: translateY(1px); background: linear-gradient(180deg, rgba(244,228,193,0.15), rgba(228,197,128,0.85), rgba(244,228,193,0.15)); background-size: 100% 200%; animation: caretFlowY 1.6s linear infinite; }
+
+  .text-light-cream { color: #F4E4C1 !important; }
+  .text-light-cream\/90 { color: rgba(244, 228, 193, 0.9) !important; }
+  .text-gold { color: #E4C580 !important; }
+  .bg-light-cream\/10 { background-color: rgba(244, 228, 193, 0.10) !important; }
+  .bg-light-cream\/20 { background-color: rgba(244, 228, 193, 0.20) !important; }
 }

@@ -1,0 +1,68 @@
+.glass-card {
+  background: rgba(244, 228, 193, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(244, 228, 193, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(8, 15, 91, 0.4);
+  transition: all 0.3s ease;
+  color: #F4E4C1;
+}
+
+.glass-card:hover {
+  background: rgba(21, 216, 149, 0.12);
+  border: 1px solid rgba(21, 216, 149, 0.25);
+  box-shadow: 0 12px 40px 0 rgba(21, 216, 149, 0.2);
+}
+
+.glass-section {
+  background: rgba(8, 15, 91, 0.25);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(244, 228, 193, 0.1);
+  border-bottom: 1px solid rgba(244, 228, 193, 0.1);
+}
+
+/* Отключение любых теней текста */
+.text-shadow { text-shadow: none !important; }
+.text-shadow-lg { text-shadow: none !important; }
+
+.liquid-button {
+  position: relative;
+  overflow: hidden;
+  background: #15D895;
+  border: 1px solid rgba(21, 216, 149, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #080F5B;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.liquid-button:hover {
+  transform: scale(1.05);
+  background: rgba(21, 216, 149, 0.9);
+  box-shadow: 0 0 25px rgba(21, 216, 149, 0.4);
+}
+
+.liquid-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(circle, rgba(244, 228, 193, 0.3) 0%, rgba(244, 228, 193, 0) 60%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.liquid-button:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
