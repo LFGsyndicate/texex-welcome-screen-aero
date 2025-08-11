@@ -10,9 +10,8 @@ export default defineConfig(({ mode }) => ({
     host: '::',
     port: 8080,
   },
-  // ---> Добавьте эту строку <---
-  base: '/', // Явно указываем базовый путь для продакшена
-  // ---> Конец добавленной строки <---
+  // GitHub Pages base path configuration
+  base: process.env.NODE_ENV === 'production' ? '/texex-welcome-screen-aero/' : '/',
   plugins: [
     react(),
     mode === 'development' && componentTagger(), // Используется только при разработке
