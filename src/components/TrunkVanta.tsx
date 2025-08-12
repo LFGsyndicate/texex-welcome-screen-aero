@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { shouldEnableAnimations, devLog } from '@/utils/env';
 
 type Props = {
   children: React.ReactNode;
@@ -27,12 +28,14 @@ const TrunkVanta: React.FC<Props> = ({
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isNarrow = window.innerWidth < 768;
+    const animationsEnabled = shouldEnableAnimations();
 
     if (containerRef.current) {
       containerRef.current.style.background = 'linear-gradient(135deg, #0D19A3 0%, #080F5B 100%)';
     }
 
-    if ((respectReducedMotion && prefersReducedMotion) || (disableOnMobile && isNarrow)) {
+    if ((respectReducedMotion && prefersReducedMotion) || (disableOnMobile && isNarrow) || !animationsEnabled) {
+      devLog('3D animations disabled', { prefersReducedMotion, isNarrow, animationsEnabled });
       return () => {};
     }
 

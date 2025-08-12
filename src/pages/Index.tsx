@@ -60,6 +60,7 @@ const gradientStripes = UI_CONFIG.gradientStripes;
 
 const Index = () => {
   const [filter, setFilter] = useState('Все');
+  const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined);
   const debouncedFilter = useDebounce(filter, 150);
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -109,6 +110,60 @@ const Index = () => {
     window.addEventListener(PKG_EVENT as any, onPkg as any);
     return () => window.removeEventListener(PKG_EVENT as any, onPkg as any);
   }, [scrollToPackage]);
+
+  // Обработчик для открытия вопроса об оплате
+  useEffect(() => {
+    const handlePaymentFocus = () => {
+      console.log('Opening payment FAQ accordion...');
+      
+      // Способ 1: Устанавливаем состояние аккордеона
+      setAccordionValue('item-4');
+      
+      // Добавляем класс expanded для усиленной подсветки
+      setTimeout(() => {
+        const paymentItem = document.getElementById('payment-accordion-item');
+        if (paymentItem) {
+          paymentItem.classList.add('expanded');
+          console.log('Added expanded class to payment question');
+        }
+      }, 200);
+      
+      // Способ 2: Если первый не сработает, попробуем кликнуть на триггер
+      setTimeout(() => {
+        const paymentTrigger = document.getElementById('payment-accordion-trigger') as HTMLButtonElement;
+        if (paymentTrigger && paymentTrigger.getAttribute('data-state') === 'closed') {
+          console.log('Clicking payment accordion trigger...');
+          paymentTrigger.click();
+          
+          // Добавляем класс expanded после клика
+          setTimeout(() => {
+            const paymentItem = document.getElementById('payment-accordion-item');
+            if (paymentItem) {
+              paymentItem.classList.add('expanded');
+            }
+          }, 100);
+        }
+      }, 300);
+      
+      console.log('Accordion value set to item-4');
+    };
+    
+    window.addEventListener('texex:open-payment-faq', handlePaymentFocus);
+    return () => window.removeEventListener('texex:open-payment-faq', handlePaymentFocus);
+  }, []);
+
+  // Отслеживаем изменения состояния аккордеона для управления подсветкой
+  useEffect(() => {
+    const paymentItem = document.getElementById('payment-accordion-item');
+    if (!paymentItem) return;
+
+    // Добавляем класс expanded когда аккордеон раскрыт
+    if (accordionValue === 'item-4') {
+      paymentItem.classList.add('expanded');
+    } else {
+      paymentItem.classList.remove('expanded');
+    }
+  }, [accordionValue]);
 
   const formatCurrency = useCallback((value: number) => {
     try { return Math.round(value).toLocaleString('ru-RU'); } catch { return `${value}`; }
@@ -326,7 +381,7 @@ return (
                 >
                   <Card className="glass-card flex flex-col h-full w-full animate-float" style={{ animationDuration: `${UI_CONFIG.floatAnimationSeconds}s` }}>
                     {/* Полоса-градиент (разные цвета) с лёгкой жидкой анимацией */}
-                    <div className={`relative h-[57px] w-full bg-gradient-to-r ${gradientStripes[index % gradientStripes.length]} overflow-hidden`}>
+                    <div className={`relative h-[57px] w-full bg-gradient-to-r ${gradientStripes[index % gradientStripes.length]} liquid-gradient-stripe overflow-hidden`}>
                       <div className="liquid-stripe-shimmer" style={{ ['--stripe-speed' as any]: `${UI_CONFIG.liquidStripeSeconds}s` }} />
                     </div>
                     <CardHeader className="p-4 md:p-6">
@@ -452,11 +507,29 @@ return (
           </div>
         </section>
 
-      {/* FAQ */}
+      {/* Контакты (теперь перед FAQ) */}
+      <div className="container mx-auto px-4">
+        <hr className="liquid-separator my-6 md:my-10 animate-[connectorFlowX_4s_linear_infinite]" />
+      </div>
+      <section id="contacts" className="py-14">
+        <div className="container mx-auto max-w-3xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-light-cream">Контакты</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-telegram rounded-lg px-4 py-3 text-center">Telegram</a>
+            <a href="https://wa.me/79097878786" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-whatsapp rounded-lg px-4 py-3 text-center">WhatsApp</a>
+            <a href="mailto:info@texex.ru" className="liquid-animated-btn liquid-btn-email rounded-lg px-4 py-3 text-center">info@texex.ru</a>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ (теперь после контактов) */}
+      <div className="container mx-auto px-4">
+        <hr className="liquid-separator my-6 md:my-10 animate-[connectorFlowX_4s_linear_infinite]" />
+      </div>
       <section id="faq" className="py-20 glass-section">
           <div className="container mx-auto max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-light-cream">Остались вопросы?</h2>
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" collapsible className="w-full" value={accordionValue} onValueChange={setAccordionValue}>
               <AccordionItem value="item-1" className="border-b border-gold/30">
                 <AccordionTrigger className="text-base md:text-lg font-semibold text-left hover:no-underline text-light-cream">Как быстро я увижу результат?</AccordionTrigger>
                 <AccordionContent className="text-light-cream/80 pt-2">Зависит от задачи и выбранного пакета. В среднем первые измеримые результаты появляются в диапазоне от нескольких дней до нескольких недель. Конкретные сроки согласуем на старте и фиксируем KPI.</AccordionContent>
@@ -470,8 +543,8 @@ return (
               <AccordionContent className="text-light-cream/80 pt-2">Свяжитесь с нами. Для крупных клиентов мы можем разработать индивидуальное решение, комбинируя наши технологии для решения вашей уникальной задачи.</AccordionContent>
               </AccordionItem>
               <div id="faq-payments" className="h-0" />
-              <AccordionItem value="item-4" className="border-b-0 border-gold/30">
-                <AccordionTrigger className="text-base md:text-lg font-semibold text-left hover:no-underline text-light-cream">Оплата и рассрочка: провайдеры платежей?</AccordionTrigger>
+              <AccordionItem value="item-4" className="border-b-0 border-gold/30 payment-question-highlight" id="payment-accordion-item">
+                <AccordionTrigger id="payment-accordion-trigger" className="text-base md:text-lg font-semibold text-left hover:no-underline text-light-cream">Оплата и рассрочка: провайдеры платежей?</AccordionTrigger>
                 <AccordionContent className="text-light-cream/80 pt-2 space-y-3">
                   <p className="text-light-cream/90 font-semibold">Оплата и безопасность</p>
                   <p>Мы стремимся сделать процесс покупки максимально удобным и безопасным для вас. Вы можете оплатить наши услуги онлайн с помощью банковской карты, а также воспользоваться опциями рассрочки от нашего партнёра.</p>
@@ -496,21 +569,6 @@ return (
             </Accordion>
           </div>
         </section>
-
-      {/* Контакты (перенесены после FAQ) */}
-      <div className="container mx-auto px-4">
-        <hr className="liquid-separator my-6 md:my-10 animate-[connectorFlowX_4s_linear_infinite]" />
-      </div>
-      <section id="contacts" className="py-14">
-        <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-light-cream">Контакты</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="liquid-animated-btn rounded-lg px-4 py-3 text-center">Telegram</a>
-            <a href="https://wa.me/79097878786" target="_blank" rel="noreferrer" className="liquid-animated-btn rounded-lg px-4 py-3 text-center">WhatsApp</a>
-            <a href="mailto:info@texex.ru" className="liquid-animated-btn rounded-lg px-4 py-3 text-center">info@texex.ru</a>
-          </div>
-        </div>
-      </section>
 
       <footer className="py-12">
         <div className="container mx-auto text-center text-gold text-sm">

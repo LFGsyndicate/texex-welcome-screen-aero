@@ -16,7 +16,7 @@ interface PerformanceMonitorProps {
 
 const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({ 
   onMetricsUpdate,
-  enableLogging = process.env.NODE_ENV === 'development'
+  enableLogging = import.meta.env.VITE_ENABLE_LOGGING === 'true' || import.meta.env.DEV
 }) => {
   const metricsRef = useRef<PerformanceMetrics>({
     loadTime: 0,

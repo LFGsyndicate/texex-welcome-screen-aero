@@ -224,7 +224,7 @@ const CarouselPrevious = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "h-8 w-8 sm:h-9 sm:w-9 rounded-full liquid-arrow",
+        "h-8 w-8 sm:h-9 sm:w-9 rounded-full liquid-arrow flex items-center justify-center",
         arrowsPosition === "sides"
           ? [
               "absolute",
@@ -240,7 +240,7 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="h-4 w-4 text-light-cream" />
+      <ArrowLeft className="h-4 w-4 text-light-cream mx-auto" />
       <span className="sr-only">Previous slide</span>
     </button>
   )
@@ -257,7 +257,7 @@ const CarouselNext = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "h-8 w-8 sm:h-9 sm:w-9 rounded-full liquid-arrow",
+        "h-8 w-8 sm:h-9 sm:w-9 rounded-full liquid-arrow flex items-center justify-center",
         arrowsPosition === "sides"
           ? [
               "absolute",
@@ -273,7 +273,7 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="h-4 w-4 text-light-cream" />
+      <ArrowRight className="h-4 w-4 text-light-cream mx-auto" />
       <span className="sr-only">Next slide</span>
     </button>
   )

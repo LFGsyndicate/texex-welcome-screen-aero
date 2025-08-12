@@ -104,13 +104,87 @@
 
   /* Shimmer for stripes */
   @keyframes stripeShimmer { 0% { transform: translateX(-45%) skewX(-6deg); } 50% { transform: translateX(45%) skewX(6deg); } 100% { transform: translateX(-45%) skewX(-6deg); } }
-  .liquid-stripe-shimmer { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(244,228,193,0), rgba(244,228,193,0.32), rgba(244,228,193,0)); mix-blend-mode: screen; animation: stripeShimmer var(--stripe-speed,12s) cubic-bezier(.55,.1,.35,1) infinite; filter: blur(1px); }
+  @keyframes gradientPulse { 0% { opacity: 0.9; filter: brightness(1) saturate(1.1); } 50% { opacity: 1; filter: brightness(1.15) saturate(1.3); } 100% { opacity: 0.9; filter: brightness(1) saturate(1.1); } }
+  .liquid-stripe-shimmer { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.4), rgba(255,255,255,0)); mix-blend-mode: overlay; animation: stripeShimmer var(--stripe-speed,8s) cubic-bezier(.55,.1,.35,1) infinite; filter: blur(0.5px); }
+  .liquid-gradient-stripe { animation: gradientPulse 3s ease-in-out infinite; }
 
   /* Liquid animated outline button */
   @keyframes liquidFlow { 0% { transform: translate(-30%, -30%); } 50% { transform: translate(30%, 30%); } 100% { transform: translate(-30%, -30%); } }
   .liquid-animated-btn { position: relative; overflow: hidden; border: 1px solid rgba(244,228,193,0.35); color: #F4E4C1; background: rgba(20,39,176,0.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 8px 28px rgba(8,15,91,0.30); }
   .liquid-animated-btn::before { content: ""; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: radial-gradient(160px 80px at 30% 30%, rgba(244,228,193,0.22), transparent 60%); animation: liquidFlow 8s ease-in-out infinite; opacity: .9; }
   .liquid-animated-btn:hover { background: rgba(20,39,176,0.18); }
+
+  /* Цветные кнопки контактов */
+  .liquid-btn-telegram { border: 1px solid rgba(85,172,238,0.4); background: rgba(85,172,238,0.12); }
+  .liquid-btn-telegram::before { background: radial-gradient(160px 80px at 30% 30%, rgba(85,172,238,0.25), transparent 60%); }
+  .liquid-btn-telegram:hover { background: rgba(85,172,238,0.18); box-shadow: 0 8px 28px rgba(85,172,238,0.35); }
+
+  .liquid-btn-whatsapp { border: 1px solid rgba(37,211,102,0.4); background: rgba(37,211,102,0.12); }
+  .liquid-btn-whatsapp::before { background: radial-gradient(160px 80px at 30% 30%, rgba(37,211,102,0.25), transparent 60%); }
+  .liquid-btn-whatsapp:hover { background: rgba(37,211,102,0.18); box-shadow: 0 8px 28px rgba(37,211,102,0.35); }
+
+  .liquid-btn-email { border: 1px solid rgba(255,149,0,0.4); background: rgba(255,149,0,0.12); }
+  .liquid-btn-email::before { background: radial-gradient(160px 80px at 30% 30%, rgba(255,149,0,0.25), transparent 60%); }
+  .liquid-btn-email:hover { background: rgba(255,149,0,0.18); box-shadow: 0 8px 28px rgba(255,149,0,0.35); }
+
+  /* Специальная подсветка для вопроса об оплате */
+  @keyframes liquidGlow { 0% { box-shadow: 0 0 15px rgba(21,216,149,0.15), 0 0 30px rgba(21,216,149,0.05), inset 0 1px 0 rgba(21,216,149,0.1); } 50% { box-shadow: 0 0 20px rgba(21,216,149,0.25), 0 0 40px rgba(21,216,149,0.08), inset 0 1px 0 rgba(21,216,149,0.15); } 100% { box-shadow: 0 0 15px rgba(21,216,149,0.15), 0 0 30px rgba(21,216,149,0.05), inset 0 1px 0 rgba(21,216,149,0.1); } }
+  @keyframes fluidBorder { 0% { border-color: rgba(21,216,149,0.15); } 50% { border-color: rgba(21,216,149,0.25); } 100% { border-color: rgba(21,216,149,0.15); } }
+  
+  .payment-question-highlight { 
+    background: linear-gradient(135deg, rgba(21,216,149,0.06) 0%, rgba(244,228,193,0.03) 50%, rgba(21,216,149,0.06) 100%) !important;
+    border: 1px solid rgba(21,216,149,0.15) !important;
+    border-radius: 16px !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+    animation: liquidGlow 8s ease-in-out infinite, fluidBorder 12s ease-in-out infinite;
+    margin: 12px 0;
+    padding: 16px 20px;
+    transition: all 0.5s ease;
+  }
+  
+  .payment-question-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(21,216,149,0.1), transparent);
+    animation: shimmerFlow 10s ease-in-out infinite;
+  }
+  
+  @keyframes shimmerFlow { 0% { left: -100%; } 50% { left: 100%; } 100% { left: -100%; } }
+  
+  /* Дополнительная подсветка при раскрытии */
+  .payment-question-highlight.expanded {
+    animation: liquidGlow 6s ease-in-out infinite, fluidBorder 8s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(21,216,149,0.08) 0%, rgba(244,228,193,0.05) 50%, rgba(21,216,149,0.08) 100%);
+    border-color: rgba(21,216,149,0.2);
+  }
+  
+  .payment-question-highlight.expanded::before {
+    animation: shimmerFlow 8s ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(21,216,149,0.08), transparent);
+  }
+
+  /* Отступы для содержимого внутри выделенного вопроса */
+  .payment-question-highlight button[data-radix-collection-item] {
+    padding: 12px 0 !important;
+    margin: 0 !important;
+  }
+  
+  .payment-question-highlight div[data-radix-accordion-content] {
+    padding: 8px 0 16px 0 !important;
+    margin: 0 !important;
+  }
+  
+  .payment-question-highlight div[data-radix-accordion-content] > div {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 
   /* Liquid connectors (How we work) */
   @keyframes connectorFlowX { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
