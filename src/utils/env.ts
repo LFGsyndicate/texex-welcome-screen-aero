@@ -16,7 +16,7 @@ export const env = {
   // Настройки производительности
   ENABLE_PERFORMANCE_MONITORING: import.meta.env.VITE_ENABLE_PERFORMANCE_MONITORING === 'true',
   ENABLE_LOGGING: import.meta.env.VITE_ENABLE_LOGGING === 'true' || import.meta.env.DEV,
-  ENABLE_MOBILE_ANIMATIONS: import.meta.env.VITE_ENABLE_MOBILE_ANIMATIONS === 'true',
+  ENABLE_MOBILE_ANIMATIONS: import.meta.env.VITE_ENABLE_MOBILE_ANIMATIONS !== 'false',
 
   // API endpoints
   CONTACT_API_URL: import.meta.env.VITE_CONTACT_API_URL,
@@ -66,9 +66,8 @@ export const devLog = (message: string, ...args: any[]): void => {
  * Проверяет, поддерживает ли устройство 3D анимации
  */
 export const shouldEnableAnimations = (): boolean => {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  
-  if (isMobile && !env.ENABLE_MOBILE_ANIMATIONS) {
+  // Всегда включаем анимации, если не указано явно отключить
+  if (env.ENABLE_MOBILE_ANIMATIONS === false) {
     return false;
   }
   
