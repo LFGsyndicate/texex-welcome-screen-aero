@@ -10,8 +10,8 @@ export default defineConfig(({ mode }) => ({
     host: '::',
     port: 8080,
   },
-  // GitHub Pages base path configuration
-  base: process.env.NODE_ENV === 'production' ? '/texex-welcome-screen-aero/' : '/',
+  // Vercel deployment - use root path
+  base: '/',
   plugins: [
     react(),
     mode === 'development' && componentTagger(), // Используется только при разработке
