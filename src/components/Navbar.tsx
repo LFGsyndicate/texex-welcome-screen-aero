@@ -112,11 +112,11 @@ const Navbar = () => {
                 Список <span className="liquid-caret" />
               </button>
             </DialogTrigger>
-            <DialogContent className="modal-elegant-background border-gold/40 text-light-cream max-w-md">
+            <DialogContent className="liquid-surface-strong border-gold/40 text-light-cream max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-light-cream font-semibold">Все решения</DialogTitle>
+                <DialogTitle>Все решения</DialogTitle>
               </DialogHeader>
-              <div className="modal-elegant-content max-h-[60vh] overflow-y-auto pr-1">
+              <div className="max-h-[60vh] overflow-y-auto pr-1 rounded-lg liquid-surface-strong" style={{ background: 'rgba(20,39,176,0.43)' }}>
                 {services.map(s => (
                   <button key={s.packageId} onClick={(ev) => {
                     ev.preventDefault();
@@ -125,7 +125,7 @@ const Navbar = () => {
                       window.dispatchEvent(new CustomEvent('texex:scroll-to-package', { detail: s.packageId }));
                       setOpen(false);
                     });
-                  }} className="modal-elegant-item w-full text-left px-3 py-2 rounded-md mt-1 text-light-cream">
+                  }} className="w-full text-left px-3 py-2 rounded-md liquid-outline-btn hover:bg-light-cream/10 mt-1">
                     {s.packageName}
                   </button>
                 ))}
@@ -159,11 +159,11 @@ const Navbar = () => {
                 Список <span className="liquid-caret" />
               </button>
             </DialogTrigger>
-            <DialogContent className="modal-elegant-background border-gold/40 text-light-cream max-w-md">
+            <DialogContent className="liquid-surface-strong border-gold/40 text-light-cream max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-light-cream font-semibold">Все решения</DialogTitle>
+                <DialogTitle>Все решения</DialogTitle>
               </DialogHeader>
-              <div className="modal-elegant-content max-h-[60vh] overflow-y-auto pr-1">
+              <div className="max-h-[60vh] overflow-y-auto pr-1 rounded-lg liquid-surface-strong" style={{ background: 'rgba(20,39,176,0.43)' }}>
                 {services.map(s => (
                   <button key={s.packageId} onClick={(ev) => {
                     ev.preventDefault();
@@ -172,7 +172,7 @@ const Navbar = () => {
                       window.dispatchEvent(new CustomEvent('texex:scroll-to-package', { detail: s.packageId }));
                       setOpen(false);
                     });
-                  }} className="modal-elegant-item w-full text-left px-3 py-2 rounded-md mt-1 text-light-cream">
+                  }} className="w-full text-left px-3 py-2 rounded-md liquid-outline-btn hover:bg-light-cream/10 mt-1">
                     {s.packageName}
                   </button>
                 ))}
