@@ -149,7 +149,7 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <Button className="liquid-button text-light-cream font-bold bg-transparent hover:bg-transparent border-0">Заказать сейчас</Button>
+          <Button onClick={() => scrollTo('contacts')} className="liquid-button text-light-cream font-bold bg-transparent hover:bg-transparent border-0">Заказать сейчас</Button>
         </div>
                  {/* Mobile: center CTA */}
          <div className="md:hidden flex-1 flex justify-center gap-2">
@@ -179,7 +179,7 @@ const Navbar = () => {
               </div>
             </DialogContent>
           </Dialog>
-          <Button variant="ghost" className="liquid-animated-btn bg-transparent text-light-cream px-3 py-1 h-8 rounded-full hover:bg-transparent active:bg-transparent focus:bg-transparent hover:text-light-cream" onClick={() => setOpen(true)}>Заказ</Button>
+          <Button variant="ghost" className="liquid-animated-btn bg-transparent text-light-cream px-3 py-1 h-8 rounded-full hover:bg-transparent active:bg-transparent focus:bg-transparent hover:text-light-cream" onClick={() => scrollTo('contacts')}>Заказ</Button>
         </div>
         <button className="md:hidden text-light-cream" onClick={() => setOpen(v => !v)}>
           {open ? <X /> : <Menu />}
