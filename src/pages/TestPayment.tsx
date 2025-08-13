@@ -22,6 +22,9 @@ const TestPayment: React.FC = () => {
             <div className="text-light-cream/90 mb-2">Сумма к оплате:</div>
             <div className="text-2xl font-bold text-gold">5 ₽</div>
             <div className="text-sm text-light-cream/70 mt-1">Тестовый платеж</div>
+            <div className="text-xs text-light-cream/60 mt-2">
+              💳 Сохранение карт: включено
+            </div>
           </div>
           
           {/* Кнопка оплаты */}
@@ -29,6 +32,7 @@ const TestPayment: React.FC = () => {
             amount={5}
             itemName="Тестовый платеж"
             paymentType="payment"
+            customerKey="test-customer-123" // Пример CustomerKey для сохранения карт
             className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-3 text-lg"
             onSuccess={() => console.log('Test payment successful')}
             onError={(error) => console.error('Test payment error:', error)}

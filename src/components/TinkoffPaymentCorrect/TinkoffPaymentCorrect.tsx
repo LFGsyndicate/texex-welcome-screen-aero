@@ -8,6 +8,7 @@ interface TinkoffPaymentCorrectProps {
   paymentType: 'payment' | 'installment';
   className?: string;
   children: React.ReactNode;
+  customerKey?: string; // Идентификатор покупателя для сохранения карт
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
@@ -18,6 +19,7 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
   paymentType,
   className = '',
   children,
+  customerKey,
   onSuccess,
   onError
 }) => {
@@ -52,6 +54,8 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
         SuccessURL: tinkoffConfig.successUrl,
         FailURL: tinkoffConfig.failUrl,
         Language: 'ru',
+        // Идентификатор покупателя для сохранения карт (если передан)
+        ...(customerKey && { CustomerKey: customerKey }),
         // Фискальные чеки - обязательны для корректной работы
         Receipt: {
           Email: 'customer@example.com',

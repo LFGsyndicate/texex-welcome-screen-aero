@@ -7,6 +7,7 @@ interface PaymentData {
   orderId: string;
   description: string;
   itemName?: string; // Добавляем название карточки
+  customerKey?: string; // Идентификатор покупателя для сохранения карт
 }
 
 export class PaymentService {
@@ -51,6 +52,8 @@ export class PaymentService {
         SuccessURL: tinkoffConfig.successUrl,
         FailURL: tinkoffConfig.failUrl,
         Language: 'ru',
+        // Идентификатор покупателя для сохранения карт (если передан)
+        ...(paymentData.customerKey && { CustomerKey: paymentData.customerKey }),
         // Фискальные чеки - обязательны для корректной работы
         Receipt: {
           Email: 'customer@example.com',

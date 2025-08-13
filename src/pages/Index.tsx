@@ -443,6 +443,7 @@ return (
                             amount={service.pricingTier1_Price}
                             itemName={service.packageName}
                             paymentType="payment"
+                            customerKey={`customer-${service.packageId}`} // Уникальный CustomerKey для каждого пакета
                             className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-2"
                             onSuccess={() => console.log('Payment successful for:', service.packageName)}
                             onError={(error) => console.error('Payment error:', error)}

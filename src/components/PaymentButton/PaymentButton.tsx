@@ -50,7 +50,8 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
         amount: service.price,
         orderId,
         description,
-        itemName: service.packageName
+        itemName: service.packageName,
+        customerKey: `customer-${service.packageId}` // Уникальный CustomerKey для каждого пакета
       });
 
       if (result.success && result.paymentUrl) {
