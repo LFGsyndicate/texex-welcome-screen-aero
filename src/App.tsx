@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentError from "./pages/PaymentError";
+import TestPayment from "./pages/TestPayment";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/payment/success" element={<PaymentSuccess />} />
               <Route path="/payment/error" element={<PaymentError />} />
+              <Route path="/test-payment" element={<TestPayment />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

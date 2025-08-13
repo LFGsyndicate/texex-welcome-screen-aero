@@ -10,9 +10,13 @@ export interface TinkoffConfig {
 // Функция для получения базового URL
 const getBaseUrl = (): string => {
   if (typeof window !== 'undefined') {
-    return window.location.origin;
+    // В продакшене используем основной домен
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return window.location.origin;
+    }
+    return 'https://texex.ru';
   }
-  return 'http://localhost:3000'; // fallback для SSR
+  return 'https://texex.ru'; // fallback для продакшена
 };
 
 export const tinkoffConfig = {
@@ -22,9 +26,9 @@ export const tinkoffConfig = {
   password: 'Ut8FxLDYq2t3563u',
   // API URL для v2 API
   apiUrl: 'https://securepay.tinkoff.ru/v2/',
-  // Страницы успеха и ошибки по умолчанию
-  successUrl: 'https://securepay.tinkoff.ru/html/payForm/success.html',
-  failUrl: 'https://securepay.tinkoff.ru/html/payForm/fail.html',
+  // Страницы успеха и ошибки - теперь ваши собственные
+  successUrl: `${getBaseUrl()}/payment/success`,
+  failUrl: `${getBaseUrl()}/payment/error`,
   // Дополнительные данные для отладки
   merchantName: 'TEXEX AI',
   merchantId: '200000001673251',
