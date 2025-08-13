@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Главная страница -->
   <url>
-    <loc>https://yourdomain.com/</loc>
+    <loc>https://texex.ru/</loc>
     <lastmod>2025-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -10,7 +10,7 @@
   
   <!-- Страница 404 (не индексируется, но включена для полноты) -->
   <url>
-    <loc>https://yourdomain.com/404</loc>
+    <loc>https://texex.ru/404</loc>
     <lastmod>2025-08-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.1</priority>

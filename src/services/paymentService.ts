@@ -56,8 +56,8 @@ export class PaymentService {
         ...(paymentData.customerKey && { CustomerKey: paymentData.customerKey }),
         // Фискальные чеки - обязательны для корректной работы
         Receipt: {
-          Email: 'customer@example.com',
-          Taxation: 'usn_income',
+          Email: 'info@texex.ru',
+          Taxation: 'usn_income', // Упрощенная СН (доходы)
           Items: [
             {
               Name: paymentData.itemName ? 
@@ -66,7 +66,7 @@ export class PaymentService {
               Price: amountInKopecks,
               Quantity: 1.00,
               Amount: amountInKopecks,
-              Tax: 'none'
+              Tax: 'none' // Без НДС - согласно УСН
             }
           ]
         }

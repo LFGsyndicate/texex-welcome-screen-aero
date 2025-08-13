@@ -50,12 +50,9 @@ const TestPayment: React.FC = () => {
             paymentType="installment"
             className="w-full text-xs py-2 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center mt-3"
             onPaymentStart={() => console.log('Test installment started for: Тестовый платеж')}
-            onError={(error) => console.error('Test installment error:', error)}
           >
             Рассрочка
           </PaymentButton>
-          
-
           
           {/* Ссылка на главную */}
           <div className="mt-6">

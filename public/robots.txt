@@ -2,6 +2,7 @@ User-agent: *
 Disallow: /payment/
 Disallow: /test/
 Disallow: /debug/
+Disallow: /test-payment
 
 # Разрешаем индексацию главной страницы
 Allow: /
@@ -18,4 +19,4 @@ Disallow: /*debug*
 Disallow: /*payment*
 
 # Sitemap
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://texex.ru/sitemap.xml

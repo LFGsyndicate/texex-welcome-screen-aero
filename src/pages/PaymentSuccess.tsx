@@ -5,11 +5,7 @@ import { Link } from 'react-router-dom';
 const PaymentSuccess: React.FC = () => {
   return (
     <>
-      <head>
-        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-        <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-      </head>
+
       <div className="min-h-screen bg-gradient-to-br from-dark-blue via-primary-blue to-dark-blue flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         <div className="liquid-surface rounded-2xl p-8 text-center border border-gold/30">
