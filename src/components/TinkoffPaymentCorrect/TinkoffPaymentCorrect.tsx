@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { tinkoffConfig } from '@/config/tinkoff.config';
 import { TokenGenerator } from '@/utils/tokenGenerator';
 
-interface TinkoffPaymentSimpleProps {
+interface TinkoffPaymentCorrectProps {
   amount: number;
   itemName: string;
   paymentType: 'payment' | 'installment';
@@ -12,7 +12,7 @@ interface TinkoffPaymentSimpleProps {
   onError?: (error: string) => void;
 }
 
-export const TinkoffPaymentSimple: React.FC<TinkoffPaymentSimpleProps> = ({
+export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
   amount,
   itemName,
   paymentType,
@@ -27,10 +27,10 @@ export const TinkoffPaymentSimple: React.FC<TinkoffPaymentSimpleProps> = ({
     if (isLoading) return;
     
     setIsLoading(true);
-    console.log('TinkoffPaymentSimple: Starting payment', { amount, itemName, paymentType });
+    console.log('TinkoffPaymentCorrect: Starting payment', { amount, itemName, paymentType });
 
     try {
-      // Генерируем уникальный ID заказа
+      // Генерируем уникальный ID заказа согласно документации
       const safeItemName = itemName.replace(/[^a-zA-Z0-9_-]/g, '_');
       const timestamp = Date.now();
       const random = Math.random().toString(36).substring(2, 8);
@@ -42,10 +42,10 @@ export const TinkoffPaymentSimple: React.FC<TinkoffPaymentSimpleProps> = ({
       // Конвертируем рубли в копейки
       const amountInKopecks = Math.round(amount * 100);
 
-      console.log('TinkoffPaymentSimple: Generated order data:', { orderId, description, amount: amountInKopecks });
+      console.log('TinkoffPaymentCorrect: Generated order data:', { orderId, description, amount: amountInKopecks });
 
-      // Создаем параметры для API запроса с фискальными чеками
-      const initParams = {
+      // Согласно документации Tinkoff, создаем правильный запрос
+      const requestData = {
         TerminalKey: tinkoffConfig.terminalKey,
         Amount: amountInKopecks,
         OrderId: orderId,
@@ -53,42 +53,38 @@ export const TinkoffPaymentSimple: React.FC<TinkoffPaymentSimpleProps> = ({
         SuccessURL: tinkoffConfig.successUrl,
         FailURL: tinkoffConfig.failUrl,
         Language: 'ru',
+        // Убираем Receipt - он не обязателен для базовой интеграции
+        // Добавляем только необходимые параметры
         CustomerKey: `customer_${Date.now()}`,
-        // Фискальные чеки - обязательны для корректной работы
-        Receipt: {
-          Email: 'customer@example.com',
-          Taxation: 'usn_income',
-          Items: [
-            {
-              Name: description,
-              Price: amountInKopecks,
-              Quantity: 1.00,
-              Amount: amountInKopecks,
-              Tax: 'none'
-            }
-          ]
-        }
+        // Для рассрочки добавляем специальный параметр
+        ...(paymentType === 'installment' && { 
+          DATA: { 
+            connection_type: 'installment' 
+          } 
+        })
       };
 
+      console.log('TinkoffPaymentCorrect: Request data:', requestData);
+
       // Генерируем токен
-      const tokenParams = TokenGenerator.prepareTokenParams(initParams);
+      const tokenParams = TokenGenerator.prepareTokenParams(requestData);
       const token = await TokenGenerator.generateToken(tokenParams, tinkoffConfig.password);
 
-      const finalInitParams = {
-        ...initParams,
+      const finalRequest = {
+        ...requestData,
         Token: token
       };
 
-      console.log('TinkoffPaymentSimple: Final init params:', finalInitParams);
+      console.log('TinkoffPaymentCorrect: Final request with token:', finalRequest);
 
-      // Отправляем запрос к Tinkoff API напрямую
+      // Отправляем запрос к Tinkoff API
       const response = await fetch(`${tinkoffConfig.apiUrl}Init`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(finalInitParams)
+        body: JSON.stringify(finalRequest)
       });
 
       if (!response.ok) {
@@ -98,10 +94,10 @@ export const TinkoffPaymentSimple: React.FC<TinkoffPaymentSimpleProps> = ({
       }
 
       const data = await response.json();
-      console.log('TinkoffPaymentSimple: API response:', data);
+      console.log('TinkoffPaymentCorrect: API response:', data);
 
       if (data.Success && data.PaymentURL) {
-        console.log('TinkoffPaymentSimple: Payment initialized successfully', data);
+        console.log('TinkoffPaymentCorrect: Payment initialized successfully', data);
         
         // Открываем платежную форму в новом окне
         const paymentWindow = window.open(
@@ -112,21 +108,21 @@ export const TinkoffPaymentSimple: React.FC<TinkoffPaymentSimpleProps> = ({
 
         if (!paymentWindow) {
           const errorMsg = 'Разрешите всплывающие окна для этого сайта.';
-          console.error('TinkoffPaymentSimple: Popup blocked');
+          console.error('TinkoffPaymentCorrect: Popup blocked');
           onError?.(errorMsg);
           alert(errorMsg);
         } else {
           onSuccess?.();
         }
       } else {
-        console.error('TinkoffPaymentSimple: Payment initialization failed', data);
+        console.error('TinkoffPaymentCorrect: Payment initialization failed', data);
         const errorMsg = `Ошибка инициализации платежа: ${data.Message || data.Details || 'Неизвестная ошибка'}`;
         onError?.(errorMsg);
         alert(errorMsg);
       }
 
     } catch (error) {
-      console.error('TinkoffPaymentSimple: Error:', error);
+      console.error('TinkoffPaymentCorrect: Error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Произошла ошибка при инициализации платежа';
       onError?.(errorMessage);
       alert(errorMessage);

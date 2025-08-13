@@ -96,7 +96,7 @@ export class PaymentService {
       SuccessURL: tinkoffConfig.successUrl,
       FailURL: tinkoffConfig.failUrl,
       Language: 'ru',
-      // Добавляем обязательные параметры для корректной работы
+      // Фискальные чеки - обязательны для корректной работы
       Receipt: {
         Email: 'customer@example.com',
         Taxation: 'usn_income',

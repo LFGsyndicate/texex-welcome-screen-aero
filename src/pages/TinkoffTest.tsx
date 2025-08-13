@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TinkoffPayment } from '@/components/TinkoffPayment';
 import { TinkoffPaymentFinal } from '@/components/TinkoffPaymentFinal/TinkoffPaymentFinal';
-import { TinkoffPaymentDirect } from '@/components/TinkoffPaymentDirect/TinkoffPaymentDirect';
+import { TinkoffPaymentSimple } from '@/components/TinkoffPaymentSimple/TinkoffPaymentSimple';
 import { PaymentService } from '@/services/paymentService';
 import { TokenGenerator } from '@/utils/tokenGenerator';
 
@@ -94,7 +94,7 @@ export const TinkoffTest: React.FC = () => {
             <div><strong>Merchant ID:</strong> 200000001673251</div>
             <div><strong>Password:</strong> Ut8FxLDYq2t3563u</div>
             <div><strong>API URL:</strong> https://securepay.tinkoff.ru/v2/</div>
-            <div><strong>Скрипт:</strong> https://securepay.tinkoff.ru/html/payForm/js/tinkoff_v2.js</div>
+            <div><strong>Метод:</strong> Прямой API вызов без iframe</div>
           </div>
         </div>
 
@@ -195,9 +195,9 @@ export const TinkoffTest: React.FC = () => {
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Тестовые кнопки оплаты</h2>
           
           <div style={{ display: 'grid', gap: '1rem', marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>TinkoffPaymentDirect (прямой API):</h3>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>TinkoffPaymentSimple (прямой API):</h3>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <TinkoffPaymentDirect
+              <TinkoffPaymentSimple
                 amount={testService.price}
                 itemName={testService.packageName}
                 paymentType="payment"
@@ -206,18 +206,7 @@ export const TinkoffTest: React.FC = () => {
                 onError={(error) => console.error('Payment error:', error)}
               >
                 💳 Оплатить {testService.price} ₽
-              </TinkoffPaymentDirect>
-              
-              <TinkoffPaymentDirect
-                amount={testService.price}
-                itemName={testService.packageName}
-                paymentType="installment"
-                className="payment-btn payment-btn--secondary"
-                onSuccess={() => console.log('Installment success!')}
-                onError={(error) => console.error('Installment error:', error)}
-              >
-                📅 Рассрочка {testService.price} ₽
-              </TinkoffPaymentDirect>
+              </TinkoffPaymentSimple>
             </div>
 
             <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', marginTop: '1rem' }}>TinkoffPaymentFinal (наш сервис):</h3>
@@ -229,15 +218,6 @@ export const TinkoffTest: React.FC = () => {
                 className="payment-btn payment-btn--primary"
               >
                 💳 Оплатить {testService.price} ₽
-              </TinkoffPaymentFinal>
-              
-              <TinkoffPaymentFinal
-                amount={testService.price}
-                itemName={testService.packageName}
-                paymentType="installment"
-                className="payment-btn payment-btn--secondary"
-              >
-                📅 Рассрочка {testService.price} ₽
               </TinkoffPaymentFinal>
             </div>
           </div>
@@ -253,11 +233,11 @@ export const TinkoffTest: React.FC = () => {
           <strong>📋 Инструкции:</strong>
           <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
             <li>Сначала запустите тесты компонентов для проверки работоспособности</li>
-            <li>Кнопки используют прямой API вызов и наш PaymentService</li>
-            <li>Платежная форма откроется в новом окне</li>
+            <li>Кнопки используют прямой API вызов без iframe</li>
+            <li>Платежная форма откроется в новом окне с фискальными чеками</li>
             <li>Используйте тестовые карты: 4300000000000777 (успех), 4300000000000785 (недостаточно средств)</li>
             <li>Проверьте консоль браузера для логов</li>
-            <li>При ошибках CORS автоматически используется fallback режим</li>
+            <li>Фискальные чеки включены для корректной работы API</li>
           </ul>
         </div>
 
@@ -279,15 +259,6 @@ export const TinkoffTest: React.FC = () => {
           
           .payment-btn--primary:hover {
             background: #2563eb;
-          }
-          
-          .payment-btn--secondary {
-            background: #10b981;
-            color: white;
-          }
-          
-          .payment-btn--secondary:hover {
-            background: #059669;
           }
           
           .payment-btn:disabled {

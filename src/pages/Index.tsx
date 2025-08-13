@@ -21,7 +21,7 @@ import { YCLogo, ForbesLogo, SkolkovoLogo, OpenAILogo, GoogleCloudLogo, AWSLogo,
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PaymentButton } from '@/components/PaymentButton/PaymentButton';
 import React from 'react';
-import { TinkoffPaymentDirect } from '@/components/TinkoffPaymentDirect/TinkoffPaymentDirect';
+import { TinkoffPaymentSimple } from '@/components/TinkoffPaymentSimple/TinkoffPaymentSimple';
 
 const CATEGORY_EVENT = 'texex:set-category';
 const PKG_EVENT = 'texex:scroll-to-package';
@@ -438,8 +438,8 @@ return (
                         ) : null}
                         <Separator className="my-3 liquid-separator" />
                         <div className="flex flex-col space-y-2">
-                          {/* Кнопка оплаты */}
-                          <TinkoffPaymentDirect
+                          {/* Кнопка оплаты - желтая большая */}
+                          <TinkoffPaymentSimple
                             amount={service.pricingTier1_Price}
                             itemName={service.packageName}
                             paymentType="payment"
@@ -448,19 +448,7 @@ return (
                             onError={(error) => console.error('Payment error:', error)}
                           >
                             Оплатить
-                          </TinkoffPaymentDirect>
-
-                          {/* Кнопка рассрочки */}
-                          <TinkoffPaymentDirect
-                            amount={service.pricingTier1_Price}
-                            itemName={service.packageName}
-                            paymentType="installment"
-                            className="w-full rounded-lg font-bold text-white bg-[#10B981] hover:bg-[#059669] text-center flex items-center justify-center py-2"
-                            onSuccess={() => console.log('Installment successful for:', service.packageName)}
-                            onError={(error) => console.error('Installment error:', error)}
-                          >
-                            Рассрочка
-                          </TinkoffPaymentDirect>
+                          </TinkoffPaymentSimple>
                           <div className="flex space-x-2">
                             <PaymentButton
                               service={{
