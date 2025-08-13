@@ -172,7 +172,6 @@ npm run build
 ## 📞 Контакты
 
 - **Telegram:** [@ruhunt](https://t.me/ruhunt)
-- **WhatsApp:** [+79097878786](https://wa.me/79097878786)
 
 ## 📄 Лицензия
 
