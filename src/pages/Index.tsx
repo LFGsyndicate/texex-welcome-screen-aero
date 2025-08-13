@@ -19,6 +19,9 @@ import { UI_CONFIG } from '@/config/ui';
 import LogoWrapper from '@/components/Logo';
 import { YCLogo, ForbesLogo, SkolkovoLogo, OpenAILogo, GoogleCloudLogo, AWSLogo, VercelLogo, GithubLogo, AnthropicLogo } from '@/components/logos';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { PaymentButton } from '@/components/PaymentButton/PaymentButton';
+import React from 'react';
+import { TinkoffPaymentDirect } from '@/components/TinkoffPaymentDirect/TinkoffPaymentDirect';
 
 const CATEGORY_EVENT = 'texex:set-category';
 const PKG_EVENT = 'texex:scroll-to-package';
@@ -435,9 +438,43 @@ return (
                         ) : null}
                         <Separator className="my-3 liquid-separator" />
                         <div className="flex flex-col space-y-2">
-                          <a href="#" className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-2">Оплатить</a>
+                          {/* Кнопка оплаты */}
+                          <TinkoffPaymentDirect
+                            amount={service.pricingTier1_Price}
+                            itemName={service.packageName}
+                            paymentType="payment"
+                            className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-2"
+                            onSuccess={() => console.log('Payment successful for:', service.packageName)}
+                            onError={(error) => console.error('Payment error:', error)}
+                          >
+                            Оплатить
+                          </TinkoffPaymentDirect>
+
+                          {/* Кнопка рассрочки */}
+                          <TinkoffPaymentDirect
+                            amount={service.pricingTier1_Price}
+                            itemName={service.packageName}
+                            paymentType="installment"
+                            className="w-full rounded-lg font-bold text-white bg-[#10B981] hover:bg-[#059669] text-center flex items-center justify-center py-2"
+                            onSuccess={() => console.log('Installment successful for:', service.packageName)}
+                            onError={(error) => console.error('Installment error:', error)}
+                          >
+                            Рассрочка
+                          </TinkoffPaymentDirect>
                           <div className="flex space-x-2">
-                            <a href="#" className="w-full text-xs py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center">Рассрочка</a>
+                            <PaymentButton
+                              service={{
+                                packageId: service.packageId,
+                                packageName: service.packageName,
+                                price: service.pricingTier1_Price
+                              }}
+                              paymentType="installment"
+                              className="w-full text-xs py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center"
+                              onPaymentStart={() => console.log('Installment started for:', service.packageName)}
+                              onPaymentError={(error) => console.error('Installment error:', error)}
+                            >
+                              Рассрочка
+                            </PaymentButton>
                             <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
                           </div>
                         <Dialog>

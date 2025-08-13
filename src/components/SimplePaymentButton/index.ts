@@ -1,0 +1,1 @@
+export { SimplePaymentButton } from './SimplePaymentButton';

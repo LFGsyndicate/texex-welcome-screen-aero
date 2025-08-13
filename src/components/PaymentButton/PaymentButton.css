@@ -1,0 +1,105 @@
+.payment-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.payment-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.payment-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.payment-button--primary {
+  background: #F2CC66;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(242, 204, 102, 0.3);
+  font-weight: bold;
+}
+
+.payment-button--primary:hover:not(:disabled) {
+  background: #F5D77F;
+  box-shadow: 0 4px 12px rgba(242, 204, 102, 0.4);
+  transform: translateY(-1px);
+}
+
+.payment-button--secondary {
+  background: #000;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-size: 0.75rem;
+  padding: 0.25rem 1.25rem;
+  height: auto;
+}
+
+.payment-button--secondary:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.payment-button__loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.payment-button__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.payment-button__error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  border: 1px solid #f5c6cb;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 640px) {
+  .payment-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    min-width: 100px;
+  }
+  
+  .payment-button-container {
+    width: 100%;
+  }
+  
+  .payment-button {
+    width: 100%;
+  }
+  
+  .payment-button--secondary {
+    font-size: 0.75rem;
+    padding: 0.25rem 1rem;
+  }
+}
