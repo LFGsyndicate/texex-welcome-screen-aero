@@ -451,20 +451,24 @@ return (
                             Оплатить
                           </TinkoffPaymentCorrect>
                           <div className="flex space-x-2">
-                            <PaymentButton
-                              service={{
-                                packageId: service.packageId,
-                                packageName: service.packageName,
-                                price: service.pricingTier1_Price
-                              }}
-                              paymentType="installment"
-                              className="w-full text-xs py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center"
-                              onPaymentStart={() => console.log('Installment started for:', service.packageName)}
-                              onPaymentError={(error) => console.error('Installment error:', error)}
-                            >
-                              Рассрочка
-                            </PaymentButton>
-                            <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
+                            <div className="w-1/2">
+                              <PaymentButton
+                                service={{
+                                  packageId: service.packageId,
+                                  packageName: service.packageName,
+                                  price: service.pricingTier1_Price
+                                }}
+                                paymentType="installment"
+                                className="w-full text-xs py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center"
+                                onPaymentStart={() => console.log('Installment started for:', service.packageName)}
+                                onPaymentError={(error) => console.error('Installment error:', error)}
+                              >
+                                Рассрочка
+                              </PaymentButton>
+                            </div>
+                            <div className="w-1/2">
+                              <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
+                            </div>
                           </div>
                         <Dialog>
                           <DialogTrigger asChild>

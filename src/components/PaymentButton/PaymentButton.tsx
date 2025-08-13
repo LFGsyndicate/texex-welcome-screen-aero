@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { PaymentService } from '@/services/paymentService';
+import { HelpCircle } from 'lucide-react';
+import { InstallmentInfoModal } from '@/components/InstallmentInfoModal';
 
 interface PaymentButtonProps {
   service: {
@@ -23,6 +25,7 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
   onPaymentError
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showInstallmentInfo, setShowInstallmentInfo] = useState(false);
 
   const handlePayment = async () => {
     if (isLoading) return;
@@ -88,17 +91,39 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
   };
 
   return (
-    <button
-      className={className}
-      onClick={handlePayment}
-      disabled={isLoading}
-      type="button"
-      style={{ 
-        opacity: isLoading ? 0.6 : 1,
-        cursor: isLoading ? 'not-allowed' : 'pointer'
-      }}
-    >
-      {isLoading ? 'Обработка...' : children}
-    </button>
+    <>
+      <div className="flex items-center space-x-1">
+        {paymentType === 'installment' && (
+          <button
+            type="button"
+            onClick={() => setShowInstallmentInfo(true)}
+            className="text-light-cream/70 hover:text-light-cream transition-colors p-1"
+            style={{ fontSize: '14px' }}
+            title="Информация о рассрочке"
+          >
+            <HelpCircle size={14} />
+          </button>
+        )}
+        <button
+          className={className}
+          onClick={handlePayment}
+          disabled={isLoading}
+          type="button"
+          style={{ 
+            opacity: isLoading ? 0.6 : 1,
+            cursor: isLoading ? 'not-allowed' : 'pointer'
+          }}
+        >
+          {isLoading ? 'Обработка...' : children}
+        </button>
+      </div>
+      
+      {paymentType === 'installment' && (
+        <InstallmentInfoModal
+          isOpen={showInstallmentInfo}
+          onClose={() => setShowInstallmentInfo(false)}
+        />
+      )}
+    </>
   );
 };

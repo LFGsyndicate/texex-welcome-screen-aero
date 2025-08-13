@@ -58,7 +58,7 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
         ...(customerKey && { CustomerKey: customerKey }),
         // Фискальные чеки - обязательны для корректной работы
         Receipt: {
-          Email: 'info@texex.ru',
+          Email: 'customer@example.com',
           Taxation: 'usn_income', // Упрощенная СН (доходы)
           Items: [
             {
