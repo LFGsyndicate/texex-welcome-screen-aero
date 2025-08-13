@@ -98,7 +98,7 @@ const Navbar = () => {
             <img src="/lovable-uploads/55ba05a5-2718-4715-9f97-cda517cbf943.png" alt="Texex" className="h-8" />
           </button>
         </div>
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-6">
           {sections.map(s => (
             <button key={s.id} onClick={() => scrollTo(s.id)} className="text-light-cream/90 hover:text-light-cream transition-colors">
               {s.label}
@@ -151,8 +151,8 @@ const Navbar = () => {
           </div>
           <Button onClick={() => scrollTo('contacts')} className="liquid-button text-light-cream font-bold bg-transparent hover:bg-transparent border-0">Заказать сейчас</Button>
         </div>
-                 {/* Mobile: center CTA */}
-         <div className="md:hidden flex-1 flex justify-center gap-2">
+                 {/* Mobile & Tablet: center CTA */}
+         <div className="lg:hidden flex-1 flex justify-center gap-2">
            <Dialog open={mobileListOpen} onOpenChange={setMobileListOpen}>
             <DialogTrigger asChild>
               <button onClick={() => setMobileListOpen(true)} className="liquid-outline-btn px-3 py-1 h-8 rounded-full text-light-cream flex items-center">
@@ -181,13 +181,13 @@ const Navbar = () => {
           </Dialog>
           <Button variant="ghost" className="liquid-animated-btn bg-transparent text-light-cream px-3 py-1 h-8 rounded-full hover:bg-transparent active:bg-transparent focus:bg-transparent hover:text-light-cream" onClick={() => scrollTo('contacts')}>Заказ</Button>
         </div>
-        <button className="md:hidden text-light-cream" onClick={() => setOpen(v => !v)}>
+        <button className="lg:hidden text-light-cream" onClick={() => setOpen(v => !v)}>
           {open ? <X /> : <Menu />}
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-gold/20 bg-dark-blue/80 backdrop-blur-xl">
+        <div className="lg:hidden border-t border-gold/20 bg-dark-blue/80 backdrop-blur-xl">
           <div className="px-4 py-2 flex flex-col gap-1">
             {sections.map(s => (
               <button key={s.id} onClick={() => scrollTo(s.id)} className="text-left px-2 py-1.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10">

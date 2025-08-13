@@ -26,7 +26,8 @@ export interface TinkoffInitRequest {
   Language?: string;
   Token: string;
   Receipt?: {
-    Email: string;
+    Email?: string; // Email для фискализации (теперь необязателен)
+    Phone?: string; // Телефон для фискализации (теперь необязателен, но одно из двух должно быть)
     Taxation: string;
     Items: Array<{
       Name: string;
@@ -34,10 +35,11 @@ export interface TinkoffInitRequest {
       Quantity: number;
       Amount: number;
       Tax: string;
+      PaymentMethod?: string; // full_prepayment, prepayment, advance, full_payment, partial_payment
     }>;
   };
   DATA?: {
-    connection_type?: string;
+    connection_type?: string; // Тип интеграции (Widget2.0, connection_type_pf и т.д.)
   };
 }
 

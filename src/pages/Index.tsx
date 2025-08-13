@@ -258,7 +258,7 @@ return (
       <section id="hero" className="relative min-h-screen overflow-hidden">
         <TrunkVanta>
           <div className="flex flex-col items-center justify-center text-center px-4 pt-36 pb-16 md:pt-40 md:pb-24">
-            <div className="relative z-10 w-full max-w-5xl">
+            <div className="relative z-10 w-full max-w-5xl lg:max-w-6xl">
               <Carousel opts={{ loop: true }} autoplayMs={7000} arrowsPosition="bottom" className="w-full">
               <CarouselContent>
                 {heroSlides.map((slide, index) => (
@@ -288,11 +288,11 @@ return (
       <section className="py-10 glass-section">
         <div className="container mx-auto">
           <h3 className="text-xs md:text-sm uppercase text-gold mb-6 text-center">Наши партнеры и инструменты</h3>
-          <Carousel opts={{ align: 'start', loop: true }} autoplayMs={5000} arrowsPosition="bottom" className="w-full max-w-6xl mx-auto">
+          <Carousel opts={{ align: 'start', loop: true }} autoplayMs={5000} arrowsPosition="bottom" className="w-full max-w-5xl lg:max-w-6xl mx-auto">
             <CarouselContent>
               {Array.from({ length: Math.ceil(logoComponents.length / 10) }).map((_, slideIndex) => (
                 <CarouselItem key={slideIndex} className="basis-full">
-                  <div className="flex flex-wrap sm:flex-nowrap gap-6 justify-center items-center" style={{ color: UI_CONFIG.logoTone }}>
+                                      <div className="flex flex-wrap sm:flex-nowrap gap-4 md:gap-6 justify-center items-center" style={{ color: UI_CONFIG.logoTone }}>
                     {logoComponents.slice(slideIndex * 10, slideIndex * 10 + 10).map(({ comp: Comp, label }) => (
                       <LogoWrapper key={label} size={48} label={label}>
                         <Comp />
@@ -314,9 +314,9 @@ return (
 
       {/* How it works */}
       <section className="py-12">
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-5xl lg:max-w-6xl">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-light-cream">Как мы работаем</h2>
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { title: 'Выбор пакета', desc: 'Подберите решение или попросите помочь с выбором' },
               { title: 'Оплата', desc: 'Оплачиваете удобным способом и получаете подтверждение' },
@@ -371,7 +371,7 @@ return (
               ))}
             </div>
             <LazyMotion features={domAnimation}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                 {filteredServices.map((service: Service, index) => (
                   <motion.div
                     key={service.packageId}
@@ -444,14 +444,14 @@ return (
                             itemName={service.packageName}
                             paymentType="payment"
                             customerKey={`customer-${service.packageId}`} // Уникальный CustomerKey для каждого пакета
-                            className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-2"
+                            className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-3 sm:py-2 text-sm sm:text-base"
                             onSuccess={() => console.log('Payment successful for:', service.packageName)}
                             onError={(error) => console.error('Payment error:', error)}
                           >
                             Оплатить
                           </TinkoffPaymentCorrect>
-                          <div className="flex space-x-2">
-                            <div className="w-1/2">
+                          <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2">
+                            <div className="w-full sm:w-1/2">
                               <PaymentButton
                                 service={{
                                   packageId: service.packageId,
@@ -459,20 +459,20 @@ return (
                                   price: service.pricingTier1_Price
                                 }}
                                 paymentType="installment"
-                                className="w-full text-xs py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center"
+                                className="w-full text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center"
                                 onPaymentStart={() => console.log('Installment started for:', service.packageName)}
                                 onPaymentError={(error) => console.error('Installment error:', error)}
                               >
                                 Рассрочка
                               </PaymentButton>
                             </div>
-                            <div className="w-1/2">
-                              <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
+                            <div className="w-full sm:w-1/2">
+                              <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
                             </div>
                           </div>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button id="order-modal-trigger" className="w-full liquid-animated-btn text-xs py-1 h-auto rounded-md text-light-cream" variant="outline">Состав стоимости</Button>
+                            <Button id="order-modal-trigger" className="w-full liquid-animated-btn text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md text-light-cream" variant="outline">Состав стоимости</Button>
                           </DialogTrigger>
                             <DialogContent className="liquid-surface border-gold/40 text-light-cream">
                               <DialogHeader>
@@ -513,7 +513,7 @@ return (
           <Carousel opts={{ align: "start", loop: true }} autoplayMs={7000} arrowsPosition="bottom" className="w-full max-w-6xl mx-auto">
               <CarouselContent>
               {testimonials && testimonials.length > 0 ? testimonials.map((testimonial: Testimonial, index) => (
-                <CarouselItem key={testimonial.id} className="md:basis-1/2 xl:basis-1/3">
+                <CarouselItem key={testimonial.id} className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3">
                   <motion.div
                     initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
                     whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
@@ -544,7 +544,7 @@ return (
       <section id="contacts" className="py-14">
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-light-cream">Контакты</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-telegram rounded-lg px-4 py-3 text-center">Telegram</a>
             <a href="https://wa.me/79097878786" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-whatsapp rounded-lg px-4 py-3 text-center">WhatsApp</a>
             <a href="mailto:info@texex.ru" className="liquid-animated-btn liquid-btn-email rounded-lg px-4 py-3 text-center">info@texex.ru</a>
