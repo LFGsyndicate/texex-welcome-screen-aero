@@ -1,14 +1,21 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
+Disallow: /payment/
+Disallow: /test/
+Disallow: /debug/
+
+# Разрешаем индексацию главной страницы
 Allow: /
+
+# Запрещаем индексацию всех страниц оплаты
+Disallow: /payment/success
+Disallow: /payment/error
+Disallow: /payment/test
+Disallow: /payment/debug
+
+# Запрещаем индексацию тестовых страниц
+Disallow: /*test*
+Disallow: /*debug*
+Disallow: /*payment*
+
+# Sitemap
+Sitemap: https://yourdomain.com/sitemap.xml

@@ -1,163 +1,81 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, ArrowLeft, Download, Mail } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import React from 'react';
+import { CheckCircle, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-interface PaymentDetails {
-  orderId?: string;
-  paymentId?: string;
-  amount?: string;
-  status?: string;
-}
-
-export const PaymentSuccess: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({});
-
-  useEffect(() => {
-    // Извлекаем параметры из URL, которые передает Tinkoff
-    const details: PaymentDetails = {
-      orderId: searchParams.get('OrderId') || undefined,
-      paymentId: searchParams.get('PaymentId') || undefined,
-      amount: searchParams.get('Amount') || undefined,
-      status: searchParams.get('Status') || undefined
-    };
-
-    setPaymentDetails(details);
-
-    // Логируем успешный платеж для аналитики
-    console.log('Payment success:', details);
-  }, [searchParams]);
-
-  const formatAmount = (amount: string | undefined) => {
-    if (!amount) return '';
-    
-    // Tinkoff передает сумму в копейках
-    const rubles = parseInt(amount) / 100;
-    return rubles.toLocaleString('ru-RU', {
-      style: 'currency',
-      currency: 'RUB',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
-  };
-
-  const handleBackToHome = () => {
-    navigate('/', { replace: true });
-  };
-
-  const handleContactSupport = () => {
-    window.open('https://t.me/ruhunt', '_blank');
-  };
-
+const PaymentSuccess: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md glass-card border-green-500/30">
-        <CardHeader className="text-center pb-4">
-          <div className="mx-auto mb-4 w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
-            <CheckCircle className="w-8 h-8 text-green-500" />
+    <>
+      <head>
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+      </head>
+      <div className="min-h-screen bg-gradient-to-br from-dark-blue via-primary-blue to-dark-blue flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
+        <div className="liquid-surface rounded-2xl p-8 text-center border border-gold/30">
+          {/* Иконка успеха */}
+          <div className="mx-auto w-20 h-20 bg-accent-green/20 rounded-full flex items-center justify-center mb-6">
+            <CheckCircle className="w-12 h-12 text-accent-green" />
           </div>
-          <CardTitle className="text-2xl font-bold text-light-cream">
-            Платеж успешно завершен!
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="space-y-6">
-          <div className="text-center">
-            <p className="text-light-cream/80 mb-4">
-              Спасибо за ваш заказ! Мы получили ваш платеж и скоро свяжемся с вами для начала работы.
-            </p>
-            
-            {paymentDetails.amount && (
-              <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-4">
-                <div className="text-green-400 font-semibold text-lg">
-                  {formatAmount(paymentDetails.amount)}
-                </div>
-                <div className="text-green-300/80 text-sm">
-                  Сумма платежа
-                </div>
-              </div>
-            )}
-          </div>
-
-          {(paymentDetails.orderId || paymentDetails.paymentId) && (
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-light-cream/90">Детали платежа:</h3>
-              
-              {paymentDetails.orderId && (
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-light-cream/70">Номер заказа:</span>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    {paymentDetails.orderId}
-                  </Badge>
-                </div>
-              )}
-              
-              {paymentDetails.paymentId && (
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-light-cream/70">ID платежа:</span>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    {paymentDetails.paymentId}
-                  </Badge>
-                </div>
-              )}
-              
-              {paymentDetails.status && (
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-light-cream/70">Статус:</span>
-                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                    {paymentDetails.status}
-                  </Badge>
-                </div>
-              )}
+          
+          {/* Заголовок */}
+          <h1 className="text-3xl font-bold text-light-cream mb-4">
+            Оплата прошла успешно!
+          </h1>
+          
+          {/* Описание */}
+          <p className="text-light-cream/80 mb-8 text-lg">
+            Спасибо за ваш заказ! Мы свяжемся с вами в ближайшее время для обсуждения деталей проекта.
+          </p>
+          
+          {/* Кнопка повторить оплату */}
+          <Link 
+            to="/"
+            className="inline-flex items-center gap-2 liquid-button px-6 py-3 rounded-lg text-light-cream font-semibold hover:scale-105 transition-transform mb-6"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Вернуться на главную
+          </Link>
+          
+          {/* Блок контактов */}
+          <div className="border-t border-gold/20 pt-6">
+            <div className="text-center text-light-cream/80 mb-4 text-sm font-medium">
+              Нужна помощь? Свяжитесь с нами:
             </div>
-          )}
-
-          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-blue-400 mb-2">Что дальше?</h3>
-            <ul className="text-sm text-blue-300/80 space-y-1">
-              <li>• В течение 24 часов с вами свяжется наш менеджер</li>
-              <li>• Мы обсудим детали проекта и сроки реализации</li>
-              <li>• Начнем работу над вашим AI-решением</li>
-            </ul>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <Button 
-              onClick={handleBackToHome}
-              className="w-full bg-[#F2CC66] hover:bg-[#F5D77F] text-black font-semibold"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Вернуться на главную
-            </Button>
-            
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex-1 border-light-cream/30 text-light-cream hover:bg-light-cream/10"
-                onClick={handleContactSupport}
+            <div className="grid grid-cols-1 gap-3">
+              <a 
+                href="https://t.me/ruhunt" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="liquid-animated-btn liquid-btn-telegram rounded-lg px-4 py-2.5 text-light-cream flex items-center justify-center gap-3 hover:scale-105 transition-transform"
               >
-                <Mail className="w-4 h-4 mr-2" />
-                Поддержка
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex-1 border-light-cream/30 text-light-cream hover:bg-light-cream/10"
-                onClick={() => window.print()}
+                <span className="liquid-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.5 4.5L2.5 11l6 2 9-8-6.5 9.5 6 3.5 4.5-13.5z" fill="#55ACEE"/>
+                  </svg>
+                </span>
+                Telegram
+              </a>
+              <a 
+                href="https://wa.me/79097878786" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="liquid-animated-btn liquid-btn-whatsapp rounded-lg px-4 py-2.5 text-light-cream flex items-center justify-center gap-3 hover:scale-105 transition-transform"
               >
-                <Download className="w-4 h-4 mr-2" />
-                Чек
-              </Button>
+                <span className="liquid-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2a10 10 0 100 20 9.6 9.6 0 004.7-1.2l3.3 1-1-3.2A9.6 9.6 0 0022 12 10 10 0 0012 2zm4.7 13.4c-.2.6-1.3 1.1-1.8 1.2-.5.1-1 .1-1.7-.1-1.6-.5-3.5-2-4.3-3.5-.6-1-.8-1.9-.8-2.6 0-.7.4-1.6 1-1.8.3-.1.6-.1.8 0 .2.1.4.6.5.9.1.2.1.4.1.5 0 .2-.2.5-.3.7-.2.2-.3.3-.2.5.1.2.4.9 1 1.5.7.8 1.6 1.4 1.8 1.5.2.1.4.1.6 0 .2-.2.4-.6.6-.8.1-.2.2-.2.4-.1.2.1 1.3.5 1.6.7.2.1.3.2.4.4 0 .1 0 .4-.2.5z" fill="#25D366"/>
+                  </svg>
+                </span>
+                WhatsApp
+              </a>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
+    </>
   );
 };
+
+export default PaymentSuccess;

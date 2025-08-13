@@ -127,6 +127,21 @@
   .liquid-btn-email::before { background: radial-gradient(160px 80px at 30% 30%, rgba(255,149,0,0.25), transparent 60%); }
   .liquid-btn-email:hover { background: rgba(255,149,0,0.18); box-shadow: 0 8px 28px rgba(255,149,0,0.35); }
 
+  /* Стили для пунктов списка в модальном окне */
+  .modal-list-item { 
+    background: rgba(20,39,176,0.43) !important; 
+    border: 1px solid rgba(244, 228, 193, 0.35); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px); 
+    transition: all 0.3s ease; 
+  }
+  .modal-list-item:hover { 
+    background: rgba(20,39,176,0.65) !important; 
+    border-color: rgba(244, 228, 193, 0.5); 
+    box-shadow: 0 4px 20px rgba(8, 15, 91, 0.4); 
+    transform: translateY(-1px); 
+  }
+
   /* Специальная подсветка для вопроса об оплате */
   @keyframes liquidGlow { 0% { box-shadow: 0 0 15px rgba(21,216,149,0.15), 0 0 30px rgba(21,216,149,0.05), inset 0 1px 0 rgba(21,216,149,0.1); } 50% { box-shadow: 0 0 20px rgba(21,216,149,0.25), 0 0 40px rgba(21,216,149,0.08), inset 0 1px 0 rgba(21,216,149,0.15); } 100% { box-shadow: 0 0 15px rgba(21,216,149,0.15), 0 0 30px rgba(21,216,149,0.05), inset 0 1px 0 rgba(21,216,149,0.1); } }
   @keyframes fluidBorder { 0% { border-color: rgba(21,216,149,0.15); } 50% { border-color: rgba(21,216,149,0.25); } 100% { border-color: rgba(21,216,149,0.15); } }

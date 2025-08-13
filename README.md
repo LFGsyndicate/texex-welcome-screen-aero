@@ -1,154 +1,185 @@
-# Texex AI Solutions Platform
+# 🚀 TEXEX AI - Витрина автоматизированных программных решений
 
-Modern React-TypeScript web application for AI solutions marketplace with performance optimizations and glass morphism design.
+Современный веб-сайт для демонстрации и продажи AI-решений с интегрированной системой оплаты Tinkoff.
 
-## 🚀 Features
+## 🎯 О проекте
 
-- 32 AI services across 7 categories
-- Performance-optimized with lazy loading and debouncing
-- Glass morphism design system with modern aesthetics
-- Mobile-responsive with accessibility support
-- 3D background animations with Vanta.js
-- Real-time filtering with smooth transitions
-- Error boundaries and performance monitoring
-- WCAG AA accessibility compliance
+TEXEX AI предлагает готовые решения в области искусственного интеллекта:
+- **AI-Мастер Контента для SMM**
+- **AI-Копирайтер для E-commerce**
+- **AI-Аналитик Рекламных Кампаний**
+- **AI-Лидогенератор 360**
+- **AI-SEO Оптимизатор**
+- **AI-Фабрика Виральных Видео**
+- **AI-Чат-Бот для Первой Линии**
+- **AI-Голос**
 
-## 🛠️ Tech Stack
+## 🛠️ Технологии
 
-- **Frontend**: React 18.3.1 + TypeScript 5.5.3
-- **Build Tool**: Vite 5.4.1
-- **Styling**: Tailwind CSS 3.4.11 + Glass morphism effects
-- **UI Components**: shadcn/ui + Radix UI primitives
-- **Animations**: Framer Motion 12.23.12 + Vanta.js + Three.js
-- **State Management**: React Query + Custom hooks
-- **Icons**: Lucide React
-- **Forms**: React Hook Form + Zod validation
+- **Frontend:** React 18 + TypeScript
+- **Стили:** Tailwind CSS + CSS Modules
+- **Сборка:** Vite
+- **UI компоненты:** Shadcn/ui + Radix UI
+- **Платежи:** Tinkoff API v2
+- **Анимации:** Framer Motion + Vanta.js
+- **Роутинг:** React Router DOM
 
-## 📦 Installation
+## 🚀 Быстрый старт
 
+### Предварительные требования
+- Node.js 18+ 
+- npm или yarn
+
+### Установка и запуск
 ```bash
-# Install dependencies
+# Клонирование репозитория
+git clone [your-repo-url]
+cd texex-welcome-screen-aero
+
+# Установка зависимостей
 npm install
 
-# Start development server
+# Запуск в режиме разработки
 npm run dev
 
-# Build for production
+# Сборка для продакшена
 npm run build
 
-# Preview production build
+# Предварительный просмотр сборки
 npm run preview
 ```
 
-## 🏗️ Project Structure
+## 💳 Система оплаты
+
+### Интеграция с Tinkoff
+- **Терминал:** 1754995728217
+- **API:** https://securepay.tinkoff.ru/v2/
+- **Страницы успеха/ошибки:** Стандартные Tinkoff
+
+### Компоненты платежей
+- `TinkoffPaymentCorrect` - основной компонент оплаты
+- `TinkoffPaymentFinal` - через PaymentService
+- `PaymentButton` - кнопка рассрочки
+
+### Особенности
+- ✅ Автоматическая генерация ID заказов
+- ✅ Передача фискальных данных (Receipt)
+- ✅ Динамические описания с названиями карточек
+- ✅ Страницы успеха/ошибки с блоками контактов
+
+## 📱 Адаптивность
+
+- **Desktop:** Полнофункциональный интерфейс
+- **Mobile:** Оптимизированная мобильная версия
+- **Responsive:** Адаптация под все размеры экранов
+
+## 🎨 Дизайн
+
+### Цветовая схема
+- **Основной синий:** #2A3BD6
+- **Темно-синий:** #1427B0
+- **Акцентный зеленый:** #15D895
+- **Светло-кремовый:** #F4E4C1
+- **Золотой:** #E4C580
+
+### Стили
+- **Liquid Glass:** Стеклянные эффекты с размытием
+- **Анимации:** Плавные переходы и hover-эффекты
+- **Типографика:** Inter, Manrope, Noto Sans
+
+## 📁 Структура проекта
 
 ```
 src/
-├── components/           # Reusable UI components
-│   ├── ui/              # shadcn/ui components
-│   ├── ErrorBoundary.tsx    # Error handling
-│   ├── LazyImage.tsx        # Optimized image loading
-│   ├── PerformanceMonitor.tsx # Performance tracking
-│   └── VantaBackground.tsx   # 3D background effects
-├── data/               # Static data and types
-│   ├── services.ts     # AI services catalog (32 services)
-│   └── testimonials.ts # Customer testimonials (15 items)
-├── hooks/              # Custom React hooks
-│   ├── useDebounce.ts  # Debouncing utility
-│   └── useLoadingState.ts # Loading state management
-├── pages/              # Page components
-│   ├── Index.tsx       # Main landing page
-│   └── liquid-glass.css # Glass morphism styles
-└── contexts/           # React contexts
-    └── LanguageContext.tsx # Internationalization (RU/EN)
+├── components/          # React компоненты
+│   ├── TinkoffPaymentCorrect/    # Основной платежный компонент
+│   ├── TinkoffPaymentFinal/      # Платежи через сервис
+│   ├── PaymentButton/            # Кнопка рассрочки
+│   ├── ui/                       # UI компоненты (Shadcn)
+│   └── Navbar.tsx               # Навигация
+├── pages/               # Страницы приложения
+│   ├── Index.tsx                # Главная страница
+│   ├── PaymentSuccess.tsx       # Успешная оплата
+│   ├── PaymentError.tsx         # Ошибка оплаты
+│   └── NotFound.tsx             # 404 страница
+├── services/            # Бизнес-логика
+│   └── paymentService.ts        # Сервис платежей
+├── config/              # Конфигурация
+│   └── tinkoff.config.ts        # Настройки Tinkoff
+├── utils/               # Утилиты
+│   └── tokenGenerator.ts        # Генерация токенов
+└── types/               # TypeScript типы
+    └── payment.types.ts         # Типы платежей
 ```
 
-## ⚡ Performance Optimizations
+## 🔧 Конфигурация
 
-- **Lazy Loading**: Images and heavy components load on demand
-- **Debounced Filtering**: Smooth category filtering with 300ms delay
-- **Mobile Optimizations**: Vanta.js disabled on mobile devices
-- **Error Boundaries**: Graceful error handling with fallbacks
-- **Performance Monitoring**: Web Vitals tracking (LCP, FID, CLS)
-- **Reduced Motion Support**: Accessibility for motion-sensitive users
-- **Bundle Optimization**: Tree shaking and code splitting
+### Переменные окружения
+Создайте файл `.env.local`:
+```env
+VITE_TINKOFF_TERMINAL_KEY=1754995728217
+VITE_TINKOFF_PASSWORD=Ut8FxLDYq2t3563u
+VITE_TINKOFF_API_URL=https://securepay.tinkoff.ru/v2/
+```
 
-## 🎨 Design System
+### Tinkoff API
+- **Init метод:** Инициализация платежа
+- **SHA-256 токены:** Безопасная аутентификация
+- **Fiscal данные:** Передача Receipt для чеков
 
-### Color Palette
-- **Primary Blue**: `#0D19A3` - Main brand color
-- **Dark Blue**: `#080F5B` - Depth and contrast
-- **Accent Green**: `#15D895` - Call-to-action elements
-- **Light Cream**: `#F4E4C1` - Primary text color
-- **Gold**: `#E4C580` - Accent highlights
+## 📊 SEO и индексация
 
-### Glass Morphism Effects
-- Semi-transparent backgrounds with backdrop blur
-- Subtle borders and shadows for depth
-- Smooth hover transitions
-- Layered visual hierarchy
+### Запрещенные страницы
+- `/payment/*` - все страницы оплаты
+- `/test/*` - тестовые страницы
+- `/debug/*` - отладочные страницы
 
-## 📊 AI Services Catalog
+### Файлы
+- `robots.txt` - запрет индексации платежных страниц
+- `sitemap.xml` - карта сайта
 
-The platform showcases **32 AI services** across **7 categories**:
+## 🚀 Деплой
 
-1. **Marketing & Sales** (6 services) - Content creation, copywriting, ad optimization
-2. **Customer Service** (4 services) - Chatbots, voice assistants, predictive support
-3. **Internal Processes** (5 services) - Document automation, HR, financial forecasting
-4. **Content & Media** (5 services) - Video production, music generation, content ideas
-5. **Small Business & Startups** (4 services) - Business assistants, landing pages
-6. **IT & Development** (2 services) - Developer tools, security auditing
-7. **Analytics & Solutions** (2 services) - Business intelligence, reputation monitoring
+### GitHub Pages
+```bash
+npm run deploy
+```
 
-## 📱 Responsive Design
+### Vercel
+```bash
+npm run build
+# Загрузить dist/ в Vercel
+```
 
-- **Mobile-first approach** with optimized performance
-- **Breakpoints**: sm (640px), md (768px), lg (1024px), xl (1280px)
-- **Touch-friendly interactions** with proper tap targets
-- **Adaptive layouts** for all screen sizes
+### Ручной деплой
+```bash
+npm run build
+# Загрузить содержимое dist/ на хостинг
+```
 
-## ♿ Accessibility Features
+## 🐛 Отладка
 
-- **WCAG AA compliance** with proper color contrast ratios
-- **Keyboard navigation** support for all interactive elements
-- **Screen reader compatibility** with semantic HTML and ARIA labels
-- **Reduced motion support** for users with vestibular disorders
-- **Focus indicators** for better navigation visibility
+### Логи платежей
+- Проверьте консоль браузера
+- Логи в компонентах платежей
+- API ответы Tinkoff
 
-## 📚 Documentation
+### Частые проблемы
+1. **"Неверные параметры"** - проверьте TerminalKey
+2. **Ошибки токена** - проверьте SHA-256 генерацию
+3. **Проблемы с Receipt** - убедитесь в правильном формате
 
-- **`concept.md`** - Complete technical documentation and architecture overview
-- **`project-recreation-prompt.md`** - Condensed recreation guide for developers
-- **Performance reports** - Optimization details and metrics
+## 📞 Контакты
 
-## 🚀 Performance Metrics
+- **Telegram:** [@ruhunt](https://t.me/ruhunt)
+- **WhatsApp:** [+79097878786](https://wa.me/79097878786)
 
-- **Development server startup**: 688ms (37% improvement)
-- **Build time**: Optimized with Vite
-- **Lighthouse score**: 90+ target
-- **Core Web Vitals**: LCP, FID, CLS monitoring
-- **Bundle size**: Optimized with tree shaking
+## 📄 Лицензия
 
-## 🔧 Development
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-### Code Quality
-
-- **TypeScript** for type safety
-- **ESLint** for code consistency
-- **Prettier** for code formatting
-- **Tailwind CSS** for consistent styling
-
-## 📄 License
-
-This project is proprietary software developed for Texex AI Solutions Platform.
+Проект разработан для TEXEX AI. Все права защищены.
 
 ---
 
-**Built with ❤️ using modern web technologies and performance best practices.**
+**Версия:** 2.0.0  
+**Последнее обновление:** Август 2025  
+**Статус:** Готов к продакшену ✅

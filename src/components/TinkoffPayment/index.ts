@@ -1,1 +1,0 @@
-export { TinkoffPayment } from './TinkoffPayment';

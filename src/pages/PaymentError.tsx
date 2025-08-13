@@ -1,210 +1,81 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { XCircle, ArrowLeft, RefreshCw, Mail, AlertTriangle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import React from 'react';
+import { XCircle, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-interface PaymentErrorDetails {
-  orderId?: string;
-  paymentId?: string;
-  errorCode?: string;
-  errorMessage?: string;
-  amount?: string;
-}
-
-export const PaymentError: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [errorDetails, setErrorDetails] = useState<PaymentErrorDetails>({});
-
-  useEffect(() => {
-    // Извлекаем параметры ошибки из URL, которые передает Tinkoff
-    const details: PaymentErrorDetails = {
-      orderId: searchParams.get('OrderId') || undefined,
-      paymentId: searchParams.get('PaymentId') || undefined,
-      errorCode: searchParams.get('ErrorCode') || undefined,
-      errorMessage: searchParams.get('Message') || searchParams.get('Details') || undefined,
-      amount: searchParams.get('Amount') || undefined
-    };
-
-    setErrorDetails(details);
-
-    // Логируем ошибку платежа для аналитики
-    console.error('Payment error:', details);
-  }, [searchParams]);
-
-  const formatAmount = (amount: string | undefined) => {
-    if (!amount) return '';
-    
-    // Tinkoff передает сумму в копейках
-    const rubles = parseInt(amount) / 100;
-    return rubles.toLocaleString('ru-RU', {
-      style: 'currency',
-      currency: 'RUB',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
-  };
-
-  const getErrorMessage = () => {
-    if (errorDetails.errorMessage) {
-      return errorDetails.errorMessage;
-    }
-
-    // Стандартные сообщения для известных кодов ошибок
-    switch (errorDetails.errorCode) {
-      case '101':
-        return 'Недостаточно средств на карте';
-      case '116':
-        return 'Превышен лимит по карте';
-      case '120':
-        return 'Операция отклонена банком-эмитентом';
-      case '125':
-        return 'Неверный код CVV';
-      case '206':
-        return 'Операция отменена пользователем';
-      default:
-        return 'Произошла ошибка при обработке платежа';
-    }
-  };
-
-  const isRetryable = () => {
-    const nonRetryableCodes = ['125', '206']; // Неверный CVV, отмена пользователем
-    return !errorDetails.errorCode || !nonRetryableCodes.includes(errorDetails.errorCode);
-  };
-
-  const handleBackToHome = () => {
-    navigate('/', { replace: true });
-  };
-
-  const handleRetryPayment = () => {
-    // Возвращаемся на главную страницу, где пользователь может повторить попытку
-    navigate('/', { replace: true });
-    // Можно добавить параметр для автоматического открытия платежной формы
-  };
-
-  const handleContactSupport = () => {
-    const supportMessage = `Здравствуйте! У меня возникла проблема с платежом.%0A%0AДетали:%0A${
-      errorDetails.orderId ? `Номер заказа: ${errorDetails.orderId}%0A` : ''
-    }${
-      errorDetails.paymentId ? `ID платежа: ${errorDetails.paymentId}%0A` : ''
-    }${
-      errorDetails.errorCode ? `Код ошибки: ${errorDetails.errorCode}%0A` : ''
-    }${
-      errorDetails.errorMessage ? `Сообщение: ${errorDetails.errorMessage}%0A` : ''
-    }%0AПожалуйста, помогите решить эту проблему.`;
-    
-    window.open(`https://t.me/ruhunt?text=${supportMessage}`, '_blank');
-  };
-
+const PaymentError: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md glass-card border-red-500/30">
-        <CardHeader className="text-center pb-4">
-          <div className="mx-auto mb-4 w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center">
-            <XCircle className="w-8 h-8 text-red-500" />
+    <>
+      <head>
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+      </head>
+      <div className="min-h-screen bg-gradient-to-br from-dark-blue via-primary-blue to-dark-blue flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
+        <div className="liquid-surface rounded-2xl p-8 text-center border border-red-400/30">
+          {/* Иконка ошибки */}
+          <div className="mx-auto w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-6">
+            <XCircle className="w-12 h-12 text-red-400" />
           </div>
-          <CardTitle className="text-2xl font-bold text-light-cream">
-            Ошибка платежа
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="space-y-6">
-          <Alert className="border-red-500/30 bg-red-500/10">
-            <AlertTriangle className="h-4 w-4 text-red-500" />
-            <AlertDescription className="text-red-200">
-              {getErrorMessage()}
-            </AlertDescription>
-          </Alert>
-
-          {errorDetails.amount && (
-            <div className="bg-slate-500/10 border border-slate-500/30 rounded-lg p-4">
-              <div className="text-light-cream font-semibold text-lg">
-                {formatAmount(errorDetails.amount)}
-              </div>
-              <div className="text-light-cream/60 text-sm">
-                Сумма платежа
-              </div>
+          
+          {/* Заголовок */}
+          <h1 className="text-3xl font-bold text-light-cream mb-4">
+            Ошибка оплаты
+          </h1>
+          
+          {/* Описание */}
+          <p className="text-light-cream/80 mb-8 text-lg">
+            К сожалению, произошла ошибка при обработке платежа. Пожалуйста, попробуйте еще раз или свяжитесь с нами.
+          </p>
+          
+          {/* Кнопка повторить оплату */}
+          <Link 
+            to="/"
+            className="inline-flex items-center gap-2 liquid-button px-6 py-3 rounded-lg text-light-cream font-semibold hover:scale-105 transition-transform mb-6"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Вернуться на главную
+          </Link>
+          
+          {/* Блок контактов */}
+          <div className="border-t border-gold/20 pt-6">
+            <div className="text-center text-light-cream/80 mb-4 text-sm font-medium">
+              Нужна помощь? Свяжитесь с нами:
             </div>
-          )}
-
-          {(errorDetails.orderId || errorDetails.paymentId || errorDetails.errorCode) && (
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-light-cream/90">Детали ошибки:</h3>
-              
-              {errorDetails.orderId && (
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-light-cream/70">Номер заказа:</span>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    {errorDetails.orderId}
-                  </Badge>
-                </div>
-              )}
-              
-              {errorDetails.paymentId && (
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-light-cream/70">ID платежа:</span>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    {errorDetails.paymentId}
-                  </Badge>
-                </div>
-              )}
-              
-              {errorDetails.errorCode && (
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-light-cream/70">Код ошибки:</span>
-                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
-                    {errorDetails.errorCode}
-                  </Badge>
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-blue-400 mb-2">Что можно сделать?</h3>
-            <ul className="text-sm text-blue-300/80 space-y-1">
-              {isRetryable() && <li>• Попробуйте повторить платеж</li>}
-              <li>• Проверьте данные карты и баланс</li>
-              <li>• Используйте другую карту</li>
-              <li>• Обратитесь в службу поддержки</li>
-            </ul>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {isRetryable() && (
-              <Button 
-                onClick={handleRetryPayment}
-                className="w-full bg-[#F2CC66] hover:bg-[#F5D77F] text-black font-semibold"
+            <div className="grid grid-cols-1 gap-3">
+              <a 
+                href="https://t.me/ruhunt" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="liquid-animated-btn liquid-btn-telegram rounded-lg px-4 py-2.5 text-light-cream flex items-center justify-center gap-3 hover:scale-105 transition-transform"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Повторить платеж
-              </Button>
-            )}
-            
-            <Button 
-              onClick={handleBackToHome}
-              variant="outline"
-              className="w-full border-light-cream/30 text-light-cream hover:bg-light-cream/10"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Вернуться на главную
-            </Button>
-            
-            <Button 
-              onClick={handleContactSupport}
-              variant="outline"
-              size="sm"
-              className="w-full border-red-500/30 text-red-400 hover:bg-red-500/10"
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              Связаться с поддержкой
-            </Button>
+                <span className="liquid-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.5 4.5L2.5 11l6 2 9-8-6.5 9.5 6 3.5 4.5-13.5z" fill="#55ACEE"/>
+                  </svg>
+                </span>
+                Telegram
+              </a>
+              <a 
+                href="https://wa.me/79097878786" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="liquid-animated-btn liquid-btn-whatsapp rounded-lg px-4 py-2.5 text-light-cream flex items-center justify-center gap-3 hover:scale-105 transition-transform"
+              >
+                <span className="liquid-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2a10 10 0 100 20 9.6 9.6 0 004.7-1.2l3.3 1-1-3.2A9.6 9.6 0 0022 12 10 10 0 0012 2zm4.7 13.4c-.2.6-1.3 1.1-1.8 1.2-.5.1-1 .1-1.7-.1-1.6-.5-3.5-2-4.3-3.5-.6-1-.8-1.9-.8-2.6 0-.7.4-1.6 1-1.8.3-.1.6-.1.8 0 .2.1.4.6.5.9.1.2.1.4.1.5 0 .2-.2.5-.3.7-.2.2-.3.3-.2.5.1.2.4.9 1 1.5.7.8 1.6 1.4 1.8 1.5.2.1.4.1.6 0 .2-.2.4-.6.6-.8.1-.2.2-.2.4-.1.2.1 1.3.5 1.6.7.2.1.3.2.4.4 0 .1 0 .4-.2.5z" fill="#25D366"/>
+                  </svg>
+                </span>
+                WhatsApp
+              </a>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
+    </>
   );
 };
+
+export default PaymentError;
