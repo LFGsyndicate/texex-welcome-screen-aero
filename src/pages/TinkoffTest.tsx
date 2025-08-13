@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TinkoffPayment } from '@/components/TinkoffPayment';
 import { TinkoffPaymentFinal } from '@/components/TinkoffPaymentFinal/TinkoffPaymentFinal';
-import { TinkoffPaymentSimple } from '@/components/TinkoffPaymentSimple/TinkoffPaymentSimple';
+import { TinkoffPaymentCorrect } from '@/components/TinkoffPaymentCorrect/TinkoffPaymentCorrect';
 import { PaymentService } from '@/services/paymentService';
 import { TokenGenerator } from '@/utils/tokenGenerator';
 
@@ -36,7 +36,7 @@ export const TinkoffTest: React.FC = () => {
 
   const testTokenGeneration = async () => {
     const testParams = {
-      TerminalKey: "25801389",
+      TerminalKey: "1754995728217", // Правильный TerminalKey
       Amount: 100000,
       OrderId: "test_order_123",
       Description: "Test payment"
@@ -47,25 +47,26 @@ export const TinkoffTest: React.FC = () => {
   };
 
   const testPaymentService = async () => {
-    // Используем безопасный ID заказа
-    const safeOrderId = `test_service_${Date.now()}`;
+    // Используем простой ID заказа
+    const orderId = PaymentService.generateOrderId('test');
     
-    console.log('Testing PaymentService with orderId:', safeOrderId);
+    console.log('Testing PaymentService with orderId:', orderId);
     
     const result = await PaymentService.initPayment({
       amount: 1000,
-      orderId: safeOrderId,
-      description: 'Тестовый платеж через PaymentService'
+      orderId: orderId,
+      description: 'Тестовый платеж через PaymentService',
+      itemName: 'Тестовый AI-Сервис'
     });
     return result;
   };
 
   const testTinkoffScript = async () => {
     return new Promise((resolve, reject) => {
-      if (window.tinkoffPayRow) {
-        resolve({ success: true, message: 'Скрипт Tinkoff загружен' });
+      if (window.PaymentIntegration) {
+        resolve({ success: true, message: 'Скрипт Tinkoff PaymentIntegration загружен' });
       } else {
-        reject(new Error('Скрипт Tinkoff не загружен'));
+        reject(new Error('Скрипт Tinkoff PaymentIntegration не загружен'));
       }
     });
   };
@@ -90,11 +91,11 @@ export const TinkoffTest: React.FC = () => {
         }}>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Конфигурация</h2>
           <div style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>
-            <div><strong>Terminal Key:</strong> 25801389</div>
+            <div><strong>Terminal Key:</strong> 1754995728217 (исправлено!)</div>
             <div><strong>Merchant ID:</strong> 200000001673251</div>
             <div><strong>Password:</strong> Ut8FxLDYq2t3563u</div>
             <div><strong>API URL:</strong> https://securepay.tinkoff.ru/v2/</div>
-            <div><strong>Метод:</strong> Прямой API вызов без iframe</div>
+            <div><strong>Метод:</strong> Прямой API вызов с правильными параметрами</div>
           </div>
         </div>
 
@@ -195,9 +196,9 @@ export const TinkoffTest: React.FC = () => {
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Тестовые кнопки оплаты</h2>
           
           <div style={{ display: 'grid', gap: '1rem', marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>TinkoffPaymentSimple (прямой API):</h3>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>TinkoffPaymentCorrect (исправленные параметры):</h3>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <TinkoffPaymentSimple
+              <TinkoffPaymentCorrect
                 amount={testService.price}
                 itemName={testService.packageName}
                 paymentType="payment"
@@ -206,7 +207,7 @@ export const TinkoffTest: React.FC = () => {
                 onError={(error) => console.error('Payment error:', error)}
               >
                 💳 Оплатить {testService.price} ₽
-              </TinkoffPaymentSimple>
+              </TinkoffPaymentCorrect>
             </div>
 
             <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', marginTop: '1rem' }}>TinkoffPaymentFinal (наш сервис):</h3>
@@ -233,11 +234,12 @@ export const TinkoffTest: React.FC = () => {
           <strong>📋 Инструкции:</strong>
           <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
             <li>Сначала запустите тесты компонентов для проверки работоспособности</li>
-            <li>Кнопки используют прямой API вызов без iframe</li>
+            <li>Кнопки используют исправленные параметры с правильным TerminalKey</li>
             <li>Платежная форма откроется в новом окне с фискальными чеками</li>
             <li>Используйте тестовые карты: 4300000000000777 (успех), 4300000000000785 (недостаточно средств)</li>
             <li>Проверьте консоль браузера для логов</li>
             <li>Фискальные чеки включены для корректной работы API</li>
+            <li>Используется правильный TerminalKey: 1754995728217</li>
           </ul>
         </div>
 

@@ -46,6 +46,29 @@ export class TokenGenerator {
   }
 
   /**
+   * Генерирует уникальный ID заказа
+   * @param prefix - префикс для ID (опционально)
+   * @returns уникальный ID заказа
+   */
+  static generateOrderId(prefix: string = 'order'): string {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000);
+    
+    // Очищаем prefix от недопустимых символов
+    const cleanPrefix = prefix.replace(/[^a-zA-Z0-9_-]/g, '_');
+    
+    // Формируем простой и читаемый ID
+    const orderId = `${cleanPrefix}_${timestamp}_${random}`;
+    
+    // Проверяем длину (Tinkoff ограничивает OrderId)
+    if (orderId.length > 64) {
+      return orderId.substring(0, 64);
+    }
+    
+    return orderId;
+  }
+
+  /**
    * Подготавливает параметры для генерации токена
    * @param params - исходные параметры
    * @returns отфильтрованные параметры

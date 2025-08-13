@@ -25,57 +25,56 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
 
   const handlePayment = async () => {
     if (isLoading) return;
-    
     setIsLoading(true);
+    
     console.log('TinkoffPaymentCorrect: Starting payment', { amount, itemName, paymentType });
 
     try {
-      // Генерируем уникальный ID заказа согласно документации
-      const safeItemName = itemName.replace(/[^a-zA-Z0-9_-]/g, '_');
+      // Генерируем простой и читаемый ID заказа
       const timestamp = Date.now();
-      const random = Math.random().toString(36).substring(2, 8);
-      const orderId = `${paymentType}_${safeItemName}_${timestamp}_${random}`;
+      const random = Math.floor(Math.random() * 1000);
+      const orderId = `order_${timestamp}_${random}`;
       
-      // Описание для формы
-      const description = 'Услуги по реализации автоматизированных программных решений';
+      // Описание для формы согласно требованию
+      const description = `Услуги по реализации автоматизированных программных решений: ${itemName}`;
 
       // Конвертируем рубли в копейки
       const amountInKopecks = Math.round(amount * 100);
 
       console.log('TinkoffPaymentCorrect: Generated order data:', { orderId, description, amount: amountInKopecks });
 
-      // Согласно документации Tinkoff, создаем правильный запрос
-      const requestData = {
-        TerminalKey: tinkoffConfig.terminalKey,
+      // Создаем параметры для API запроса согласно документации
+      const initParams = {
+        TerminalKey: tinkoffConfig.terminalKey, // 1754995728217
         Amount: amountInKopecks,
         OrderId: orderId,
         Description: description,
         SuccessURL: tinkoffConfig.successUrl,
         FailURL: tinkoffConfig.failUrl,
         Language: 'ru',
-        // Убираем Receipt - он не обязателен для базовой интеграции
-        // Добавляем только необходимые параметры
-        CustomerKey: `customer_${Date.now()}`,
-        // Для рассрочки добавляем специальный параметр
-        ...(paymentType === 'installment' && { 
-          DATA: { 
-            connection_type: 'installment' 
-          } 
-        })
+        // Фискальные чеки - обязательны для корректной работы
+        Receipt: {
+          Email: 'customer@example.com',
+          Taxation: 'usn_income',
+          Items: [
+            {
+              Name: description,
+              Price: amountInKopecks,
+              Quantity: 1.00,
+              Amount: amountInKopecks,
+              Tax: 'none'
+            }
+          ]
+        }
       };
 
-      console.log('TinkoffPaymentCorrect: Request data:', requestData);
-
-      // Генерируем токен
-      const tokenParams = TokenGenerator.prepareTokenParams(requestData);
+      // Генерируем токен для безопасности
+      const tokenParams = TokenGenerator.prepareTokenParams(initParams);
       const token = await TokenGenerator.generateToken(tokenParams, tinkoffConfig.password);
 
-      const finalRequest = {
-        ...requestData,
-        Token: token
-      };
+      const finalInitParams = { ...initParams, Token: token };
 
-      console.log('TinkoffPaymentCorrect: Final request with token:', finalRequest);
+      console.log('TinkoffPaymentCorrect: Final init params:', finalInitParams);
 
       // Отправляем запрос к Tinkoff API
       const response = await fetch(`${tinkoffConfig.apiUrl}Init`, {
@@ -84,7 +83,7 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(finalRequest)
+        body: JSON.stringify(finalInitParams)
       });
 
       if (!response.ok) {
@@ -101,11 +100,11 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
         
         // Открываем платежную форму в новом окне
         const paymentWindow = window.open(
-          data.PaymentURL,
-          'tinkoff_payment',
+          data.PaymentURL, 
+          'tinkoff_payment', 
           'width=800,height=600,scrollbars=yes,resizable=yes'
         );
-
+        
         if (!paymentWindow) {
           const errorMsg = 'Разрешите всплывающие окна для этого сайта.';
           console.error('TinkoffPaymentCorrect: Popup blocked');
@@ -122,8 +121,8 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
       }
 
     } catch (error) {
-      console.error('TinkoffPaymentCorrect: Error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Произошла ошибка при инициализации платежа';
+      console.error('TinkoffPaymentCorrect: Error:', error);
       onError?.(errorMessage);
       alert(errorMessage);
     } finally {

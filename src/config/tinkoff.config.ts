@@ -15,11 +15,18 @@ const getBaseUrl = (): string => {
   return 'http://localhost:3000'; // fallback для SSR
 };
 
-export const tinkoffConfig: TinkoffConfig = {
-  terminalKey: import.meta.env.VITE_TINKOFF_TERMINAL_KEY || '25801389',
-  merchantId: import.meta.env.VITE_TINKOFF_MERCHANT_ID || '200000001673251',
-  password: import.meta.env.VITE_TINKOFF_PASSWORD || 'Ut8FxLDYq2t3563u',
-  apiUrl: import.meta.env.VITE_TINKOFF_API_URL || 'https://securepay.tinkoff.ru/v2/',
-  successUrl: `${getBaseUrl()}/payment/success`,
-  failUrl: `${getBaseUrl()}/payment/error`
+export const tinkoffConfig = {
+  // Правильный TerminalKey согласно документации
+  terminalKey: '1754995728217', // Terminal_id из ваших данных
+  // Правильный пароль
+  password: 'Ut8FxLDYq2t3563u',
+  // API URL для v2 API
+  apiUrl: 'https://securepay.tinkoff.ru/v2/',
+  // Страницы успеха и ошибки по умолчанию
+  successUrl: 'https://securepay.tinkoff.ru/html/payForm/success.html',
+  failUrl: 'https://securepay.tinkoff.ru/html/payForm/fail.html',
+  // Дополнительные данные для отладки
+  merchantName: 'TEXEX AI',
+  merchantId: '200000001673251',
+  sbpMerchantId: 'MB0001881027'
 };

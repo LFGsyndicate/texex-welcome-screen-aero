@@ -25,12 +25,11 @@ export const TinkoffPaymentFinal: React.FC<TinkoffPaymentFinalProps> = ({
     console.log('TinkoffPaymentFinal: Starting payment', { amount, itemName, paymentType });
 
     try {
-      // Генерируем уникальный ID заказа с безопасными символами
-      const safeItemName = itemName.replace(/[^a-zA-Z0-9_-]/g, '_');
-      const orderId = PaymentService.generateOrderId(`${paymentType}_${safeItemName}`);
+      // Генерируем простой и читаемый ID заказа
+      const orderId = PaymentService.generateOrderId(paymentType);
       
-      // Описание для формы
-      const description = 'Услуги по реализации автоматизированных программных решений';
+      // Описание для формы с названием карточки
+      const description = `Услуги по реализации автоматизированных программных решений: ${itemName}`;
 
       console.log('TinkoffPaymentFinal: Generated order data:', { orderId, description, amount });
 
@@ -39,7 +38,7 @@ export const TinkoffPaymentFinal: React.FC<TinkoffPaymentFinalProps> = ({
         amount,
         orderId,
         description,
-        customerKey: `customer_${Date.now()}`
+        itemName
       });
 
       if (result.success && result.paymentUrl) {
@@ -57,7 +56,7 @@ export const TinkoffPaymentFinal: React.FC<TinkoffPaymentFinalProps> = ({
         }
       } else {
         console.error('TinkoffPaymentFinal: Payment initialization failed', result);
-        alert(`Ошибка инициализации платежа: ${result.message || 'Неизвестная ошибка'}`);
+        alert(`Ошибка инициализации платежа: Неизвестная ошибка`);
       }
 
     } catch (error) {

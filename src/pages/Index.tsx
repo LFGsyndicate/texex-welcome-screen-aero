@@ -21,7 +21,7 @@ import { YCLogo, ForbesLogo, SkolkovoLogo, OpenAILogo, GoogleCloudLogo, AWSLogo,
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PaymentButton } from '@/components/PaymentButton/PaymentButton';
 import React from 'react';
-import { TinkoffPaymentSimple } from '@/components/TinkoffPaymentSimple/TinkoffPaymentSimple';
+import { TinkoffPaymentCorrect } from '@/components/TinkoffPaymentCorrect/TinkoffPaymentCorrect';
 
 const CATEGORY_EVENT = 'texex:set-category';
 const PKG_EVENT = 'texex:scroll-to-package';
@@ -439,7 +439,7 @@ return (
                         <Separator className="my-3 liquid-separator" />
                         <div className="flex flex-col space-y-2">
                           {/* Кнопка оплаты - желтая большая */}
-                          <TinkoffPaymentSimple
+                          <TinkoffPaymentCorrect
                             amount={service.pricingTier1_Price}
                             itemName={service.packageName}
                             paymentType="payment"
@@ -448,7 +448,7 @@ return (
                             onError={(error) => console.error('Payment error:', error)}
                           >
                             Оплатить
-                          </TinkoffPaymentSimple>
+                          </TinkoffPaymentCorrect>
                           <div className="flex space-x-2">
                             <PaymentButton
                               service={{

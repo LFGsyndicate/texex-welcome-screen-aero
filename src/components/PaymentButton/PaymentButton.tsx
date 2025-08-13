@@ -37,12 +37,11 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
     });
 
     try {
-      // Генерируем уникальный ID заказа с безопасными символами
-      const safePackageId = service.packageId.replace(/[^a-zA-Z0-9_-]/g, '_');
-      const orderId = PaymentService.generateOrderId(`${safePackageId}_${paymentType}`);
+      // Генерируем простой и читаемый ID заказа
+      const orderId = PaymentService.generateOrderId(paymentType);
       
-      // Описание для формы (единое для всех товаров)
-      const description = 'Услуги по реализации автоматизированных программных решений';
+      // Описание для формы с названием карточки
+      const description = `Услуги по реализации автоматизированных программных решений: ${service.packageName}`;
 
       console.log('PaymentButton: Generated order data:', { orderId, description, amount: service.price });
 
@@ -51,7 +50,7 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
         amount: service.price,
         orderId,
         description,
-        customerKey: `customer_${Date.now()}`
+        itemName: service.packageName
       });
 
       if (result.success && result.paymentUrl) {
@@ -71,7 +70,7 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
           alert(errorMsg);
         }
       } else {
-        const errorMsg = `Ошибка инициализации платежа: ${result.message || 'Неизвестная ошибка'}`;
+        const errorMsg = `Ошибка инициализации платежа: Неизвестная ошибка`;
         console.error('PaymentButton: Payment initialization failed', result);
         onPaymentError?.(errorMsg);
         alert(errorMsg);
