@@ -19,31 +19,34 @@
   animation: gentle-glass-flow 20s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
 }
 
-/* Улучшенные стили для кнопок категорий */
+/* Стили для кнопок фильтра категорий - ТОЛЬКО СВЕТЛЫЕ ЦВЕТА */
 .category-filter-btn {
   position: relative;
   overflow: hidden;
-  background: transparent !important; /* Вернул на прозрачный фон */
-  border: 1px solid rgba(244, 228, 193, 0.6); /* Изменил с темного на светлый */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #F4E4C1;
+  background: transparent !important;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  font-weight: 500;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(8, 15, 91, 0.2);
+  box-shadow: none;
 }
 
 .category-filter-btn:hover {
-  background: rgba(244, 228, 193, 0.15) !important; /* Легкая подсветка при наведении */
-  border-color: rgba(244, 228, 193, 0.8); /* Светлая граница при наведении */
-  box-shadow: 0 6px 20px rgba(8, 15, 91, 0.3);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 1);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: none;
 }
 
-/* Стили для активной (выбранной) категории */
 .category-filter-btn.active {
-  background: rgba(21, 216, 149, 0.25) !important;
-  border-color: rgba(21, 216, 149, 0.5);
-  box-shadow: 0 0 20px rgba(21, 216, 149, 0.4), 0 8px 25px rgba(8, 15, 91, 0.4);
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 1);
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: none;
   animation: categoryGlow 2s ease-in-out infinite;
 }
 
@@ -54,29 +57,28 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(21, 216, 149, 0.15), transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%);
   animation: categoryPulse 3s ease-in-out infinite;
   pointer-events: none;
 }
 
-/* Анимации для активной категории */
 @keyframes categoryGlow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(21, 216, 149, 0.4), 0 8px 25px rgba(8, 15, 91, 0.4);
+    background: rgba(255, 255, 255, 0.25);
   }
   50% {
-    box-shadow: 0 0 30px rgba(21, 216, 149, 0.6), 0 12px 35px rgba(8, 15, 91, 0.5);
+    background: rgba(255, 255, 255, 0.35);
   }
 }
 
 @keyframes categoryPulse {
   0%, 100% {
-    opacity: 0.3;
+    opacity: 0.2;
     transform: scale(1);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(1.05);
+    opacity: 0.4;
+    transform: scale(1.02);
   }
 }
 
