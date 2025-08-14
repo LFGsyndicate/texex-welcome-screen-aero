@@ -489,7 +489,7 @@ return (
                       <div className="liquid-stripe-shimmer" style={{ ['--stripe-speed' as any]: `${UI_CONFIG.liquidStripeSeconds}s` }} />
                       {/* Заголовок карточки на цветной плашке */}
                       <div className="relative z-10 text-center px-2 sm:px-4">
-                        <h3 className="text-sm sm:text-lg md:text-xl font-bold text-blue-600 drop-shadow-lg leading-tight">{service.packageName}</h3>
+                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight" style={{ fontFamily: 'Arial, sans-serif', color: '#1e3a8a' }}>{service.packageName}</h3>
                       </div>
                     </div>
                     <CardHeader className="p-4 md:p-6">
