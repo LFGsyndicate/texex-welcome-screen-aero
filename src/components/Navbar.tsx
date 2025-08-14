@@ -188,45 +188,45 @@ const Navbar = () => {
 
       {open && (
         <div className="lg:hidden border-t border-gold/20 bg-dark-blue/80 backdrop-blur-xl">
-          <div className="px-4 py-2 flex flex-col gap-1">
+          <div className="px-4 py-0.5 flex flex-col gap-0.25">
             {sections.map(s => (
-              <button key={s.id} onClick={() => scrollTo(s.id)} className="text-left px-2 py-1.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10">
+              <button key={s.id} onClick={() => scrollTo(s.id)} className="text-left px-2 py-0.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10">
                 {s.label}
               </button>
             ))}
-            <div className="border-t border-gold/20 my-1" />
-            <a href="https://aiix.pro" target="_blank" rel="noreferrer" className="text-left px-2 py-1.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10">
+            <div className="border-t border-gold/20 my-0.25" />
+            <a href="https://aiix.pro" target="_blank" rel="noreferrer" className="text-left px-2 py-0.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10">
               Наш EN проект
             </a>
-            <div className="border-t border-gold/20 my-1" />
+            <div className="border-t border-gold/20 my-0.25" />
             <div className="px-2" ref={dropdownRef}>
-              <button onClick={() => setCatOpen(v => !v)} className="text-left px-2 py-1.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10 flex items-center justify-between w-full">
+              <button onClick={() => setCatOpen(v => !v)} className="text-left px-2 py-0.5 rounded-lg text-light-cream/90 hover:bg-light-cream/10 flex items-center justify-between w-full">
                 Категории <ChevronDown className="w-4 h-4" />
               </button>
               {catOpen && (
-                <div className="grid grid-cols-1 gap-1 py-1">
+                <div className="grid grid-cols-1 gap-0.25 py-0.25">
                   {categories.map((c, idx) => (
                     <div key={c}>
-                                              <button onClick={() => selectCategory(c)} className="w-full px-3 py-1.5 rounded-lg liquid-surface-strong text-light-cream text-left" style={{ background: 'rgba(20,39,176,0.15)' }}>
+                                              <button onClick={() => selectCategory(c)} className="w-full px-3 py-0.5 rounded-lg liquid-surface-strong text-light-cream text-left" style={{ background: 'rgba(20,39,176,0.15)' }}>
                         {c}
                       </button>
-                      {idx < categories.length - 1 && <hr className="liquid-separator my-0.5" />}
+                      {idx < categories.length - 1 && <hr className="liquid-separator my-0.125" />}
                     </div>
                   ))}
                 </div>
               )}
             </div>
             {/* Modal content for contacts */}
-            <div className="mt-2 p-2 rounded-xl liquid-surface">
-              <div className="text-center text-light-cream font-semibold uppercase tracking-wide mb-2 text-sm">СВЯЗАТЬСЯ ДЛЯ ЗАКАЗА СЕЙЧАС</div>
-              <div className="grid grid-cols-1 gap-1.5">
-                <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-telegram rounded-md px-3 py-1.5 text-light-cream flex items-center gap-3">
+            <div className="mt-0.5 p-1.5 rounded-xl liquid-surface">
+              <div className="text-center text-light-cream font-semibold uppercase tracking-wide mb-0.5 text-sm">СВЯЗАТЬСЯ ДЛЯ ЗАКАЗА СЕЙЧАС</div>
+              <div className="grid grid-cols-1 gap-0.5">
+                <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-telegram rounded-md px-3 py-0.5 text-light-cream flex items-center gap-3">
                   <span className="liquid-icon">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.5 4.5L2.5 11l6 2 9-8-6.5 9.5 6 3.5 4.5-13.5z" fill="#55ACEE"/></svg>
                   </span>
                   Telegram
                 </a>
-                <a href="https://wa.me/79097878786" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-whatsapp rounded-md px-3 py-1.5 text-light-cream flex items-center gap-3">
+                <a href="https://wa.me/79097878786" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-whatsapp rounded-md px-3 py-0.5 text-light-cream flex items-center gap-3">
                   <span className="liquid-icon">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 100 20 9.6 9.6 0 004.7-1.2l3.3 1-1-3.2A9.6 9.6 0 0022 12 10 10 0 0012 2zm4.7 13.4c-.2.6-1.3 1.1-1.8 1.2-.5.1-1 .1-1.7-.1-1.6-.5-3.5-2-4.3-3.5-.6-1-.8-1.9-.8-2.6 0-.7.4-1.6 1-1.8.3-.1.6-.1.8 0 .2.1.4.6.5.9.1.2.1.4.1.5 0 .2-.2.5-.3.7-.2.2-.3.3-.2.5.1.2.4.9 1 1.5.7.8 1.6 1.4 1.8 1.5.2.1.4.1.6 0 .2-.2.4-.6.6-.8.1-.2.2-.2.4-.1.2.1 1.3.5 1.6.7.2.1.3.2.4.4 0 .1 0 .4-.2.5z" fill="#25D366"/></svg>
                   </span>
