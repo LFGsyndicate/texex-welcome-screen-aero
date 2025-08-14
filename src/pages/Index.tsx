@@ -172,14 +172,14 @@ const Index = () => {
   const scrollToServices = useCallback(() => {
     try {
       const element = document.getElementById('services');
-      if (element) element.scrollIntoView({ behavior: 'smooth' });
+      if (element) element.scrollIntoView({ behavior: 'auto' });
     } catch (error) { console.error('Scroll handler error:', error); }
   }, []);
 
   const scrollToPackage = useCallback((id: string) => {
     try {
       const el = document.getElementById(`pkg-${id}`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (el) el.scrollIntoView({ behavior: 'auto', block: 'center' });
     } catch (e) { console.error('scrollToPackage error', e) }
   }, []);
 
@@ -197,34 +197,28 @@ const Index = () => {
     const handlePaymentFocus = () => {
       console.log('Opening payment FAQ accordion...');
       
-      // Способ 1: Устанавливаем состояние аккордеона
+      // Устанавливаем состояние аккордеона
       setAccordionValue('item-4');
       
       // Добавляем класс expanded для усиленной подсветки
-      setTimeout(() => {
-        const paymentItem = document.getElementById('payment-accordion-item');
-        if (paymentItem) {
-          paymentItem.classList.add('expanded');
-          console.log('Added expanded class to payment question');
-        }
-      }, 200);
+      const paymentItem = document.getElementById('payment-accordion-item');
+      if (paymentItem) {
+        paymentItem.classList.add('expanded');
+        console.log('Added expanded class to payment question');
+      }
       
-      // Способ 2: Если первый не сработает, попробуем кликнуть на триггер
-      setTimeout(() => {
-        const paymentTrigger = document.getElementById('payment-accordion-trigger') as HTMLButtonElement;
-        if (paymentTrigger && paymentTrigger.getAttribute('data-state') === 'closed') {
-          console.log('Clicking payment accordion trigger...');
-          paymentTrigger.click();
-          
-          // Добавляем класс expanded после клика
-          setTimeout(() => {
-            const paymentItem = document.getElementById('payment-accordion-item');
-            if (paymentItem) {
-              paymentItem.classList.add('expanded');
-            }
-          }, 100);
+      // Если нужно, кликаем на триггер
+      const paymentTrigger = document.getElementById('payment-accordion-trigger') as HTMLButtonElement;
+      if (paymentTrigger && paymentTrigger.getAttribute('data-state') === 'closed') {
+        console.log('Clicking payment accordion trigger...');
+        paymentTrigger.click();
+        
+        // Добавляем класс expanded после клика
+        const paymentItemAfterClick = document.getElementById('payment-accordion-item');
+        if (paymentItemAfterClick) {
+          paymentItemAfterClick.classList.add('expanded');
         }
-      }, 300);
+      }
       
       console.log('Accordion value set to item-4');
     };
@@ -239,13 +233,11 @@ const Index = () => {
       console.log('Opening terms dialog...');
       
       // Находим триггер модального окна с условиями и кликаем на него
-      setTimeout(() => {
-        const termsButton = document.querySelector('[data-terms-trigger]') as HTMLButtonElement;
-        if (termsButton) {
-          termsButton.click();
-          console.log('Terms dialog opened');
-        }
-      }, 100);
+      const termsButton = document.querySelector('[data-terms-trigger]') as HTMLButtonElement;
+      if (termsButton) {
+        termsButton.click();
+        console.log('Terms dialog opened');
+      }
     };
     
     window.addEventListener('texex:open-terms', handleTermsOpen);
@@ -492,12 +484,15 @@ return (
                     className={`glass-card ${service.isFeatured ? ('featured-card ' + (service.featuredVariant === 'secondary' ? 'featured-secondary' : 'featured-primary')) : ''} flex flex-col h-full w-full animate-float`}
                     style={{ animationDuration: `${UI_CONFIG.floatAnimationSeconds}s` }}
                   >
-                    {/* Полоса-градиент (разные цвета) с лёгкой жидкой анимацией */}
-                    <div className={`relative h-[57px] w-full bg-gradient-to-r ${gradientStripes[index % gradientStripes.length]} liquid-gradient-stripe overflow-hidden`}>
+                    {/* Полоса-градиент с заголовком карточки */}
+                    <div className={`relative h-[70px] sm:h-[80px] w-full bg-gradient-to-r ${gradientStripes[index % gradientStripes.length]} liquid-gradient-stripe overflow-hidden flex items-center justify-center`}>
                       <div className="liquid-stripe-shimmer" style={{ ['--stripe-speed' as any]: `${UI_CONFIG.liquidStripeSeconds}s` }} />
+                      {/* Заголовок карточки на цветной плашке */}
+                      <div className="relative z-10 text-center px-2 sm:px-4">
+                        <h3 className="text-sm sm:text-lg md:text-xl font-bold text-blue-600 drop-shadow-lg leading-tight">{service.packageName}</h3>
+                      </div>
                     </div>
                     <CardHeader className="p-4 md:p-6">
-                      <CardTitle className="text-xl md:text-2xl font-bold text-light-cream">{service.packageName}</CardTitle>
                       <CardDescription className="text-light-cream/80 pt-2">{service.painPoint}</CardDescription>
                     </CardHeader>
                     <CardContent className="p-4 md:p-6 flex-grow flex flex-col">

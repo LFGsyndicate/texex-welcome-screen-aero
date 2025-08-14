@@ -38,7 +38,7 @@ const Navbar = () => {
     }
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'auto' });
       setOpen(false);
       return;
     }
@@ -46,18 +46,14 @@ const Navbar = () => {
     if (id === 'faq-payments') {
       const faqEl = document.getElementById('faq');
       if (faqEl) {
-        faqEl.scrollIntoView({ behavior: 'smooth' });
-        // Ждем завершения прокрутки, затем раскрываем аккордеон и прокручиваем к нему
-        setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('texex:open-payment-faq'));
-          // Дополнительная прокрутка к раскрытому элементу после анимации
-          setTimeout(() => {
-            const paymentAccordion = document.getElementById('payment-accordion-item');
-            if (paymentAccordion) {
-              paymentAccordion.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-          }, 500);
-        }, 800);
+        faqEl.scrollIntoView({ behavior: 'auto' });
+        // Мгновенно раскрываем аккордеон и прокручиваем к нему
+        window.dispatchEvent(new CustomEvent('texex:open-payment-faq'));
+        // Дополнительная прокрутка к раскрытому элементу
+        const paymentAccordion = document.getElementById('payment-accordion-item');
+        if (paymentAccordion) {
+          paymentAccordion.scrollIntoView({ behavior: 'auto', block: 'center' });
+        }
       }
       setOpen(false);
       return;
@@ -67,7 +63,7 @@ const Navbar = () => {
   const selectCategory = (category: string) => {
     window.dispatchEvent(new CustomEvent(CATEGORY_EVENT, { detail: category }));
     const el = document.getElementById('services');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el) el.scrollIntoView({ behavior: 'auto' });
     setCatOpen(false);
   };
 
@@ -121,10 +117,8 @@ const Navbar = () => {
                   <button key={s.packageId} onClick={(ev) => {
                     ev.preventDefault();
                     setDesktopListOpen(false);
-                    requestAnimationFrame(() => {
-                      window.dispatchEvent(new CustomEvent('texex:scroll-to-package', { detail: s.packageId }));
-                      setOpen(false);
-                    });
+                    window.dispatchEvent(new CustomEvent('texex:scroll-to-package', { detail: s.packageId }));
+                    setOpen(false);
                   }} className="w-full text-left px-3 py-2 rounded-md liquid-outline-btn hover:bg-light-cream/10 mt-1 modal-list-item">
                     {index + 1} | {s.packageName}
                   </button>
@@ -168,10 +162,8 @@ const Navbar = () => {
                   <button key={s.packageId} onClick={(ev) => {
                     ev.preventDefault();
                     setMobileListOpen(false);
-                    requestAnimationFrame(() => {
-                      window.dispatchEvent(new CustomEvent('texex:scroll-to-package', { detail: s.packageId }));
-                      setOpen(false);
-                    });
+                    window.dispatchEvent(new CustomEvent('texex:scroll-to-package', { detail: s.packageId }));
+                    setOpen(false);
                   }} className="w-full text-left px-3 py-2 rounded-md liquid-outline-btn hover:bg-light-cream/10 mt-1 modal-list-item">
                     {index + 1} | {s.packageName}
                   </button>

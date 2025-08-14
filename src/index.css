@@ -415,12 +415,275 @@
   @keyframes gradientPulse { 0% { opacity: 0.9; filter: brightness(1) saturate(1.1); } 50% { opacity: 1; filter: brightness(1.15) saturate(1.3); } 100% { opacity: 0.9; filter: brightness(1) saturate(1.1); } }
   .liquid-stripe-shimmer { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.4), rgba(255,255,255,0)); mix-blend-mode: overlay; animation: stripeShimmer var(--stripe-speed,8s) cubic-bezier(.55,.1,.35,1) infinite; filter: blur(0.5px); }
   .liquid-gradient-stripe { animation: gradientPulse 3s ease-in-out infinite; }
+  
+  /* Стили для заголовков на цветных плашках */
+  .liquid-gradient-stripe h3 { 
+    color: #1e40af !important; /* Синий цвет для лучшего контраста */
+    text-shadow: 0 2px 4px rgba(255,255,255,0.8), 0 1px 2px rgba(255,255,255,0.6);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  /* Адаптивные размеры для заголовков на плашках */
+  @media (max-width: 640px) {
+    .liquid-gradient-stripe h3 { font-size: 0.875rem; line-height: 1.2; }
+  }
+  
+  @media (min-width: 641px) and (max-width: 768px) {
+    .liquid-gradient-stripe h3 { font-size: 1rem; line-height: 1.3; }
+  }
+  
+  @media (min-width: 769px) {
+    .liquid-gradient-stripe h3 { font-size: 1.125rem; line-height: 1.4; }
+  }
 
   /* Liquid animated outline button */
   @keyframes liquidFlow { 0% { transform: translate(-30%, -30%); } 50% { transform: translate(30%, 30%); } 100% { transform: translate(-30%, -30%); } }
   .liquid-animated-btn { position: relative; overflow: hidden; border: 1px solid rgba(244,228,193,0.35); color: #F4E4C1; background: rgba(20,39,176,0.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 8px 28px rgba(8,15,91,0.30); }
   .liquid-animated-btn::before { content: ""; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: radial-gradient(160px 80px at 30% 30%, rgba(244,228,193,0.22), transparent 60%); animation: liquidFlow 8s ease-in-out infinite; opacity: .9; }
-  .liquid-animated-btn:hover { background: rgba(20,39,176,0.18); }
+  .liquid-animated-btn:hover { background: rgba(20,39,176,0.05) !important; }
+  
+  /* Специальные стили для кнопки "Состав стоимости" */
+  .liquid-animated-btn[data-variant="outline"]:hover,
+  .liquid-animated-btn.variant-outline:hover,
+  .liquid-animated-btn[class*="variant-outline"]:hover {
+    background: rgba(20,39,176,0.05) !important;
+  }
+  
+  /* Принудительно убираем зеленый фон при hover для всех вариантов */
+  .liquid-animated-btn:hover,
+  .liquid-animated-btn[data-variant="outline"]:hover,
+  .liquid-animated-btn.variant-outline:hover,
+  .liquid-animated-btn[class*="variant-outline"]:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+  }
+  
+  /* Медиа-запросы для всех устройств */
+  @media (max-width: 1023px) {
+    .liquid-animated-btn:hover,
+    .liquid-animated-btn[data-variant="outline"]:hover,
+    .liquid-animated-btn.variant-outline:hover,
+    .liquid-animated-btn[class*="variant-outline"]:hover {
+      background: rgba(20,39,176,0.05) !important;
+      background-color: rgba(20,39,176,0.05) !important;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .liquid-animated-btn:hover,
+    .liquid-animated-btn[data-variant="outline"]:hover,
+    .liquid-animated-btn.variant-outline:hover,
+    .liquid-animated-btn[class*="variant-outline"]:hover {
+      background: rgba(20,39,176,0.05) !important;
+      background-color: rgba(20,39,176,0.05) !important;
+    }
+  }
+  
+  /* Дополнительные специфичные правила для переопределения всех hover стилей */
+  button.liquid-animated-btn:hover,
+  button.liquid-animated-btn[data-variant="outline"]:hover,
+  button.liquid-animated-btn.variant-outline:hover,
+  button.liquid-animated-btn[class*="variant-outline"]:hover,
+  .liquid-animated-btn[class*="hover:bg-accent"]:hover,
+  .liquid-animated-btn[class*="hover:bg-accent"]:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+    background-image: none !important;
+  }
+  
+  /* Переопределение всех возможных Tailwind hover классов */
+  .liquid-animated-btn.hover\:bg-accent:hover,
+  .liquid-animated-btn.hover\:bg-primary:hover,
+  .liquid-animated-btn.hover\:bg-secondary:hover,
+  .liquid-animated-btn.hover\:bg-destructive:hover,
+  .liquid-animated-btn.hover\:bg-muted:hover,
+  .liquid-animated-btn.hover\:bg-popover:hover,
+  .liquid-animated-btn.hover\:bg-card:hover,
+  .liquid-animated-btn.hover\:bg-background:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+  }
+  
+  /* Максимально специфичные правила для всех устройств */
+  html body .liquid-animated-btn:hover,
+  html body .liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.variant-outline:hover,
+  html body .liquid-animated-btn[class*="variant-outline"]:hover,
+  html body button.liquid-animated-btn:hover,
+  html body button.liquid-animated-btn[data-variant="outline"]:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+    background-image: none !important;
+  }
+  
+  /* Медиа-запросы для планшетов с максимальной специфичностью */
+  @media (max-width: 1023px) {
+    html body .liquid-animated-btn:hover,
+    html body .liquid-animated-btn[data-variant="outline"]:hover,
+    html body .liquid-animated-btn.variant-outline:hover,
+    html body .liquid-animated-btn[class*="variant-outline"]:hover,
+    html body button.liquid-animated-btn:hover,
+    html body button.liquid-animated-btn[data-variant="outline"]:hover {
+      background: rgba(20,39,176,0.05) !important;
+      background-color: rgba(20,39,176,0.05) !important;
+      background-image: none !important;
+    }
+  }
+  
+  /* Медиа-запросы для мобильных с максимальной специфичностью */
+  @media (max-width: 767px) {
+    html body .liquid-animated-btn:hover,
+    html body .liquid-animated-btn[data-variant="outline"]:hover,
+    html body .liquid-animated-btn.variant-outline:hover,
+    html body .liquid-animated-btn[class*="variant-outline"]:hover,
+    html body button.liquid-animated-btn:hover,
+    html body button.liquid-animated-btn[data-variant="outline"]:hover {
+      background: rgba(20,39,176,0.05) !important;
+      background-color: rgba(20,39,176,0.05) !important;
+      background-image: none !important;
+    }
+  }
+  
+  /* Финальные правила для переопределения всех возможных hover стилей */
+  html body .liquid-animated-btn:hover,
+  html body .liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.variant-outline:hover,
+  html body .liquid-animated-btn[class*="variant-outline"]:hover,
+  html body button.liquid-animated-btn:hover,
+  html body button.liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.hover\:bg-accent:hover,
+  html body .liquid-animated-btn.hover\:bg-primary:hover,
+  html body .liquid-animated-btn.hover\:bg-secondary:hover,
+  html body .liquid-animated-btn.hover\:bg-destructive:hover,
+  html body .liquid-animated-btn.hover\:bg-muted:hover,
+  html body .liquid-animated-btn.hover\:bg-popover:hover,
+  html body .liquid-animated-btn.hover\:bg-card:hover,
+  html body .liquid-animated-btn.hover\:bg-background:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+    background-image: none !important;
+    background-clip: unset !important;
+    background-origin: unset !important;
+    background-size: unset !important;
+    background-repeat: unset !important;
+    background-position: unset !important;
+  }
+  
+  /* Дополнительные правила для всех устройств */
+  @media (min-width: 0px) {
+    html body .liquid-animated-btn:hover,
+    html body .liquid-animated-btn[data-variant="outline"]:hover,
+    html body .liquid-animated-btn.variant-outline:hover,
+    html body .liquid-animated-btn[class*="variant-outline"]:hover,
+    html body button.liquid-animated-btn:hover,
+    html body button.liquid-animated-btn[data-variant="outline"]:hover {
+      background: rgba(20,39,176,0.05) !important;
+      background-color: rgba(20,39,176,0.05) !important;
+      background-image: none !important;
+    }
+  }
+  
+  /* Финальные правила для всех устройств с максимальной специфичностью */
+  html body .liquid-animated-btn:hover,
+  html body .liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.variant-outline:hover,
+  html body .liquid-animated-btn[class*="variant-outline"]:hover,
+  html body button.liquid-animated-btn:hover,
+  html body button.liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.hover\:bg-accent:hover,
+  html body .liquid-animated-btn.hover\:bg-primary:hover,
+  html body .liquid-animated-btn.hover\:bg-secondary:hover,
+  html body .liquid-animated-btn.hover\:bg-destructive:hover,
+  html body .liquid-animated-btn.hover\:bg-muted:hover,
+  html body .liquid-animated-btn.hover\:bg-popover:hover,
+  html body .liquid-animated-btn.hover\:bg-card:hover,
+  html body .liquid-animated-btn.hover\:bg-background:hover,
+  html body .liquid-animated-btn[class*="hover:bg-accent"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-primary"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-secondary"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-destructive"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-muted"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-popover"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-card"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-background"]:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+    background-image: none !important;
+    background-clip: unset !important;
+    background-origin: unset !important;
+    background-size: unset !important;
+    background-repeat: unset !important;
+    background-position: unset !important;
+  }
+  
+  /* Дополнительные правила для всех устройств с максимальной специфичностью */
+  @media (min-width: 0px) {
+    html body .liquid-animated-btn:hover,
+    html body .liquid-animated-btn[data-variant="outline"]:hover,
+    html body .liquid-animated-btn.variant-outline:hover,
+    html body .liquid-animated-btn[class*="variant-outline"]:hover,
+    html body button.liquid-animated-btn:hover,
+    html body button.liquid-animated-btn[data-variant="outline"]:hover,
+    html body .liquid-animated-btn.hover\:bg-accent:hover,
+    html body .liquid-animated-btn.hover\:bg-primary:hover,
+    html body .liquid-animated-btn.hover\:bg-secondary:hover,
+    html body .liquid-animated-btn.hover\:bg-destructive:hover,
+    html body .liquid-animated-btn.hover\:bg-muted:hover,
+    html body .liquid-animated-btn.hover\:bg-popover:hover,
+    html body .liquid-animated-btn.hover\:bg-card:hover,
+    html body .liquid-animated-btn.hover\:bg-background:hover,
+    html body .liquid-animated-btn[class*="hover:bg-accent"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-primary"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-secondary"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-destructive"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-muted"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-popover"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-card"]:hover,
+    html body .liquid-animated-btn[class*="hover:bg-background"]:hover {
+      background: rgba(20,39,176,0.05) !important;
+      background-color: rgba(20,39,176,0.05) !important;
+      background-image: none !important;
+      background-clip: unset !important;
+      background-origin: unset !important;
+      background-size: unset !important;
+      background-repeat: unset !important;
+      background-position: unset !important;
+    }
+  }
+  
+  /* Финальные правила для всех устройств с максимальной специфичностью */
+  html body .liquid-animated-btn:hover,
+  html body .liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.variant-outline:hover,
+  html body .liquid-animated-btn[class*="variant-outline"]:hover,
+  html body button.liquid-animated-btn:hover,
+  html body button.liquid-animated-btn[data-variant="outline"]:hover,
+  html body .liquid-animated-btn.hover\:bg-accent:hover,
+  html body .liquid-animated-btn.hover\:bg-primary:hover,
+  html body .liquid-animated-btn.hover\:bg-secondary:hover,
+  html body .liquid-animated-btn.hover\:bg-destructive:hover,
+  html body .liquid-animated-btn.hover\:bg-muted:hover,
+  html body .liquid-animated-btn.hover\:bg-popover:hover,
+  html body .liquid-animated-btn.hover\:bg-card:hover,
+  html body .liquid-animated-btn.hover\:bg-background:hover,
+  html body .liquid-animated-btn[class*="hover:bg-accent"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-primary"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-secondary"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-destructive"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-muted"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-popover"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-card"]:hover,
+  html body .liquid-animated-btn[class*="hover:bg-background"]:hover {
+    background: rgba(20,39,176,0.05) !important;
+    background-color: rgba(20,39,176,0.05) !important;
+    background-image: none !important;
+    background-clip: unset !important;
+    background-origin: unset !important;
+    background-size: unset !important;
+    background-repeat: unset !important;
+    background-position: unset !important;
+  }
 
   /* Цветные кнопки контактов */
   .liquid-btn-telegram { border: 1px solid rgba(85,172,238,0.4); background: rgba(85,172,238,0.12); }
