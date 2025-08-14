@@ -1,5 +1,14 @@
 .glass-card {
-  background: rgba(244, 228, 193, 0.08);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg,
+    rgba(244, 228, 193, 0.08) 0%,
+    rgba(244, 228, 193, 0.05) 25%,
+    rgba(21, 216, 149, 0.03) 50%,
+    rgba(244, 228, 193, 0.06) 75%,
+    rgba(244, 228, 193, 0.08) 100%
+  );
+  background-size: 300% 300%;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
@@ -7,12 +16,105 @@
   box-shadow: 0 8px 32px 0 rgba(8, 15, 91, 0.4);
   transition: all 0.3s ease;
   color: #F4E4C1;
+  animation: gentle-glass-flow 20s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+/* Улучшенные стили для кнопок категорий */
+.category-filter-btn {
+  position: relative;
+  overflow: hidden;
+  background: transparent !important; /* Вернул на прозрачный фон */
+  border: 1px solid rgba(244, 228, 193, 0.6); /* Изменил с темного на светлый */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #F4E4C1;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(8, 15, 91, 0.2);
+}
+
+.category-filter-btn:hover {
+  background: rgba(244, 228, 193, 0.15) !important; /* Легкая подсветка при наведении */
+  border-color: rgba(244, 228, 193, 0.8); /* Светлая граница при наведении */
+  box-shadow: 0 6px 20px rgba(8, 15, 91, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Стили для активной (выбранной) категории */
+.category-filter-btn.active {
+  background: rgba(21, 216, 149, 0.25) !important;
+  border-color: rgba(21, 216, 149, 0.5);
+  box-shadow: 0 0 20px rgba(21, 216, 149, 0.4), 0 8px 25px rgba(8, 15, 91, 0.4);
+  animation: categoryGlow 2s ease-in-out infinite;
+}
+
+.category-filter-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(21, 216, 149, 0.15), transparent 70%);
+  animation: categoryPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Анимации для активной категории */
+@keyframes categoryGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(21, 216, 149, 0.4), 0 8px 25px rgba(8, 15, 91, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(21, 216, 149, 0.6), 0 12px 35px rgba(8, 15, 91, 0.5);
+  }
+}
+
+@keyframes categoryPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 70%,
+    rgba(244, 228, 193, 0.03) 0%,
+    rgba(21, 216, 149, 0.02) 40%,
+    rgba(244, 228, 193, 0.01) 70%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: soft-inner-glow 25s cubic-bezier(0.19, 1, 0.22, 1) infinite;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .glass-card:hover {
-  background: rgba(21, 216, 149, 0.12);
+  background: linear-gradient(135deg,
+    rgba(21, 216, 149, 0.12) 0%,
+    rgba(21, 216, 149, 0.08) 25%,
+    rgba(244, 228, 193, 0.06) 50%,
+    rgba(21, 216, 149, 0.10) 75%,
+    rgba(21, 216, 149, 0.12) 100%
+  );
   border: 1px solid rgba(21, 216, 149, 0.25);
   box-shadow: 0 12px 40px 0 rgba(21, 216, 149, 0.2);
+  animation-duration: 12s;
+}
+
+.glass-card:hover::before {
+  animation-duration: 18s;
+  opacity: 0.8;
 }
 
 .glass-section {
@@ -65,4 +167,344 @@
 .liquid-button:hover::before {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
+}
+
+/* Featured Cards Styling - Enhanced Liquid Glass Effect */
+.featured-card {
+  position: relative;
+  overflow: visible;
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.3));
+}
+
+/* Primary Featured Card - Luxurious Gold Palette */
+.featured-card.featured-primary::before {
+  content: '';
+  position: absolute;
+  top: -1.5px;
+  left: -1.5px;
+  right: -1.5px;
+  bottom: -1.5px;
+  border-radius: 22px;
+  padding: 1.5px;
+  background: linear-gradient(135deg,
+    #FFD700 0%,    /* Pure Gold */
+    #FFA500 15%,   /* Orange Gold */
+    #FF8C00 30%,   /* Dark Orange */
+    #DAA520 45%,   /* Goldenrod */
+    #B8860B 60%,   /* Dark Goldenrod */
+    #FF6347 75%,   /* Tomato accent */
+    #FFD700 90%,   /* Back to Gold */
+    #FFF8DC 100%   /* Cornsilk highlight */
+  );
+  background-size: 400% 400%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: subtract;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: subtract;
+  animation: liquid-gold-flow 16s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+  filter: blur(0.8px) brightness(1.3) saturate(1.5);
+}
+
+.featured-card.featured-primary::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 25px;
+  background: radial-gradient(ellipse at 25% 25%,
+    rgba(255,215,0,0.4) 0%,
+    rgba(255,165,0,0.3) 25%,
+    rgba(218,165,32,0.2) 50%,
+    transparent 75%
+  );
+  animation: liquid-aura-gold 12s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Secondary Featured Card - Vibrant Cyan-Teal Palette */
+.featured-card.featured-secondary::before {
+  content: '';
+  position: absolute;
+  top: -1.5px;
+  left: -1.5px;
+  right: -1.5px;
+  bottom: -1.5px;
+  border-radius: 22px;
+  padding: 1.5px;
+  background: linear-gradient(135deg,
+    #00FFFF 0%,    /* Cyan */
+    #40E0D0 15%,   /* Turquoise */
+    #20B2AA 30%,   /* Light Sea Green */
+    #008B8B 45%,   /* Dark Cyan */
+    #00CED1 60%,   /* Dark Turquoise */
+    #48D1CC 75%,   /* Medium Turquoise */
+    #7FFFD4 90%,   /* Aquamarine */
+    #E0FFFF 100%   /* Light Cyan */
+  );
+  background-size: 400% 400%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: subtract;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: subtract;
+  animation: liquid-cyan-flow 18s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  filter: blur(0.8px) brightness(1.4) saturate(1.6);
+}
+
+.featured-card.featured-secondary::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 25px;
+  background: radial-gradient(ellipse at 75% 75%,
+    rgba(0,255,255,0.4) 0%,
+    rgba(64,224,208,0.3) 25%,
+    rgba(32,178,170,0.2) 50%,
+    transparent 75%
+  );
+  animation: liquid-aura-cyan 15s cubic-bezier(0.39, 0, 0.61, 1) infinite alternate;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Enhanced hover effects */
+.featured-card:hover::before {
+  animation-duration: 8s;
+  filter: blur(0.5px) brightness(1.6) saturate(2);
+}
+
+.featured-card:hover::after {
+  animation-duration: 6s;
+  opacity: 0.8;
+}
+
+/* Liquid Flow Animations - Fluid and Organic */
+@keyframes liquid-gold-flow {
+  0% {
+    background-position: 0% 20%;
+    transform: rotate(0deg);
+  }
+  15% {
+    background-position: 30% 0%;
+    transform: rotate(0.3deg);
+  }
+  32% {
+    background-position: 80% 15%;
+    transform: rotate(-0.2deg);
+  }
+  48% {
+    background-position: 95% 65%;
+    transform: rotate(0.4deg);
+  }
+  63% {
+    background-position: 70% 90%;
+    transform: rotate(-0.1deg);
+  }
+  78% {
+    background-position: 25% 85%;
+    transform: rotate(0.2deg);
+  }
+  92% {
+    background-position: 5% 45%;
+    transform: rotate(-0.3deg);
+  }
+  100% {
+    background-position: 0% 20%;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes liquid-cyan-flow {
+  0% {
+    background-position: 10% 60%;
+    transform: rotate(0deg);
+  }
+  18% {
+    background-position: 45% 10%;
+    transform: rotate(-0.2deg);
+  }
+  34% {
+    background-position: 85% 25%;
+    transform: rotate(0.3deg);
+  }
+  51% {
+    background-position: 90% 70%;
+    transform: rotate(-0.1deg);
+  }
+  67% {
+    background-position: 60% 95%;
+    transform: rotate(0.4deg);
+  }
+  81% {
+    background-position: 20% 80%;
+    transform: rotate(-0.2deg);
+  }
+  95% {
+    background-position: 5% 35%;
+    transform: rotate(0.1deg);
+  }
+  100% {
+    background-position: 10% 60%;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes liquid-aura-gold {
+  0% {
+    opacity: 0.15;
+    transform: scale(0.995) rotate(0deg);
+  }
+  12% {
+    opacity: 0.25;
+    transform: scale(1.002) rotate(1deg);
+  }
+  25% {
+    opacity: 0.35;
+    transform: scale(1.005) rotate(2deg);
+  }
+  38% {
+    opacity: 0.45;
+    transform: scale(1.008) rotate(2.5deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.01) rotate(3deg);
+  }
+  62% {
+    opacity: 0.4;
+    transform: scale(1.007) rotate(3.5deg);
+  }
+  75% {
+    opacity: 0.3;
+    transform: scale(1.004) rotate(4deg);
+  }
+  88% {
+    opacity: 0.2;
+    transform: scale(1.001) rotate(4.5deg);
+  }
+  100% {
+    opacity: 0.15;
+    transform: scale(0.995) rotate(5deg);
+  }
+}
+
+@keyframes liquid-aura-cyan {
+  0% {
+    opacity: 0.18;
+    transform: scale(1.001) rotate(0deg);
+  }
+  14% {
+    opacity: 0.28;
+    transform: scale(1.004) rotate(-0.8deg);
+  }
+  28% {
+    opacity: 0.4;
+    transform: scale(1.007) rotate(-1.5deg);
+  }
+  42% {
+    opacity: 0.5;
+    transform: scale(1.01) rotate(-2deg);
+  }
+  56% {
+    opacity: 0.45;
+    transform: scale(1.008) rotate(-2.8deg);
+  }
+  70% {
+    opacity: 0.35;
+    transform: scale(1.005) rotate(-3.5deg);
+  }
+  84% {
+    opacity: 0.25;
+    transform: scale(1.002) rotate(-4deg);
+  }
+  100% {
+    opacity: 0.18;
+    transform: scale(1.001) rotate(-4.5deg);
+  }
+}
+
+/* Background Flow Animations for All Cards */
+@keyframes gentle-glass-flow {
+  0% {
+    background-position: 0% 30%;
+  }
+  12% {
+    background-position: 15% 10%;
+  }
+  25% {
+    background-position: 35% 5%;
+  }
+  38% {
+    background-position: 60% 20%;
+  }
+  50% {
+    background-position: 80% 45%;
+  }
+  62% {
+    background-position: 75% 70%;
+  }
+  75% {
+    background-position: 50% 85%;
+  }
+  88% {
+    background-position: 25% 75%;
+  }
+  100% {
+    background-position: 0% 30%;
+  }
+}
+
+@keyframes soft-inner-glow {
+  0% {
+    background-position: 20% 50%;
+    opacity: 0.4;
+  }
+  16% {
+    background-position: 40% 20%;
+    opacity: 0.6;
+  }
+  33% {
+    background-position: 70% 10%;
+    opacity: 0.5;
+  }
+  50% {
+    background-position: 90% 40%;
+    opacity: 0.7;
+  }
+  66% {
+    background-position: 80% 80%;
+    opacity: 0.6;
+  }
+  83% {
+    background-position: 40% 90%;
+    opacity: 0.4;
+  }
+  100% {
+    background-position: 20% 50%;
+    opacity: 0.4;
+  }
+}
+
+/* Enhanced glow for featured cards */
+.featured-card.glass-card {
+  box-shadow: 0 8px 32px 0 rgba(8, 15, 91, 0.4), 0 0 25px rgba(244, 228, 193, 0.15);
+}
+
+.featured-primary.glass-card:hover {
+  box-shadow:
+    0 12px 40px 0 rgba(21, 216, 149, 0.2),
+    0 0 40px rgba(255, 215, 0, 0.4),
+    0 0 80px rgba(255, 165, 0, 0.2);
+}
+
+.featured-secondary.glass-card:hover {
+  box-shadow:
+    0 12px 40px 0 rgba(21, 216, 149, 0.3),
+    0 0 40px rgba(0, 255, 255, 0.4),
+    0 0 80px rgba(64, 224, 208, 0.2);
 }

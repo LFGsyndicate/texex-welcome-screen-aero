@@ -116,8 +116,8 @@ const Navbar = () => {
               <DialogHeader>
                 <DialogTitle>Все решения</DialogTitle>
               </DialogHeader>
-              <div className="max-h-[60vh] overflow-y-auto pr-1 rounded-lg liquid-surface" style={{ background: 'rgba(20,39,176,0.43)' }}>
-                {services.map(s => (
+              <div className="max-h-[60vh] overflow-y-auto pr-1 rounded-lg liquid-surface bg-transparent">
+                {services.map((s, index) => (
                   <button key={s.packageId} onClick={(ev) => {
                     ev.preventDefault();
                     setDesktopListOpen(false);
@@ -126,7 +126,7 @@ const Navbar = () => {
                       setOpen(false);
                     });
                   }} className="w-full text-left px-3 py-2 rounded-md liquid-outline-btn hover:bg-light-cream/10 mt-1 modal-list-item">
-                    {s.packageName}
+                    {index + 1} | {s.packageName}
                   </button>
                 ))}
               </div>
@@ -137,7 +137,7 @@ const Navbar = () => {
               Категории <ChevronDown className="w-4 h-4" />
             </button>
             {catOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-xl liquid-surface-strong p-2" style={{ background: 'rgba(20,39,176,0.43)' }}>
+                             <div className="absolute right-0 mt-2 w-56 rounded-xl liquid-surface-strong p-2" style={{ background: 'rgba(20,39,176,0.20)' }}>
                 {categories.map((c, idx) => (
                   <div key={c}>
                     <button onClick={() => selectCategory(c)} className="w-full text-left px-3 py-2 rounded-lg hover:bg-light-cream/10 text-light-cream">
@@ -163,8 +163,8 @@ const Navbar = () => {
               <DialogHeader>
                 <DialogTitle>Все решения</DialogTitle>
               </DialogHeader>
-              <div className="max-h-[60vh] overflow-y-auto pr-1 rounded-lg liquid-surface" style={{ background: 'rgba(20,39,176,0.43)' }}>
-                {services.map(s => (
+              <div className="max-h-[60vh] overflow-y-auto pr-1 rounded-lg liquid-surface bg-transparent">
+                {services.map((s, index) => (
                   <button key={s.packageId} onClick={(ev) => {
                     ev.preventDefault();
                     setMobileListOpen(false);
@@ -173,7 +173,7 @@ const Navbar = () => {
                       setOpen(false);
                     });
                   }} className="w-full text-left px-3 py-2 rounded-md liquid-outline-btn hover:bg-light-cream/10 mt-1 modal-list-item">
-                    {s.packageName}
+                    {index + 1} | {s.packageName}
                   </button>
                 ))}
               </div>
@@ -207,7 +207,7 @@ const Navbar = () => {
                 <div className="grid grid-cols-1 gap-1 py-1">
                   {categories.map((c, idx) => (
                     <div key={c}>
-                      <button onClick={() => selectCategory(c)} className="w-full px-3 py-1.5 rounded-lg liquid-surface-strong text-light-cream text-left" style={{ background: 'rgba(20,39,176,0.43)' }}>
+                                              <button onClick={() => selectCategory(c)} className="w-full px-3 py-1.5 rounded-lg liquid-surface-strong text-light-cream text-left" style={{ background: 'rgba(20,39,176,0.15)' }}>
                         {c}
                       </button>
                       {idx < categories.length - 1 && <hr className="liquid-separator my-0.5" />}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { TinkoffPaymentCorrect } from '@/components/TinkoffPaymentCorrect/TinkoffPaymentCorrect';
 import { PaymentButton } from '@/components/PaymentButton/PaymentButton';
+import { testMinimalPayment } from '@/debug/minimal-payment-test';
 
 const TestPayment: React.FC = () => {
   return (
@@ -53,6 +54,27 @@ const TestPayment: React.FC = () => {
           >
             Рассрочка
           </PaymentButton>
+          
+          {/* Debug кнопка */}
+          <div className="mt-4 pt-4 border-t border-light-cream/20">
+            <h3 className="text-sm font-semibold text-light-cream/80 mb-2">🔍 Отладка API</h3>
+            <button
+              onClick={async () => {
+                console.log('🔍 Starting minimal API test...');
+                const result = await testMinimalPayment();
+                if (result.success) {
+                  console.log('✅ Minimal API test passed!');
+                  alert('✅ API работает! Проверьте консоль для деталей.');
+                } else {
+                  console.error('❌ Minimal API test failed:', result);
+                  alert('❌ API ошибка! Проверьте консоль для деталей.');
+                }
+              }}
+              className="w-full text-xs py-2 px-4 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+            >
+              Тест минимального запроса к API
+            </button>
+          </div>
           
           {/* Ссылка на главную */}
           <div className="mt-6">

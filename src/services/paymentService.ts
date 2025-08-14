@@ -1,13 +1,77 @@
 import { tinkoffConfig } from '@/config/tinkoff.config';
 import { TokenGenerator } from '@/utils/tokenGenerator';
-import { TinkoffInitRequest } from '@/types/payment.types';
+import {
+  EnhancedPaymentData,
+  PaymentResult,
+  FiscalError,
+  EnhancedTinkoffInitRequest,
+  TinkoffReceipt
+} from '@/types/payment.types';
 
-interface PaymentData {
-  amount: number;
-  orderId: string;
-  description: string;
-  itemName?: string; // Добавляем название карточки
-  customerKey?: string; // Идентификатор покупателя для сохранения карт
+// ✅ Удаляем старый интерфейс PaymentData, используем EnhancedPaymentData
+
+/**
+ * ✅ НОВОЕ: Утилита для создания фискального Receipt из пользовательских данных
+ */
+class FiscalReceiptBuilder {
+  static buildReceipt(
+    paymentData: EnhancedPaymentData,
+    amountInKopecks: number
+  ): TinkoffReceipt {
+    const receipt: TinkoffReceipt = {
+      Taxation: 'usn_income', // УСН 6% (доходы)
+      Items: [
+        {
+          Name: paymentData.itemName
+            ? `Услуги по реализации автоматизированных программных решений: ${paymentData.itemName}`
+            : paymentData.description,
+          Price: amountInKopecks,
+          Quantity: 1.00,
+          Amount: amountInKopecks,
+          Tax: 'none', // Без НДС при УСН
+          PaymentMethod: 'full_prepayment' // Для опции "Отправить закрывающий чек"
+        }
+      ]
+    };
+
+    // ✅ Динамически добавляем контактные данные пользователя
+    if (paymentData.fiscalData.email) {
+      receipt.Email = paymentData.fiscalData.email;
+    }
+    if (paymentData.fiscalData.phone) {
+      receipt.Phone = paymentData.fiscalData.phone;
+    }
+
+    return receipt;
+  }
+}
+
+/**
+ * ✅ НОВОЕ: Обработчик ошибок фискализации
+ */
+class FiscalErrorHandler {
+  static handleTinkoffError(data: any): FiscalError {
+    const errorCode = data.ErrorCode || 'UNKNOWN_ERROR';
+    const message = data.Message || data.Details || 'Неизвестная ошибка';
+
+    // Определяем пользовательское сообщение в зависимости от кода ошибки
+    let userMessage = 'Произошла ошибка при обработке платежа';
+
+    if (errorCode === '329' || message.includes('параметр')) {
+      userMessage = 'Ошибка в данных для фискального чека. Проверьте корректность email или номера телефона.';
+    } else if (errorCode === '53' || message.includes('Receipt')) {
+      userMessage = 'Ошибка создания фискального чека. Пожалуйста, попробуйте еще раз.';
+    } else if (message.includes('Email') || message.includes('Phone')) {
+      userMessage = 'Некорректные контактные данные. Проверьте формат email или номера телефона.';
+    }
+
+    return {
+      code: errorCode,
+      message,
+      details: data.Details,
+      userMessage
+    };
+  }
 }
 
 export class PaymentService {
@@ -34,20 +98,44 @@ export class PaymentService {
     return orderId;
   }
 
-  static async initPayment(paymentData: PaymentData) {
+  /**
+   * ✅ ОБНОВЛЕННЫЙ: Инициализация платежа с поддержкой фискальных данных
+   */
+  static async initPayment(paymentData: EnhancedPaymentData): Promise<PaymentResult> {
     try {
-      console.log('PaymentService: Starting payment initialization', paymentData);
+      // ✅ Валидация фискальных данных
+      if (!paymentData.fiscalData) {
+        throw new Error('Фискальные данные пользователя обязательны');
+      }
+
+      if (!paymentData.fiscalData.email && !paymentData.fiscalData.phone) {
+        throw new Error('Укажите email или телефон для получения фискального чека');
+      }
+
+      // Маскируем чувствительные данные в логах
+      const safeFiscalData = {
+        email: paymentData.fiscalData.email ? '***masked***' : undefined,
+        phone: paymentData.fiscalData.phone ? '***masked***' : undefined,
+        preferredContact: paymentData.fiscalData.preferredContact
+      };
+      console.log('PaymentService: Starting payment initialization with fiscal data:', {
+        ...paymentData,
+        fiscalData: safeFiscalData
+      });
 
       // Конвертируем рубли в копейки
       const amountInKopecks = Math.round(paymentData.amount * 100);
 
-      // Создаем запрос с правильными параметрами
-      const requestData: Omit<TinkoffInitRequest, 'Token'> = {
-        TerminalKey: tinkoffConfig.terminalKey, // 1754995728217
+      // ✅ Создаем фискальный Receipt с помощью FiscalReceiptBuilder
+      const receipt = FiscalReceiptBuilder.buildReceipt(paymentData, amountInKopecks);
+
+      // Создаем запрос с обновленными типами
+      const requestData: Omit<EnhancedTinkoffInitRequest, 'Token'> = {
+        TerminalKey: tinkoffConfig.terminalKey,
         Amount: amountInKopecks,
         OrderId: paymentData.orderId || this.generateOrderId('payment'),
-        Description: paymentData.itemName ? 
-          `Услуги по реализации автоматизированных программных решений: ${paymentData.itemName}` : 
+        Description: paymentData.itemName ?
+          `Услуги по реализации автоматизированных программных решений: ${paymentData.itemName}` :
           paymentData.description,
         SuccessURL: tinkoffConfig.successUrl,
         FailURL: tinkoffConfig.failUrl,
@@ -56,39 +144,34 @@ export class PaymentService {
         ...(paymentData.customerKey && { CustomerKey: paymentData.customerKey }),
         // В DATA оставляем только технически необходимые параметры
         DATA: {
-          connection_type: 'Widget2.0' // Тип интеграции для корректной работы
+          connection_type: 'Widget2.0'
         },
-        // Фискальные чеки - ОБЯЗАТЕЛЬНЫ для корректной работы
-        Receipt: {
-          Phone: '+79999999999', // Указываем телефон-плейсхолдер для прохождения валидации
-          Taxation: 'usn_income', // Упрощенная СН (доходы)
-          Items: [
-            {
-              Name: paymentData.itemName ? 
-                `Услуги по реализации автоматизированных программных решений: ${paymentData.itemName}` : 
-                paymentData.description,
-              Price: amountInKopecks,
-              Quantity: 1.00,
-              Amount: amountInKopecks,
-              Tax: 'none', // Без НДС - согласно УСН
-              PaymentMethod: 'full_prepayment' // Для опции "Отправить закрывающий чек"
-            }
-          ]
-        }
+        // ✅ Используем динамически созданный Receipt
+        Receipt: receipt
       };
 
-      console.log('PaymentService: Request data:', requestData);
+      console.log('PaymentService: Request data prepared');
 
       // Генерируем токен
       const tokenParams = TokenGenerator.prepareTokenParams(requestData);
       const token = await TokenGenerator.generateToken(tokenParams, tinkoffConfig.password);
 
-      const finalRequest = {
+      const finalRequest: EnhancedTinkoffInitRequest = {
         ...requestData,
         Token: token
       };
 
-      console.log('PaymentService: Final request with token:', finalRequest);
+      // Маскируем чувствительные данные в логах
+      const maskedRequestLog = {
+        ...finalRequest,
+        Token: '***masked***',
+        Receipt: {
+          ...finalRequest.Receipt,
+          ...(finalRequest.Receipt.Email ? { Email: '***masked***' } : {}),
+          ...(finalRequest.Receipt.Phone ? { Phone: '***masked***' } : {})
+        }
+      };
+      console.log('PaymentService: Final request (sensitive masked):', maskedRequestLog);
 
       // Отправляем запрос к Tinkoff API
       const response = await fetch(`${tinkoffConfig.apiUrl}Init`, {
@@ -103,7 +186,15 @@ export class PaymentService {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('PaymentService: HTTP error response:', response.status, errorText);
-        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+        
+        return {
+          success: false,
+          error: {
+            code: `HTTP_${response.status}`,
+            message: errorText,
+            userMessage: 'Ошибка соединения с платежной системой. Попробуйте еще раз.'
+          }
+        };
       }
 
       const data = await response.json();
@@ -117,12 +208,28 @@ export class PaymentService {
           orderId: data.OrderId
         };
       } else {
-        throw new Error(`Tinkoff API Error ${data.ErrorCode}: ${data.Message}`);
+        // ✅ Используем FiscalErrorHandler для обработки ошибок
+        const fiscalError = FiscalErrorHandler.handleTinkoffError(data);
+        console.error('PaymentService: Tinkoff API error:', fiscalError);
+        
+        return {
+          success: false,
+          error: fiscalError
+        };
       }
 
     } catch (error) {
       console.error('PaymentService: Error during payment initialization:', error);
-      throw error;
+      
+      const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка';
+      return {
+        success: false,
+        error: {
+          code: 'INIT_ERROR',
+          message: errorMessage,
+          userMessage: 'Произошла ошибка при инициализации платежа. Попробуйте еще раз.'
+        }
+      };
     }
   }
 }

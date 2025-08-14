@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { tinkoffConfig } from '@/config/tinkoff.config';
-import { TokenGenerator } from '@/utils/tokenGenerator';
+import { PaymentService } from '@/services/paymentService';
+import { FiscalDataModal } from '@/components/FiscalDataModal';
+import { FiscalData, EnhancedPaymentData } from '@/types/payment.types';
 
 interface TinkoffPaymentCorrectProps {
   amount: number;
@@ -24,93 +25,51 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
   onError
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isFiscalModalOpen, setIsFiscalModalOpen] = useState(false);
 
-  const handlePayment = async () => {
+  // ✅ НОВОЕ: Обработчик клика по кнопке - открывает модальное окно
+  const handlePaymentClick = () => {
     if (isLoading) return;
+    console.log('TinkoffPaymentCorrect: Starting payment flow', { amount, itemName, paymentType });
+    setIsFiscalModalOpen(true);
+  };
+
+  // ✅ НОВОЕ: Обработчик отправки фискальных данных
+  const handleFiscalDataSubmit = async (fiscalData: FiscalData) => {
     setIsLoading(true);
     
-    console.log('TinkoffPaymentCorrect: Starting payment', { amount, itemName, paymentType });
-
     try {
-      // Генерируем простой и читаемый ID заказа
-      const timestamp = Date.now();
-      const random = Math.floor(Math.random() * 1000);
-      const orderId = `order_${timestamp}_${random}`;
+      // Генерируем ID заказа
+      const orderId = PaymentService.generateOrderId(paymentType);
       
-      // Описание для формы согласно требованию
+      // Описание для платежа
       const description = `Услуги по реализации автоматизированных программных решений: ${itemName}`;
 
-      // Конвертируем рубли в копейки
-      const amountInKopecks = Math.round(amount * 100);
-
-      console.log('TinkoffPaymentCorrect: Generated order data:', { orderId, description, amount: amountInKopecks });
-
-      // Создаем параметры для API запроса согласно документации
-      const initParams = {
-        TerminalKey: tinkoffConfig.terminalKey, // 1754995728217
-        Amount: amountInKopecks,
-        OrderId: orderId,
-        Description: description,
-        SuccessURL: tinkoffConfig.successUrl,
-        FailURL: tinkoffConfig.failUrl,
-        Language: 'ru',
-        // Идентификатор покупателя для сохранения карт (если передан)
-        ...(customerKey && { CustomerKey: customerKey }),
-        // В DATA оставляем только технически необходимые параметры
-        DATA: {
-          connection_type: 'Widget2.0' // Тип интеграции для корректной работы
-        },
-        // Фискальные чеки - ОБЯЗАТЕЛЬНЫ для корректной работы
-        Receipt: {
-          Phone: '+79999999999', // Указываем телефон-плейсхолдер для прохождения валидации
-          Taxation: 'usn_income', // Упрощенная СН (доходы)
-          Items: [
-            {
-              Name: description,
-              Price: amountInKopecks,
-              Quantity: 1.00,
-              Amount: amountInKopecks,
-              Tax: 'none', // Без НДС - согласно УСН
-              PaymentMethod: 'full_prepayment' // Для опции "Отправить закрывающий чек"
-            }
-          ]
-        }
+      // Подготавливаем данные для PaymentService
+      const paymentData: EnhancedPaymentData = {
+        amount,
+        orderId,
+        description,
+        itemName,
+        customerKey,
+        fiscalData // ✅ Передаем фискальные данные от пользователя
       };
 
-      // Генерируем токен для безопасности
-      const tokenParams = TokenGenerator.prepareTokenParams(initParams);
-      const token = await TokenGenerator.generateToken(tokenParams, tinkoffConfig.password);
+      console.log('TinkoffPaymentCorrect: Initializing payment with fiscal data');
 
-      const finalInitParams = { ...initParams, Token: token };
+      // ✅ Используем обновленный PaymentService
+      const result = await PaymentService.initPayment(paymentData);
 
-      console.log('TinkoffPaymentCorrect: Final init params:', finalInitParams);
-
-      // Отправляем запрос к Tinkoff API
-      const response = await fetch(`${tinkoffConfig.apiUrl}Init`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(finalInitParams)
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('HTTP error response:', response.status, errorText);
-        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('TinkoffPaymentCorrect: API response:', data);
-
-      if (data.Success && data.PaymentURL) {
-        console.log('TinkoffPaymentCorrect: Payment initialized successfully', data);
+      if (result.success && result.paymentUrl) {
+        console.log('TinkoffPaymentCorrect: Payment initialized successfully', result);
+        
+        // Закрываем модальное окно
+        setIsFiscalModalOpen(false);
         
         // Открываем платежную форму в новом окне
         const paymentWindow = window.open(
-          data.PaymentURL, 
-          'tinkoff_payment', 
+          result.paymentUrl,
+          'tinkoff_payment',
           'width=800,height=600,scrollbars=yes,resizable=yes'
         );
         
@@ -123,15 +82,19 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
           onSuccess?.();
         }
       } else {
-        console.error('TinkoffPaymentCorrect: Payment initialization failed', data);
-        const errorMsg = `Ошибка инициализации платежа: ${data.Message || data.Details || 'Неизвестная ошибка'}`;
+        // ✅ Обрабатываем ошибки через новую систему
+        const errorMsg = result.error?.userMessage || 'Ошибка инициализации платежа';
+        console.error('TinkoffPaymentCorrect: Payment initialization failed', result.error);
+        
         onError?.(errorMsg);
         alert(errorMsg);
+        
+        // Не закрываем модальное окно, чтобы пользователь мог исправить данные
       }
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Произошла ошибка при инициализации платежа';
-      console.error('TinkoffPaymentCorrect: Error:', error);
+      console.error('TinkoffPaymentCorrect: Unexpected error:', error);
       onError?.(errorMessage);
       alert(errorMessage);
     } finally {
@@ -139,18 +102,35 @@ export const TinkoffPaymentCorrect: React.FC<TinkoffPaymentCorrectProps> = ({
     }
   };
 
+  // ✅ НОВОЕ: Обработчик закрытия модального окна
+  const handleFiscalModalClose = () => {
+    if (!isLoading) {
+      setIsFiscalModalOpen(false);
+    }
+  };
+
   return (
-    <button
-      className={className}
-      onClick={handlePayment}
-      disabled={isLoading}
-      type="button"
-      style={{
-        opacity: isLoading ? 0.6 : 1,
-        cursor: isLoading ? 'not-allowed' : 'pointer'
-      }}
-    >
-      {isLoading ? 'Обработка...' : children}
-    </button>
+    <>
+      <button
+        className={className}
+        onClick={handlePaymentClick}
+        disabled={isLoading}
+        type="button"
+        style={{
+          opacity: isLoading ? 0.6 : 1,
+          cursor: isLoading ? 'not-allowed' : 'pointer'
+        }}
+      >
+        {isLoading ? 'Обработка...' : children}
+      </button>
+
+      {/* ✅ НОВОЕ: Модальное окно для сбора фискальных данных */}
+      <FiscalDataModal
+        isOpen={isFiscalModalOpen}
+        onClose={handleFiscalModalClose}
+        onSubmit={handleFiscalDataSubmit}
+        isLoading={isLoading}
+      />
+    </>
   );
 };

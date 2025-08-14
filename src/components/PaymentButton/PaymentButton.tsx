@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { PaymentService } from '@/services/paymentService';
 import { HelpCircle } from 'lucide-react';
 import { InstallmentInfoModal } from '@/components/InstallmentInfoModal';
+import { FiscalDataModal } from '@/components/FiscalDataModal';
+import { FiscalData, EnhancedPaymentData } from '@/types/payment.types';
 
 interface PaymentButtonProps {
   service: {
@@ -26,39 +28,53 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showInstallmentInfo, setShowInstallmentInfo] = useState(false);
+  const [isFiscalModalOpen, setIsFiscalModalOpen] = useState(false);
 
-  const handlePayment = async () => {
+  // ✅ НОВОЕ: Обработчик клика по кнопке - открывает модальное окно
+  const handlePaymentClick = () => {
     if (isLoading) return;
     
-    setIsLoading(true);
     onPaymentStart?.();
-    
-    console.log('PaymentButton: Starting payment', { 
-      service: service.packageName, 
-      amount: service.price, 
-      paymentType 
+    console.log('PaymentButton: Starting payment flow', {
+      service: service.packageName,
+      amount: service.price,
+      paymentType
     });
+    
+    setIsFiscalModalOpen(true);
+  };
 
+  // ✅ НОВОЕ: Обработчик отправки фискальных данных
+  const handleFiscalDataSubmit = async (fiscalData: FiscalData) => {
+    setIsLoading(true);
+    
     try {
-      // Генерируем простой и читаемый ID заказа
+      // Генерируем ID заказа
       const orderId = PaymentService.generateOrderId(paymentType);
       
-      // Описание для формы с названием карточки
+      // Описание для платежа
       const description = `Услуги по реализации автоматизированных программных решений: ${service.packageName}`;
 
-      console.log('PaymentButton: Generated order data:', { orderId, description, amount: service.price });
-
-      // Инициализируем платеж через PaymentService
-      const result = await PaymentService.initPayment({
+      // Подготавливаем данные для PaymentService
+      const paymentData: EnhancedPaymentData = {
         amount: service.price,
         orderId,
         description,
         itemName: service.packageName,
-        customerKey: `customer-${service.packageId}` // Уникальный CustomerKey для каждого пакета
-      });
+        customerKey: `customer-${service.packageId}`,
+        fiscalData // ✅ Передаем фискальные данные от пользователя
+      };
+
+      console.log('PaymentButton: Initializing payment with fiscal data');
+
+      // ✅ Используем обновленный PaymentService
+      const result = await PaymentService.initPayment(paymentData);
 
       if (result.success && result.paymentUrl) {
         console.log('PaymentButton: Payment initialized successfully', result);
+        
+        // Закрываем модальное окно
+        setIsFiscalModalOpen(false);
         
         // Открываем платежную форму в новом окне
         const paymentWindow = window.open(
@@ -74,19 +90,30 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
           alert(errorMsg);
         }
       } else {
-        const errorMsg = `Ошибка инициализации платежа: Неизвестная ошибка`;
-        console.error('PaymentButton: Payment initialization failed', result);
+        // ✅ Обрабатываем ошибки через новую систему
+        const errorMsg = result.error?.userMessage || 'Ошибка инициализации платежа';
+        console.error('PaymentButton: Payment initialization failed', result.error);
+        
         onPaymentError?.(errorMsg);
         alert(errorMsg);
+        
+        // Не закрываем модальное окно, чтобы пользователь мог исправить данные
       }
 
     } catch (error) {
+      console.error('PaymentButton: Unexpected error:', error);
       const errorMsg = error instanceof Error ? error.message : 'Произошла ошибка при инициализации платежа';
-      console.error('PaymentButton: Error:', error);
       onPaymentError?.(errorMsg);
       alert(errorMsg);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // ✅ НОВОЕ: Обработчик закрытия модального окна
+  const handleFiscalModalClose = () => {
+    if (!isLoading) {
+      setIsFiscalModalOpen(false);
     }
   };
 
@@ -96,8 +123,12 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
         {paymentType === 'installment' && (
           <button
             type="button"
-            onClick={() => setShowInstallmentInfo(true)}
-            className="text-light-cream/70 hover:text-light-cream transition-colors p-1"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowInstallmentInfo(true);
+            }}
+            className="text-light-cream/70 hover:text-light-cream transition-colors p-1 z-10 relative flex-shrink-0"
             style={{ fontSize: '14px' }}
             title="Информация о рассрочке"
           >
@@ -106,10 +137,10 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
         )}
         <button
           className={className}
-          onClick={handlePayment}
+          onClick={handlePaymentClick}
           disabled={isLoading}
           type="button"
-          style={{ 
+          style={{
             opacity: isLoading ? 0.6 : 1,
             cursor: isLoading ? 'not-allowed' : 'pointer'
           }}
@@ -117,6 +148,14 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
           {isLoading ? 'Обработка...' : children}
         </button>
       </div>
+      
+      {/* ✅ НОВОЕ: Модальное окно для сбора фискальных данных */}
+      <FiscalDataModal
+        isOpen={isFiscalModalOpen}
+        onClose={handleFiscalModalClose}
+        onSubmit={handleFiscalDataSubmit}
+        isLoading={isLoading}
+      />
       
       {paymentType === 'installment' && (
         <InstallmentInfoModal

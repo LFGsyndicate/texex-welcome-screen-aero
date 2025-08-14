@@ -22,19 +22,52 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { PaymentButton } from '@/components/PaymentButton/PaymentButton';
 import React from 'react';
 import { TinkoffPaymentCorrect } from '@/components/TinkoffPaymentCorrect/TinkoffPaymentCorrect';
+import { updateMetaTags, addStructuredData, generateGlobalKeywords } from '@/utils/meta';
 
 const CATEGORY_EVENT = 'texex:set-category';
 const PKG_EVENT = 'texex:scroll-to-package';
 
 const heroSlides = [
-  { intro: true, title: 'Готовые AI-решения для вашего бизнеса', subtitle: 'Мы превращаем сложные технологии в понятные продукты с фиксированной ценой и гарантированным результатом. Перестаньте тратить время на эксперименты — начните получать прибыль.' },
-  { category: "Маркетинг и Продажи", title: "Превратите маркетинг из центра затрат в генератор прибыли", subtitle: "Наши AI-решения находят клиентов, оптимизируют рекламу и создают контент, который продает. Автоматизируйте рутину, сфокусируйтесь на росте." },
-  { category: "Клиентский сервис", title: "Подарите клиентам поддержку, которую они заслуживают. 24/7.", subtitle: "AI-ассистенты отвечают мгновенно, решают 70% вопросов и никогда не устают. Повышайте лояльность и сокращайте издержки." },
-  { category: "Внутренние процессы", title: "Освободите команду от бумажной работы и рутины", subtitle: "AI автоматизирует документооборот, финансы и HR. Ваши лучшие сотрудники должны решать сложные задачи, а не перекладывать бумаги." },
-  { category: "Контент и Медиа", title: "Создавайте контент студийного качества без бюджета на студию", subtitle: "AI-аватары, генераторы музыки и виральных идей. Ваш творческий потенциал теперь не ограничен техническими возможностями." },
-  { category: "Малый бизнес и Стартапы", title: "Получите AI-суперсилу для вашего бизнеса. С первого дня.", subtitle: "Небольшому бизнесу нужны быстрые и доступные решения. Запустите сайт за 3 минуты или наймите AI-ассистента, который стоит дешевле кофе." },
-  { category: "IT и Разработка", title: "Ускорьте разработку и повысьте безопасность вашего кода", subtitle: "AI-помощники для разработчиков и аудиторы безопасности. Пишите код быстрее и надежнее, опережая конкурентов и угрозы." },
-  { category: "Аналитика и Решения", title: "Превратите данные в деньги. Принимайте решения, основанные на фактах.", subtitle: "AI-платформы анализируют большие данные, находят скрытые инсайты и помогают вам видеть будущее вашего рынка." }
+  { 
+    intro: true, 
+    title: 'Готовые AI-решения с гарантированным ROI', 
+    subtitle: '50+ проверенных решений от 105,000₽. Внедрение за 1-4 недели. Фиксированная цена. Гарантированный результат. Перестаньте экспериментировать — начните зарабатывать на AI уже через месяц.' 
+  },
+  { 
+    category: "Маркетинг и Продажи", 
+    title: "Маркетинг, который окупается в 3-5 раз", 
+    subtitle: "AI находит ваших клиентов, создает контент-магниты и оптимизирует рекламу в реальном времени. Результат: +40% лидов, -60% стоимости привлечения. Автоматизация, которая приносит прибыль." 
+  },
+  { 
+    category: "Малый бизнес и Стартапы", 
+    title: "AI-суперсила для малого бизнеса. С первого дня.", 
+    subtitle: "Запустите сайт за 3 минуты, наймите AI-ассистента за 105,000₽ или автоматизируйте продажи за 150,000₽. Решения, которые окупаются за 2-3 месяца. Большой бизнес в маленьком формате." 
+  },
+  { 
+    category: "IT и Разработка", 
+    title: "Разработка в 3 раза быстрее. Безопасность на максимуме.", 
+    subtitle: "AI-помощники пишут код, находят баги и аудируют безопасность. Ваша команда работает как 3 команды. Результат: +200% скорости разработки, -90% критических ошибок. Опережайте конкурентов и угрозы." 
+  },
+  { 
+    category: "Аналитика и Решения", 
+    title: "Данные превращаются в деньги. Автоматически.", 
+    subtitle: "AI анализирует большие данные, находит скрытые инсайты и предсказывает тренды. Принимайте решения на основе фактов, а не интуиции. Результат: +60% точности прогнозов, +35% прибыльности решений." 
+  },
+  { 
+    category: "Клиентский сервис", 
+    title: "Клиенты получают ответ за 3 секунды. 24/7.", 
+    subtitle: "AI-ассистенты решают 70% вопросов без участия человека. Ваши менеджеры фокусируются на сложных кейсах, а клиенты получают поддержку премиум-уровня. Результат: +45% лояльности, -80% издержек." 
+  },
+  { 
+    category: "Внутренние процессы", 
+    title: "Освободите команду от рутины на 70%", 
+    subtitle: "AI автоматизирует документооборот, финансы и HR. Ваши топ-специалисты перестают быть секретарями и начинают создавать ценность. Результат: +50% продуктивности, -40% операционных расходов." 
+  },
+  { 
+    category: "Контент и Медиа", 
+    title: "Студийное качество без студийного бюджета", 
+    subtitle: "AI-аватары, генераторы музыки и виральных идей. Создавайте контент в 10 раз быстрее и дешевле. Результат: +300% объема контента, -80% затрат на производство. Ваш креатив теперь не ограничен ресурсами." 
+  }
 ];
 
 const logoComponents = [
@@ -66,6 +99,51 @@ const Index = () => {
   const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined);
   const debouncedFilter = useDebounce(filter, 150);
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // SEO: Инициализация мета-тегов и структурированных данных
+  useEffect(() => {
+    // Обновляем мета-теги с улучшенным содержанием
+    updateMetaTags({
+      title: 'TEXEX — готовые AI-решения для бизнеса | 60+ услуг автоматизации с ИИ',
+      description: '🤖 Готовые AI-решения для автоматизации бизнеса: AI-сотрудники, чат-боты, генераторы контента, аналитика. 60+ услуг от 105,000₽. Фиксированная цена, гарантированный результат. Внедрение за 1-4 недели.',
+      keywords: generateGlobalKeywords(),
+      url: window.location.href,
+      type: 'website'
+    });
+
+    // Добавляем структурированные данные
+    addStructuredData();
+
+    // Добавляем дополнительные мета-теги для конкретных категорий
+    const categoriesMeta = document.querySelector('meta[name="categories"]');
+    if (!categoriesMeta) {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'categories');
+      meta.setAttribute('content', [...new Set(services.map(s => s.category))].join(', '));
+      document.head.appendChild(meta);
+    }
+
+    // Добавляем мета-тег с количеством услуг
+    const serviceCountMeta = document.querySelector('meta[name="service-count"]');
+    if (!serviceCountMeta) {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'service-count');
+      meta.setAttribute('content', services.length.toString());
+      document.head.appendChild(meta);
+    }
+
+    // Добавляем мета-тег с ценовым диапазоном
+    const prices = services.map(s => s.pricingTier1_Price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const priceRangeMeta = document.querySelector('meta[name="price-range"]');
+    if (!priceRangeMeta) {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'price-range');
+      meta.setAttribute('content', `${minPrice.toLocaleString('ru')}-${maxPrice.toLocaleString('ru')} RUB`);
+      document.head.appendChild(meta);
+    }
+  }, []);
 
   useEffect(() => {
     const handler = (e: any) => setFilter(e.detail || 'Все');
@@ -155,6 +233,25 @@ const Index = () => {
     return () => window.removeEventListener('texex:open-payment-faq', handlePaymentFocus);
   }, []);
 
+  // ✅ НОВОЕ: Обработчик для открытия условий использования
+  useEffect(() => {
+    const handleTermsOpen = () => {
+      console.log('Opening terms dialog...');
+      
+      // Находим триггер модального окна с условиями и кликаем на него
+      setTimeout(() => {
+        const termsButton = document.querySelector('[data-terms-trigger]') as HTMLButtonElement;
+        if (termsButton) {
+          termsButton.click();
+          console.log('Terms dialog opened');
+        }
+      }, 100);
+    };
+    
+    window.addEventListener('texex:open-terms', handleTermsOpen);
+    return () => window.removeEventListener('texex:open-terms', handleTermsOpen);
+  }, []);
+
   // Отслеживаем изменения состояния аккордеона для управления подсветкой
   useEffect(() => {
     const paymentItem = document.getElementById('payment-accordion-item');
@@ -176,8 +273,16 @@ const Index = () => {
   const getMonthlyCostsRange = useCallback((service: Service): [number, number] | null => {
     if (!service.hasMonthlyCosts) return null;
     const overrides: Record<string, [number, number]> = {
+      'EMP-01': [10000, 30000], // Виртуальный AI-сотрудник — высокая нагрузка
+      'EMP-BC-01': [20000, 60000], // Блокчейн/DAO/трейдинг — повышенная нагрузка
+      'EMP-02': [18000, 55000], // Финтех/банки — высоконагруженные системы
       'SRV-02': [15000, 50000], // Голосовой ассистент: ASR/TTS дороже
       'OPS-05': [20000, 60000], // Контроль качества CV-инференс
+      'CNT-01': [12000, 35000], // Видеостудия — рендеринг и обработка
+      'CNT-06': [8000, 25000], // Подкаст автопилот — аудио обработка
+      'MKT-07': [10000, 30000], // Таргетолог Pro — частые API запросы
+      'ANL-03': [15000, 45000], // Предсказатель трендов — большие объемы данных
+      'ANL-06': [12000, 40000], // Инвестиционный советчик — финансовые API
     };
     if (overrides[service.packageId]) return overrides[service.packageId];
     const byCategory: Record<string, [number, number]> = {
@@ -188,6 +293,7 @@ const Index = () => {
       'Малый бизнес и Стартапы': [2000, 8000],
       'IT и Разработка': [3000, 15000],
       'Аналитика и Решения': [5000, 20000],
+      'AI-сотрудники': [5000, 25000],
     };
     return byCategory[service.category] || [2000, 15000];
   }, []);
@@ -267,7 +373,9 @@ return (
                         <div className="flex flex-col items-center justify-center p-4 md:p-6 min-h-[300px]">
                           <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4 text-shadow-lg text-light-cream leading-tight">{slide.title}</h1>
                           <p className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 max-w-3xl mx-auto text-light-cream/90 text-shadow">{slide.subtitle}</p>
-                          <Button size="lg" className="liquid-button text-light-cream font-bold border-0 shadow-xl bg-transparent hover:bg-transparent" onClick={scrollToServices}>Подобрать решение</Button>
+                          <Button size="lg" className="liquid-button text-light-cream font-bold border-0 shadow-xl bg-transparent hover:bg-transparent" onClick={scrollToServices}>
+                            Подобрать решение за 2 минуты
+                          </Button>
                         </div>
                       </div>
                     </CarouselItem>
@@ -287,7 +395,7 @@ return (
       {/* Social Proof Logos */}
       <section className="py-10 glass-section">
         <div className="container mx-auto">
-          <h3 className="text-xs md:text-sm uppercase text-gold mb-6 text-center">Наши партнеры и инструменты</h3>
+          <h3 className="text-xs md:text-sm uppercase text-gold mb-6 text-center">Технологии мирового уровня. Доверие лидеров индустрии</h3>
           <Carousel opts={{ align: 'start', loop: true }} autoplayMs={5000} arrowsPosition="bottom" className="w-full max-w-5xl lg:max-w-6xl mx-auto">
             <CarouselContent>
               {Array.from({ length: Math.ceil(logoComponents.length / 10) }).map((_, slideIndex) => (
@@ -315,12 +423,12 @@ return (
       {/* How it works */}
       <section className="py-12">
         <div className="container mx-auto max-w-5xl lg:max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-light-cream">Как мы работаем</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-light-cream">От идеи до результата за 4 недели</h2>
           <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { title: 'Выбор пакета', desc: 'Подберите решение или попросите помочь с выбором' },
-              { title: 'Оплата', desc: 'Оплачиваете удобным способом и получаете подтверждение' },
-              { title: 'Старт работы', desc: 'Обсуждаем детали и начинаем проект' },
+              { title: 'Выбор пакета', desc: 'Подберите решение за 2 минуты или получите бесплатную консультацию' },
+              { title: 'Оплата или Рассрочка', desc: 'Оплачиваете удобным способом. Рассрочка 0% на 12 месяцев' },
+              { title: 'Реализация', desc: 'Внедряем решение за 1-4 недели с гарантированным результатом' },
             ].map((step, idx) => (
               <>
                 <motion.div key={`step-${idx}`} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.1 }} className="liquid-surface rounded-xl p-6 text-center relative overflow-hidden group z-10">
@@ -353,18 +461,16 @@ return (
 
       <section id="services" className="py-14 md:py-20">
           <div className="container mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 text-light-cream">Витрина AI-решений</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 text-light-cream">50+ готовых AI-решений с гарантированным ROI</h2>
           <div className="flex justify-center flex-wrap gap-1.5 md:gap-2 mb-6 md:mb-12">
               {categories.map(category => (
                 <Button
                   key={category}
-                  variant={filter === category ? 'ghost' : 'outline'}
+                  variant="outline"
                   onClick={() => setFilter(category)}
-                className={`rounded-full transition-all duration-300 px-3 py-1 h-8 text-xs sm:text-sm ${
-                  filter === category
-                    ? 'liquid-animated-btn text-light-cream hover:!bg-transparent active:!bg-transparent focus:!bg-transparent'
-                    : 'liquid-outline-btn text-light-cream hover:text-light-cream hover:!bg-transparent active:!bg-transparent focus:!bg-transparent'
-                }`}
+                  className={`category-filter-btn rounded-full transition-all duration-300 px-3 py-1 h-8 text-xs sm:text-sm ${
+                    filter === category ? 'active' : ''
+                  }`}
                 >
                   {category}
                 </Button>
@@ -382,7 +488,10 @@ return (
                     className="flex"
                   id={`pkg-${service.packageId}`}
                 >
-                  <Card className="glass-card flex flex-col h-full w-full animate-float" style={{ animationDuration: `${UI_CONFIG.floatAnimationSeconds}s` }}>
+                  <Card
+                    className={`glass-card ${service.isFeatured ? ('featured-card ' + (service.featuredVariant === 'secondary' ? 'featured-secondary' : 'featured-primary')) : ''} flex flex-col h-full w-full animate-float`}
+                    style={{ animationDuration: `${UI_CONFIG.floatAnimationSeconds}s` }}
+                  >
                     {/* Полоса-градиент (разные цвета) с лёгкой жидкой анимацией */}
                     <div className={`relative h-[57px] w-full bg-gradient-to-r ${gradientStripes[index % gradientStripes.length]} liquid-gradient-stripe overflow-hidden`}>
                       <div className="liquid-stripe-shimmer" style={{ ['--stripe-speed' as any]: `${UI_CONFIG.liquidStripeSeconds}s` }} />
@@ -407,11 +516,15 @@ return (
                             </Badge>
                             <Dialog>
                               <DialogTrigger asChild>
-                                <button aria-label="Подробнее об ежемесячных расходах" className="text-gold/80 hover:text-gold focus:outline-none">
+                                <button
+                                  aria-label="Подробнее об ежемесячных расходах"
+                                  className="text-gold/80 hover:text-gold focus:outline-none z-10 relative flex-shrink-0"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
                                   <HelpCircle size={16} />
                                 </button>
                               </DialogTrigger>
-                              <DialogContent className="liquid-surface border-gold/40 text-light-cream">
+                              <DialogContent className="liquid-surface border-gold/40 text-light-cream z-50">
                                 <DialogHeader>
                                   <DialogTitle>Ежемесячные расходы LLM/API</DialogTitle>
                                    <DialogDescription className="text-light-cream/80">
@@ -437,20 +550,22 @@ return (
                         </div>
                         ) : null}
                         <Separator className="my-3 liquid-separator" />
-                        <div className="flex flex-col space-y-2">
+                        <div className="flex flex-col space-y-2 relative z-20">
                           {/* Кнопка оплаты - желтая большая */}
-                          <TinkoffPaymentCorrect
-                            amount={service.pricingTier1_Price}
-                            itemName={service.packageName}
-                            paymentType="payment"
-                            customerKey={`customer-${service.packageId}`} // Уникальный CustomerKey для каждого пакета
-                            className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-3 sm:py-2 text-sm sm:text-base"
-                            onSuccess={() => console.log('Payment successful for:', service.packageName)}
-                            onError={(error) => console.error('Payment error:', error)}
-                          >
-                            Оплатить
-                          </TinkoffPaymentCorrect>
-                          <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2">
+                          <div className="relative z-30">
+                            <TinkoffPaymentCorrect
+                              amount={service.pricingTier1_Price}
+                              itemName={service.packageName}
+                              paymentType="payment"
+                              customerKey={`customer-${service.packageId}`} // Уникальный CustomerKey для каждого пакета
+                              className="w-full rounded-lg font-bold text-black bg-[#F2CC66] hover:bg-[#F5D77F] text-center flex items-center justify-center py-3 sm:py-2 text-sm sm:text-base relative z-40"
+                              onSuccess={() => console.log('Payment successful for:', service.packageName)}
+                              onError={(error) => console.error('Payment error:', error)}
+                            >
+                              Оплатить
+                            </TinkoffPaymentCorrect>
+                          </div>
+                          <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2 relative z-30">
                             <div className="w-full sm:w-1/2">
                               <PaymentButton
                                 service={{
@@ -459,7 +574,7 @@ return (
                                   price: service.pricingTier1_Price
                                 }}
                                 paymentType="installment"
-                                className="w-full text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center"
+                                className="w-full text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md bg-black text-white hover:bg-black/90 text-center flex items-center justify-center relative z-40"
                                 onPaymentStart={() => console.log('Installment started for:', service.packageName)}
                                 onPaymentError={(error) => console.error('Installment error:', error)}
                               >
@@ -467,12 +582,12 @@ return (
                               </PaymentButton>
                             </div>
                             <div className="w-full sm:w-1/2">
-                              <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
+                              <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="w-full liquid-outline-btn text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md text-light-cream text-center flex items-center justify-center relative z-40" style={{ borderColor: 'rgba(244,228,193,0.35)' }}>Помощь с выбором</a>
                             </div>
                           </div>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button id="order-modal-trigger" className="w-full liquid-animated-btn text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md text-light-cream" variant="outline">Состав стоимости</Button>
+                            <Button id="order-modal-trigger" className="w-full liquid-animated-btn text-xs sm:text-sm py-2 sm:py-1 h-auto rounded-md text-light-cream relative z-40" variant="outline">Состав стоимости</Button>
                           </DialogTrigger>
                             <DialogContent className="liquid-surface border-gold/40 text-light-cream">
                               <DialogHeader>
@@ -543,7 +658,7 @@ return (
       </div>
       <section id="contacts" className="py-14">
         <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-light-cream">Контакты</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-light-cream">Свяжитесь с нами. Получите консультацию за 5 минут</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <a href="https://t.me/ruhunt" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-telegram rounded-lg px-4 py-3 text-center">Telegram</a>
             <a href="https://wa.me/79097878786" target="_blank" rel="noreferrer" className="liquid-animated-btn liquid-btn-whatsapp rounded-lg px-4 py-3 text-center">WhatsApp</a>
@@ -558,7 +673,7 @@ return (
       </div>
       <section id="faq" className="py-20 glass-section">
           <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-light-cream">Остались вопросы?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-light-cream">Остались вопросы? Получите ответы за 30 секунд</h2>
             <Accordion type="single" collapsible className="w-full" value={accordionValue} onValueChange={setAccordionValue}>
               <AccordionItem value="item-1" className="border-b border-gold/30">
                 <AccordionTrigger className="text-base md:text-lg font-semibold text-left hover:no-underline text-light-cream">Как быстро я увижу результат?</AccordionTrigger>
@@ -607,7 +722,10 @@ return (
           <div className="flex justify-center mt-4">
             <Dialog>
               <DialogTrigger asChild>
-                <button className="liquid-outline-btn px-4 py-2 rounded-md text-light-cream/95 hover:text-light-cream">
+                <button
+                  data-terms-trigger
+                  className="liquid-outline-btn px-4 py-2 rounded-md text-light-cream/95 hover:text-light-cream"
+                >
                   Обработка ПД, Конфиденциальность и Условия использования
                 </button>
               </DialogTrigger>

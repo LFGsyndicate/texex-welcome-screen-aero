@@ -4,10 +4,10 @@
 
 export const env = {
   // Основные настройки
-  APP_URL: import.meta.env.VITE_APP_URL || 'https://texex-ai-platform.vercel.app',
-  COMPANY_NAME: import.meta.env.VITE_COMPANY_NAME || 'Texex AI Solutions',
-  CONTACT_EMAIL: import.meta.env.VITE_CONTACT_EMAIL || 'info@texex.ai',
-  CONTACT_PHONE: import.meta.env.VITE_CONTACT_PHONE || '+7 (999) 123-45-67',
+  APP_URL: import.meta.env.VITE_APP_URL || 'https://texex.ru',
+  COMPANY_NAME: import.meta.env.VITE_COMPANY_NAME || 'TEXEX AI Solutions',
+  CONTACT_EMAIL: import.meta.env.VITE_CONTACT_EMAIL || 'info@texex.ru',
+  CONTACT_PHONE: import.meta.env.VITE_CONTACT_PHONE || '+79097878786',
 
   // Режимы работы
   IS_DEV: import.meta.env.DEV,
@@ -27,9 +27,9 @@ export const env = {
   YM_ID: import.meta.env.VITE_YM_ID,
 
   // Социальные сети
-  TELEGRAM_URL: import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/texex_ai',
-  WHATSAPP_URL: import.meta.env.VITE_WHATSAPP_URL || 'https://wa.me/79991234567',
-  EMAIL_URL: import.meta.env.VITE_EMAIL_URL || 'mailto:info@texex.ai',
+  TELEGRAM_URL: import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/ruhunt',
+  WHATSAPP_URL: import.meta.env.VITE_WHATSAPP_URL || 'https://wa.me/79097878786',
+  EMAIL_URL: import.meta.env.VITE_EMAIL_URL || 'mailto:info@texex.ru',
 
   // Feature flags
   FEATURES: {
