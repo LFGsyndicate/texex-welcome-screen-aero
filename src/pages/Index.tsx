@@ -21,8 +21,10 @@ import { YCLogo, ForbesLogo, SkolkovoLogo, OpenAILogo, GoogleCloudLogo, AWSLogo,
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PaymentButton } from '@/components/PaymentButton/PaymentButton';
 import React from 'react';
+import { trackViewItem } from '@/utils/analytics';
 import { TinkoffPaymentCorrect } from '@/components/TinkoffPaymentCorrect/TinkoffPaymentCorrect';
 import { updateMetaTags, addStructuredData, generateGlobalKeywords } from '@/utils/meta';
+
 
 const CATEGORY_EVENT = 'texex:set-category';
 const PKG_EVENT = 'texex:scroll-to-package';
@@ -102,10 +104,12 @@ const Index = () => {
 
   // SEO: Инициализация мета-тегов и структурированных данных
   useEffect(() => {
+    // Отмечаем просмотр витрины как view_item_list
+    try { trackViewItem({ section: 'hero' }); } catch {}
     // Обновляем мета-теги с улучшенным содержанием
     updateMetaTags({
-      title: 'TEXEX — готовые AI-решения для бизнеса | 60+ услуг автоматизации с ИИ',
-      description: '🤖 Готовые AI-решения для автоматизации бизнеса: AI-сотрудники, чат-боты, генераторы контента, аналитика. 60+ услуг от 105,000₽. Фиксированная цена, гарантированный результат. Внедрение за 1-4 недели.',
+      title: 'TEXEX — готовые AI-решения для бизнеса | 50+ услуг автоматизации с ИИ',
+      description: '🤖 Готовые AI-решения для автоматизации бизнеса: AI-сотрудники, чат-боты, генераторы контента, аналитика. 50+ услуг от 105,000₽. Фиксированная цена, гарантированный результат. Внедрение за 1-4 недели.',
       keywords: generateGlobalKeywords(),
       url: window.location.href,
       type: 'website'
@@ -709,6 +713,8 @@ return (
             </Accordion>
           </div>
         </section>
+
+
 
       <footer className="py-12">
         <div className="container mx-auto text-center text-gold text-sm">

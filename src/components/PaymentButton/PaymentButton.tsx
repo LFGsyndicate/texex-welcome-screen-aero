@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { trackAddToCart, trackBeginCheckout } from '@/utils/analytics';
 import { PaymentService } from '@/services/paymentService';
 import { HelpCircle } from 'lucide-react';
 import { InstallmentInfoModal } from '@/components/InstallmentInfoModal';
@@ -34,6 +35,8 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
   const handlePaymentClick = () => {
     if (isLoading) return;
     
+    try { trackAddToCart({ label: 'payment_button', packageId: service.packageId, name: service.packageName, price: service.price }); } catch {}
+
     onPaymentStart?.();
     console.log('PaymentButton: Starting payment flow', {
       service: service.packageName,
@@ -66,6 +69,7 @@ export const PaymentButton: React.FC<PaymentButtonProps> = ({
       };
 
       console.log('PaymentButton: Initializing payment with fiscal data');
+      try { trackBeginCheckout({ label: 'tinkoff_checkout', orderValue: service.price, packageId: service.packageId }); } catch {}
 
       // ✅ Используем обновленный PaymentService
       const result = await PaymentService.initPayment(paymentData);

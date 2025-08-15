@@ -3,16 +3,36 @@
   <!-- Главная страница -->
   <url>
     <loc>https://texex.ru/</loc>
-    <lastmod>2025-08-13</lastmod>
+    <lastmod>2025-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Страница 404 (не индексируется, но включена для полноты) -->
+
+  <!-- Витрина услуг (якорь не влияет на индекс, но укажем базовый URL) -->
   <url>
-    <loc>https://texex.ru/404</loc>
-    <lastmod>2025-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.1</priority>
+    <loc>https://texex.ru/#services</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+
+  <!-- Важные страницы статуса оплаты исключены robots.txt, поэтому в карту не добавляем
+       (payment/success, payment/error) -->
+
+  <!-- Страницы справки/FAQ, контактов -->
+  <url>
+    <loc>https://texex.ru/#contacts</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://texex.ru/#faq</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Не включаем тестовые и отладочные разделы: /test, /debug, /test-payment -->
 </urlset>

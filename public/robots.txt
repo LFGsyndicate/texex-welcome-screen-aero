@@ -1,22 +1,39 @@
 User-agent: *
+# Блокируем тесты и оплату
 Disallow: /payment/
-Disallow: /test/
-Disallow: /debug/
-Disallow: /test-payment
-
-# Разрешаем индексацию главной страницы
-Allow: /
-
-# Запрещаем индексацию всех страниц оплаты
 Disallow: /payment/success
 Disallow: /payment/error
 Disallow: /payment/test
 Disallow: /payment/debug
-
-# Запрещаем индексацию тестовых страниц
+Disallow: /test/
+Disallow: /debug/
+Disallow: /test-payment
 Disallow: /*test*
 Disallow: /*debug*
-Disallow: /*payment*
 
-# Sitemap
+# Разрешаем главную и публичные страницы
+Allow: /
+
+# Специально разрешаем крупным поисковикам и AI-ботам краулинг и кэш изображений
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Yandex
+Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content / 
+
+# Разрешаем AI-ботам безопасное индексирование (без тестовых и платежных зон)
+User-agent: GPTBot
+Allow: /
+Disallow: /payment/
+Disallow: /test/
+Disallow: /debug/
+User-agent: CCBot
+Allow: /
+Disallow: /payment/
+Disallow: /test/
+Disallow: /debug/
+
+# Карта сайта
 Sitemap: https://texex.ru/sitemap.xml

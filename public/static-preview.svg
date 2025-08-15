@@ -1,0 +1,51 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Основной градиент фона -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D19A3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#080F5B;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Паттерн волн как на оригинальном скриншоте -->
+    <pattern id="wavePattern" patternUnits="userSpaceOnUse" width="200" height="100" patternTransform="rotate(15)">
+      <path d="M0,50 Q50,30 100,50 T200,50" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" fill="none"/>
+      <path d="M0,30 Q50,10 100,30 T200,30" stroke="rgba(255,255,255,0.06)" stroke-width="1" fill="none"/>
+      <path d="M0,70 Q50,50 100,70 T200,70" stroke="rgba(255,255,255,0.04)" stroke-width="0.8" fill="none"/>
+    </pattern>
+    
+    <!-- Дополнительные волновые эффекты -->
+    <pattern id="wavePattern2" patternUnits="userSpaceOnUse" width="150" height="80" patternTransform="rotate(-10)">
+      <ellipse cx="75" cy="40" rx="60" ry="15" stroke="rgba(255,255,255,0.03)" stroke-width="1" fill="none"/>
+      <ellipse cx="75" cy="40" rx="40" ry="10" stroke="rgba(255,255,255,0.05)" stroke-width="0.8" fill="none"/>
+      <ellipse cx="75" cy="40" rx="20" ry="5" stroke="rgba(255,255,255,0.07)" stroke-width="0.6" fill="none"/>
+    </pattern>
+  </defs>
+  
+  <!-- Основной фон -->
+  <rect width="1200" height="630" fill="url(#mainGradient)"/>
+  
+  <!-- Волновые паттерны -->
+  <rect width="1200" height="630" fill="url(#wavePattern)" opacity="0.6"/>
+  <rect width="1200" height="630" fill="url(#wavePattern2)" opacity="0.4"/>
+  
+  <!-- Дополнительные декоративные элементы -->
+  <circle cx="200" cy="150" r="80" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none"/>
+  <circle cx="1000" cy="480" r="120" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" fill="none"/>
+  <circle cx="100" cy="500" r="40" stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none"/>
+  <circle cx="1100" cy="100" r="60" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none"/>
+  
+  <!-- Логотип TEXEX -->
+  <text x="600" y="120" text-anchor="middle" fill="#F4E4C1" font-family="Inter, Arial, sans-serif" font-size="52" font-weight="bold" letter-spacing="2px">TEXEX</text>
+  
+  <!-- Основной заголовок -->
+  <text x="600" y="260" text-anchor="middle" fill="white" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="bold">Готовые AI-решения</text>
+  <text x="600" y="330" text-anchor="middle" fill="white" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="bold">с гарантированным ROI</text>
+  
+  <!-- Дополнительная информация -->
+  <text x="600" y="420" text-anchor="middle" fill="#F4E4C1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">50+ проверенных решений от 105,000₽. Внедрение за 1-4 недели.</text>
+  <text x="600" y="460" text-anchor="middle" fill="#F4E4C1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">Фиксированная цена. Гарантированный результат. Перестаньте</text>
+  <text x="600" y="500" text-anchor="middle" fill="#F4E4C1" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">экспериментировать — начните зарабатывать на AI уже через месяц.</text>
+  
+  <!-- Подпись внизу -->
+  <text x="600" y="580" text-anchor="middle" fill="#F4E4C1" font-family="Inter, Arial, sans-serif" font-size="24" opacity="0.8">AI-решения для автоматизации бизнеса</text>
+</svg>
